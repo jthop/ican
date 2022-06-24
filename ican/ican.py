@@ -9,6 +9,7 @@ from .version import Version
 from .git import Git
 from .log import logger
 from .emojis import rnd_good_emoji
+from .exceptions import GitDescribeError
 
 #######################################
 #
@@ -44,16 +45,18 @@ class Ican(object):
 
         # Now config is parsed.  We can parse from config
         self.version = Version.parse(self.config.current_version)
-        logger.debug(
-            f'{rnd_good_emoji(2)} Parsed version {self.version.semantic}' \
-            f' from config {rnd_good_emoji(2)}'
-        )
+        logger.debug(f'Parsed version {self.version.semantic} from config')
 
-        self.version._git_metadata = self.git.describe()
-        logger.debug(
-            f'{rnd_good_emoji(2)} Set git-version metadata: ' \
-            f'{self.version.git} {rnd_good_emoji(2)}'
-        )
+        try:
+            self.version._git_metadata = self.git.describe()
+        except GitDescribeError as e:
+            logger.info(e)
+            logger.info('Git style versions will be disabled.')
+            logger.info('Possibly this is a new repo with no tags.')
+            self.git.disable()
+            
+        else:
+            logger.debug(f'Set git-version metadata: {self.version.git}')
 
         return
 
@@ -73,7 +76,7 @@ class Ican(object):
 
         # Use the Version API to bump 'part'
         self.version.bump(part)
-        logger.debug(f'+ New value of {part}: {getattr(self.version, part)}.')
+        logger.debug(f'+ New value of {part}: {getattr(self.version, part)}')
 
         for file in self.config.source_files:
             file.update(self.version)

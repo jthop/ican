@@ -30,7 +30,8 @@ class SourceCode(object):
         
         if not self.file.exists():
             raise SourceCodeFileMissing(
-                f'config references non existant file: {self.file}')
+                f'config references non existant file: {self.file}'
+            )
         self.valid = True
 
         if self.regex:

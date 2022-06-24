@@ -8,7 +8,14 @@ from tempfile import NamedTemporaryFile
 from types import SimpleNamespace
 
 from .log import logger
+from .exceptions import GitUnusable
+from .exceptions import GitDescribeError
+from .exceptions import GitAddError
+from .exceptions import GitCommitError
+from .exceptions import GitTagError
+from .exceptions import GitPushError
 
+from .exceptions import GPGSigningError
 
 #######################################
 #
@@ -50,19 +57,20 @@ class Git(object):
             r = str(self.root).rstrip('\n')
             logger.debug(f'Found git root: {r}')
 
+    def disable(self):
+        self.usable = False
+
 
     def command(self, cmd=[]):
         env = os.environ.copy()
-        try:
-            result = subprocess.run(
-                cmd, 
-                check=True, 
-                capture_output=True,
-                env=env
-            ).stdout
-        except subprocess.CalledProcessError as e:
-            print("Exception: {e.returncode}, {e.output}")
-            return None
+
+        result = subprocess.run(
+            cmd, 
+            check=True, 
+            capture_output=True,
+            env=env
+        ).stdout
+
         return result
 
 
@@ -76,7 +84,7 @@ class Git(object):
         try:
             u = self.command(cmd)
         except Exception as e:
-            return False
+            raise GitUnusable(e)
 
         return u
 
@@ -89,8 +97,11 @@ class Git(object):
         """
 
         cmd = ['git', 'rev-parse', '--show-toplevel']
-        dir = self.command(cmd)
-        
+        try:
+            dir = self.command(cmd)
+        except Exception as e:
+            raise GitRootError(e)
+
         return Path(dir.decode())
 
 
@@ -100,7 +111,10 @@ class Git(object):
         """
 
         cmd = ['git', 'describe', '--dirty', '--tags', '--long']
-        d = self.command(cmd).decode().split("-")
+        try:
+            d = self.command(cmd).decode().split("-")
+        except Exception as e:
+            raise GitDescribeError(e)
         
         dirty = False
         if d[-1].strip() == "dirty":
@@ -131,7 +145,10 @@ class Git(object):
         """
 
         cmd = ['git', 'add', files]
-        add = self.command(cmd)
+        try:
+            add = self.command(cmd)
+        except Exception as e:
+            raise GitAddError(e)
 
         return add
 
@@ -147,7 +164,12 @@ class Git(object):
         """
 
         cmd = ['git', 'push', 'origin', 'master', tag]
-        push = self.command(cmd)
+        try:
+            push = self.command(cmd)
+        except Exception as e:
+            GitPushError(e)
+
+        return
 
 
     def commit(self, message):
@@ -159,7 +181,10 @@ class Git(object):
             f.write(message.encode("utf-8"))
 
         cmd = ['git', 'commit', '-F', f.name]
-        commit = self.command(cmd)
+        try:
+            commit = self.command(cmd)
+        except Exception as e:
+            raise GitCommitError(e)
 
         return commit
 
@@ -181,5 +206,10 @@ class Git(object):
         if message:
             cmd += ["--message", message]
 
-        tag = self.command(cmd)
+        try:
+            tag = self.command(cmd)
+        except Exception as e:
+            GitTagError(e)
+
         return tag
+

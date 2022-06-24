@@ -105,7 +105,7 @@ class Config(object):
                 break
         else:
             msg = f"Could not find config file [{f}]  " \
-            "Try using a default config with '--defaults',"
+            "Try using a default config with '--init',"
             raise ValueError(msg)
 
     def parse_source_files(self):
@@ -116,7 +116,7 @@ class Config(object):
         for s in sections:
             file = self.parser.get(s, 'file', fallback=None)
             regex = self.parser.get(s, 'regex', fallback=None)
-            style = self.parser.get(s, 'style', fallback='version')
+            style = self.parser.get(s, 'style', fallback='semantic')
             
             # First throw an error if need be
             if file is None or regex is None:
@@ -169,7 +169,8 @@ class Config(object):
             self.auto_tag,
             self.auto_commit,
             self.auto_push,
-            self.signature)
+            self.signature
+        )
         logger.debug(f'Options parsed.  {o}')
 
         # We need to verify sections are there, especially before we blindly remove

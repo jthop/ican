@@ -68,8 +68,11 @@ We recommend the following commands:
     def _excepthook(self, type, value, tracekback, debug=False):
         """ """
         if isinstance(value, IcanException):
-            if value.message:
-                value.output_method(value.message)
+            if value.msg:
+                value.output_method(value.msg)
+            if value.e:
+                for line in value.e:
+                    value.output_method(line)
             if debug:
                 self._original_excepthook(type, value, tracekback)
             exit_code = value.exit_code

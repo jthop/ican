@@ -16,12 +16,13 @@ class ExitCode():
     NO_CURRENT_VERSION = 4
     
     GIT_UNUSABLE = 10
-    GIT_ADD_ERROR = 11
-    GIT_COMMIT_ERROR = 12
-    GIT_TAG_ERROR = 13
-    GIT_PUSH_ERROR = 14
-    GIT_REPO_ERROR = 15
-    GPG_SIGNING_ERROR = 16
+    GIT_ROOT_ERROR = 11
+    GIT_DESCRIBE_ERROR = 12
+    GIT_ADD_ERROR = 13
+    GIT_COMMIT_ERROR = 14
+    GIT_TAG_ERROR = 15
+    GIT_PUSH_ERROR = 16
+    GPG_SIGNING_ERROR = 17
     
     VERSION_PARSE_ERROR = 20
     VERSION_METADATA_ERROR = 21
@@ -39,26 +40,101 @@ class IcanException(Exception):
         """ """
         self.output_method = logger.critical
         self.exit_code = self.__class__.exit_code
+        self.msg = ""
+        self.e = []
+        
+        # Set the message, typically at init
         if args:
-            self.message = args[0]
-        elif hasattr(self.__class__, "message"):
-            self.message = self.__class__.message
-        else:
-            self.message = ""
+            if isinstance(args[0], Exception):
+                self.msg = str(args[0])
+
+                _e = args[0]
+                if hasattr(_e, 'stderr'):
+                    stderr = getattr(_e, 'stderr')
+                    stderr = stderr.decode('utf-8')
+                    stderr = stderr.rstrip('\n')
+                    self.e.append(stderr)
+                if hasattr(_e, 'returncode'):
+                    returncode = getattr(_e, 'returncode')
+                    self.e.append(returncode)
+            else:
+                self.msg = args[0]
+        elif hasattr(self.__class__, "msg"):
+            self.msg = self.__class__.msg
+
+        # Go ahead and merge the exit_code into msg
+        m = f'{self.msg} (code {self.exit_code})'
+        self.msg = m
 
     def __str__(self):
-        return self.message
+        return self.msg
 
 class DryRunExit(IcanException):
     pass
 
+########################
+
+class NoConfigFound(IcanException):
+    exit_code = ExitCode.NO_CONFIG_FOUND
+
+class InvalidConfig(IcanException):
+    exit_code = ExitCode.INVALID_CONFIG
+
+class ConfigWriteError(IcanException):
+    exit_code = ExitCode.CONFIG_WRITE_ERROR
+
 class NoCurrentVersion(IcanException):
     exit_code = ExitCode.NO_CURRENT_VERSION
-    message = (
+    msg = (
         "[NO_VERSION_SPECIFIED]\n"
         "Check if current version is specified in config file, like:\n"
         "version = 0.4.3\n"
     )
+
+########################
+
+class GitUnusable(IcanException):
+    exit_code = ExitCode.GIT_UNUSABLE
+
+class GitRootError(IcanException):
+    exit_code = ExitCode.GIT_ROOT_ERROR
+
+class GitDescribeError(IcanException):
+    exit_code = ExitCode.GIT_DESCRIBE_ERROR
+
+class GitAddError(IcanException):
+    exit_code = ExitCode.GIT_ADD_ERROR
+
+class GitCommitError(IcanException):
+    exit_code = ExitCode.GIT_COMMIT_ERROR
+
+class GitTagError(IcanException):
+    exit_code = ExitCode.GIT_TAG_ERROR
+
+class GitPushError(IcanException):
+    exit_code = ExitCode.GIT_PUSH_ERROR
+
+class GPGSigningError(IcanException):
+    exit_code = ExitCode.GPG_SIGNING_ERROR
+
+########################
+
+class VersionParseError(IcanException):
+    exit_code = ExitCode.VERSION_PARSE_ERROR
+
+class VersionMetadataError(IcanException):
+    exit_code = ExitCode.VERSION_METADATA_ERROR
+
+class VersionBumpError(IcanException):
+    exit_code = ExitCode.VERSION_BUMP_ERROR
+
+class VersionPep440Error(IcanException):
+    exit_code = ExitCode.VERSION_PEP440_ERROR
+
+class VersionGitError(IcanException):
+    exit_code = ExitCode.VERSION_GIT_ERROR
+
+########################
 
 class SourceCodeFileOpenError(IcanException):
     exit_code = ExitCode.SOURCE_CODE_FILE_OPEN_ERROR
@@ -68,3 +144,5 @@ class SourceCodeFileMissing(IcanException):
 
 class UserSuppliedRegexError(IcanException):
     exit_code = ExitCode.USER_SUPPLIED_REGEX_ERROR
+
+########################

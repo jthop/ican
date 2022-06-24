@@ -246,13 +246,13 @@ class Version(object):
         format will be: M.m.p-dev.<distance>+build.<commit_sha>
         ex: 4.2.0-rc.3.dev.5+fcf2c8fd
         """
+        if self._git_metadata is None:
+            return 'GIT METADATA NOT AVAILABLE'
+
         tag = self._git_metadata.tag
         dirty = self._git_metadata.dirty
         commit_sha = self._git_metadata.commit_sha
         distance = self._git_metadata.distance
-
-        if tag is None:
-            return None
 
         # Add distance in prerelease. Check for existing prerelease
         if distance and self.prerelease:
