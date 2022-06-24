@@ -3,7 +3,14 @@
 any deploy/build task you ask of it, the response is always: ican
 
 ```
-dev@macbook:~/proj$ avb 
+can you bump my version to the next prerelease?
+dev@macbook:~/proj$ ican 
+
+can you use that version as a git tag and push a commit to the tag?
+dev@macbook:~/proj$ ican 
+
+can you deploy my new version by building a docker container and starting it?
+dev@macbook:~/proj$ ican 
 ```
 
 ## Install
@@ -45,16 +52,16 @@ You can use ican via the CLI in a typical fashion, using the format below
 ican [command] [arguments] [options] 
 ```
 
-### Commands
+## Commands
 
-  - bump [PART]
-    - PART (_**required**_)
-  
-The PART would be: The segment of the semantic version to increase.  
-Choices are [*major*, *minor*, *patch*, *prerelease*]
+| Command      | Arguments             | Description   |
+| -------------| --------------------  | ------------- |
+| bump       | **PART** `required`  |The **PART** would be: The segment of the semantic version to increase.  <br />Choices are [*major*, *minor*, *patch*, *prerelease*] |
+| show       | **STYLE** `required` | The **STYLE** would be: The version style you want. <br />Choices are [*semantic*, *public*, *pep440*, *git*] |
+| init       | none.                | This command would initialize your project in the current directory.                                |
 
 
-## Command line options
+## Options
 
 The output and parsing of `ican` can be controlled with the following options.
 
@@ -63,18 +70,16 @@ The output and parsing of `ican` can be controlled with the following options.
 | `--verbose`            | To aid in your debugging, verbose prints all messages.       |
 | `--dry-run`            | Useful if used WITH --verbose, will not modify any files.    |
 | `--version`            | This will displpay the current version of ican.              |
-| `--defaults`           | Will configure ican with default settings. [^1]              |
-| `--currrent`           | Display the current full version.                            |
-| `--public`             | Display the version in format: MAJOR.MINOR.PATCH (1.2.3)     |
-| `--pep440`             | Display a version that conforms with pep440                  |
 | `--canonical`          | Test if the pep440 version conforms to pypi's specs          |
-| `--git`                | Version composed of a git tag, commit sha, and distance      |  
-
 
 ## Examples
 
 ```shell
-$ ican bump --current
+$ ican init
+
+...
+
+$ ican show current
 0.2.7-beta.3+build.99
 
 # Lets run a build.  Bump with no arguments defaults to bump the build number.
@@ -86,7 +91,7 @@ $ ican bump minor
 0.3.0+build.101
 
 # If we wanted to use the version to build a package for pypi
-$ ican bump --public
+$ ican show public
 0.3.0
 
 # Oh no a bug, let's patch
@@ -98,7 +103,7 @@ $ ican bump major
 1.0.0+build.103
 
 # Of course, our 1.0 release will be on pypi
-$ ican bump --public
+$ ican show public
 1.0.0
 ```
 
