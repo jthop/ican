@@ -21,7 +21,7 @@ dynamic = ["version"]
 version = {attr = "ican.__public_version__"}
 
 [project.scripts]
-ican = "ican.cli:main"
+ican = "ican.cli:entry"
 
 [project.urls]
 homepage = "https://github.com/jthop/ican"

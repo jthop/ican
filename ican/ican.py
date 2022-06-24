@@ -22,8 +22,8 @@ class Ican(object):
     Object which will orchestrate entire program
     """
 
-    def __init__(self, args=None):
-        self.dryrun = args['dry_run']
+    def __init__(self, dry_run=None):
+        self.dryrun = dry_run
 
         self.version = None
         self.git = None
@@ -33,15 +33,13 @@ class Ican(object):
         logger.debug('Verbose output selected.')
         if self.dryrun:
             logger.info('--dry-run detected.  No files will be written to.')
-        if self.dry_run and not args['verbose']:
-            logger.info('FYI, --dry-run without --verbose is fairly useless.')
         
         # Git init - Do this early incase we need git.root
         logger.debug('Investigating a project git repo.')
         self.git = Git()
 
         # Config
-        self.config = Config(args=args, parent=self)
+        self.config = Config(parent=self)
         self.config.parse()
 
         # Now config is parsed.  We can parse from config

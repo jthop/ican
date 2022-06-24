@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
-
+"""
+"""
 import re
+from pathlib import Path
 
 from .log import logger
-
+from . import exceptions
+from .exceptions import UserSuppliedRegexError
+from .exceptions import SourceCodeFileOpenError
+from .exceptions import SourceCodeFileMissing
 
 #######################################
 #
@@ -15,14 +20,25 @@ from .log import logger
 
 class SourceCode(object):
     def __init__(self, parent, file, regex, style='semantic'):
-        self.updated = False
         self.parent = parent
-        self.file = file
+        self.file = Path(file)
         self.regex = regex
         self.style = style
+
+        self.updated = False
+        self.valid = False
         
+        if not self.file.exists():
+            raise SourceCodeFileMissing(
+                f'config references non existant file: {self.file}')
+        self.valid = True
+
         if self.regex:
-            self.compiled = re.compile(self.regex)
+            try:
+                self.compiled = re.compile(self.regex)
+            except Exception as e:
+                msg = f'Error compiling regex: {self.regex}'
+                raise UserSuppliedRegexError(msg)
 
     def _to_raw_string(self, str):
         return fr"{string}"
@@ -49,7 +65,12 @@ class SourceCode(object):
             f'Updating `{self.file}` with {self.new_version}'
         )
 
-        with open(self.file, 'r+') as f:
+        try:
+            f = self.file.open('r+')
+        except OSError:
+            raise SourceCodeFileOpenError(f'Error opening {self.file}')
+
+        with self.file.open('r+') as f:
             # Read entire file into string
             original = f.read()
 

@@ -34,11 +34,8 @@ class Config(object):
         }
     }
 
-    def __init__(self, args=None, parent=None):
+    def __init__(self, parent=None):
         self.config_file = None
-
-        self.defaults = args['defaults']
-        self.verbose = args['verbose']
         self.parent = parent
 
         self.parser = ConfigParser()
@@ -108,7 +105,7 @@ class Config(object):
                 break
         else:
             msg = f"Could not find config file [{f}]  " \
-            "Try using a default config with '--defaults'," \
+            "Try using a default config with '--defaults',"
             raise ValueError(msg)
 
     def parse_source_files(self):
@@ -143,10 +140,10 @@ class Config(object):
         specify default config, which we load here as well.
         """
 
-        if self.defaults:
-            self.set_defaults()
-        else:
-            self.search_for_config()
+        # if self.defaults:
+        #     self.set_defaults()
+        # else:
+        self.search_for_config()
 
         # By now we may have git_root or config_root
         self.ch_dir_root()

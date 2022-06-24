@@ -4,127 +4,150 @@ from tempfile import NamedTemporaryFile
 """
 
 import argparse
+import sys
 
 from . import __version__
 from .ican import Ican
 from .log import logger
 from .log import set_logger_level
 from .emojis import rnd_good_emoji
+from .exceptions import IcanException
 
-arg_desc = f'''\
-===================================
-       Ican v{__version__}
-===================================
 
-usage:
-$ bump [options] VERSION_SEGMENT
-where VERSION_SEGMENT is:
-[major, minor, patch, prerelease, build]
+#===============================
+#
+#  CLI Class
+#
+#===============================
+
+
+class CLI(object):
+    usage='''ican <command> [<args>]
+
+We recommend the following commands:
+   bump [PART]      increment the PART of the version
+                    [minor, major, patch, prerelease, build]
+   show [STYLE]     display current version with STYLE
+                    [semantic, public, pep440, git]
+   init             initialize the current directory with a 
+                    config file
 '''
 
+    def __init__(self):
+        self._register_excepthook()
 
-def main():
-    """
-    The script entrypoint
-    """
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        description=arg_desc,
-        prog='ican'
-    )
+        parser = argparse.ArgumentParser(
+            description='ican - bump versions, git, docker',
+            usage=CLI.usage,
+            prog='ican'
+        )
 
-    # The primary argument
-    parser.add_argument(
-        "part", 
-        nargs='?',
-        default='build',
-        choices=['major', 'minor', 'patch', 'prerelease', 'build'],
-        help="what to bump"
-    )
-    # is_canonical
-    parser.add_argument(
-        "--canonical", action="store_true",
-        help = "True/False is the current pep440 of this version canonical"
-    )
-    # current flag
-    parser.add_argument(
-        '--current', action='store_true',
-        help='display the current semantic version'
-    )
-    # default config
-    parser.add_argument(
-        "--defaults", action="store_true",
-        help = "use default config to run without a config file"
-    )
-    # dry-run flag
-    parser.add_argument(
-        "--dry-run", action="store_true",
-        help = "dry run - will not modify files - best with --verbose"
-    )
-    # git flag
-    parser.add_argument(
-        "--git", action="store_true",
-        help = "display the current git version"
-    )
-    # pep440 flag
-    parser.add_argument(
-        "--pep440", action="store_true",
-        help = "display the current pep440 version"
-    )
-    # public flag
-    parser.add_argument(
-        '--public', action='store_true',
-        help='display the current public version'
-    )
-    # verbose flag
-    parser.add_argument(
-        "--verbose", action="store_true",
-        help = "verbose output"
-    )
-    # version flag
-    parser.add_argument(
-        '--version', 
-        action='version',
-        version=f'{rnd_good_emoji(2)} ican v{__version__} {rnd_good_emoji(2)}'
-    )
+        parser.add_argument('command', help='Subcommand to run')    # need
+        parser.add_argument(
+            '--version', 
+            action='version',
+            version=f'ican v{__version__}'
+        )
+        # parse_args defaults to [1:] for args, but you need to
+        # exclude the rest of the args too, or validation will fail
 
+        args = parser.parse_args(sys.argv[1:2])
+        if not hasattr(self, args.command):
+            logger.error('Unrecognized command')
+            parser.print_help()
+            exit(1)
 
-    # The meat of the cli, parse the args
-    args = vars(parser.parse_args())
+        # use dispatch pattern to invoke method with same name
+        getattr(self, args.command)()
+        return
 
-    # We can setup logger as soon as we have args
-    set_logger_level(args['verbose'])
+    def _register_excepthook(self):
+        self._original_excepthook = sys.excepthook
+        sys.excepthook = self._excepthook
 
-    # Rest of args
-    part = args['part']
+    def _excepthook(self, type, value, tracekback, debug=False):
+        """ """
+        if isinstance(value, IcanException):
+            if value.message:
+                value.output_method(value.message)
+            if debug:
+                self._original_excepthook(type, value, tracekback)
+            exit_code = value.exit_code
+            sys.exit(exit_code)
+        else:
+            self._original_excepthook(type, value, tracekback)
 
-    canonical = args['canonical']   
-    git = args['git']
-    current = args['current']
-    public = args['public']
-    pep440 = args['pep440']
-
-    #verbose, dry_run, defaults, config_file in args{}
-    i = Ican(args=args)
-
-    if current:
-        logger.warning(f'Current: {i.version.semantic} {rnd_good_emoji(2)}')
-    elif git:
-        logger.warning(f'Git: {i.version.git} {rnd_good_emoji(2)}')
-    elif public:
-        logger.warning(f'Public: {i.version.public} {rnd_good_emoji(2)}=')
-    elif pep440:
-        logger.warning(f'Pep440: {i.version.pep440} {rnd_good_emoji(2)}')
-    elif canonical:
-        c = b.version.is_canonical()
-        logger.warning(f'Pep440 (canonical={c}): {i.version.pep440}') 
-    else:
-        i.bump(part.lower())
-        logger.warning(f'{rnd_good_emoji(2)} Version: {i.version.semantic} {rnd_good_emoji(2)}')
+    def fetch_args(self, parser):
+        """
+        now that we're inside a subcommand, ignore the first
+        TWO argvs, ie the command (git) and the subcommand (commit)
+        """
         
+        args = vars(parser.parse_args(sys.argv[2:]))
+
+        self.verbose = False
+        self.dry_run = False
+        if args.get('verbose'):
+            self.verbose = args['verbose']
+        if args.get('dry_run'):
+            self.dry_run = args['dry_run']
+
+        set_logger_level(self.verbose, self.dry_run)
+        return args
+
+    def bump(self):
+        parser = argparse.ArgumentParser(
+            description='increment the [PART] of the version')
+        
+        parser.add_argument(
+            "part", 
+            nargs='?',
+            default='build',
+            choices=['major', 'minor', 'patch', 'prerelease', 'build'],
+            help="what to bump"
+        )
+        parser.add_argument('--dry-run', action="store_true")
+        parser.add_argument('--verbose', action="store_true")
+        args = self.fetch_args(parser)
+        
+        part = args['part']
+        i = Ican(self.dry_run)
+        i.bump(part.lower())
+        logger.warning(f'Version: {i.version.semantic}')
+        return
 
 
+    def show(self):
+        parser = argparse.ArgumentParser(
+            description='show the [STYLE] of current version')
 
-if __name__ == "__main__":
-    main()
+        parser.add_argument(
+            "style", 
+            nargs='?',
+            default='semantic',
+            choices=['semantic', 'public', 'pep440', 'git'],
+            help="version style to show"
+        )
+        parser.add_argument('--verbose', action="store_true")
+        args = self.fetch_args(parser)
+
+        i = Ican(self.dry_run)
+        style = getattr(i.version, args['style'])
+        logger.warning(f"{args['style']}: {style}")
+
+        return
+
+
+    def init(self):
+        parser = argparse.ArgumentParser(
+            description='initialize your project in the current directory')
+        parser.add_argument('--dry-run', action="store_true")
+        parser.add_argument('--verbose', action="store_true")
+        args = self.fetch_args(parser)
+        logger.warning('running init')
+        return
+
+
+def entry():
+    CLI()
 

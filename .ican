@@ -1,5 +1,5 @@
 [version]
-current = 0.1.2+build.92
+current = 0.1.3+build.96
 
 [options]
 auto-tag = True
@@ -8,12 +8,12 @@ auto-push = True
 signature = True
 
 [file1]
-file = ./bumpster/__init__.py
+file = ./ican/__init__.py
 regex = __version__\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)
 style = semantic
 
 [file2]
-file = ./bumpster/__init__.py
+file = ./ican/__init__.py
 regex = __public_version__\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)
 style = public
 
