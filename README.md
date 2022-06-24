@@ -1,4 +1,16 @@
-# ican
+[![build, publish, and release](https://github.com/jthop/ican/actions/workflows/build_pub_release.yml/badge.svg)](https://github.com/jthop/ican/actions/workflows/build_pub_release.yml)
+[![CodeFactor](https://www.codefactor.io/repository/github/jthop/ican/badge)](https://www.codefactor.io/repository/github/jthop/ican)
+[![PyPI version](https://badge.fury.io/py/ican.svg)](https://badge.fury.io/py/ican)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+[![GitHub last commit](https://img.shields.io/github/last-commit/jthop/flask-api-key)](https://github.com/jthop/flask-api-key)
+[![GitHub repo size](https://img.shields.io/github/repo-size/jthop/flask-api-key?style=flat)](https://github.com/jthop/flask-api-key)
+[![GitHub language count](https://img.shields.io/github/languages/count/jthop/flask-api-key?style=flat)](https://github.com/jthop/flask-api-key)
+[![GitHub top language](https://img.shields.io/github/languages/top/jthop/flask-api-key?style=flat)](https://python.org)
+[![Whos your daddy](https://img.shields.io/badge/whos%20your%20daddy-2.0.7rc3-brightgreen.svg)](https://14.do/)
+[![works badge](https://cdn.jsdelivr.net/gh/nikku/works-on-my-machine@v0.2.0/badge.svg)](https://github.com/nikku/works-on-my-machine)
+
+
+# ican  	:raising_hand_man:
 
 any deploy/build task you ask of it, the response is always: ican
 
@@ -13,7 +25,7 @@ can you deploy my new version by building a docker container and starting it?
 dev@macbook:~/proj$ ican 
 ```
 
-## Install
+## Install  :floppy_disk:
 
 Install the ican package via pypi
 
@@ -21,7 +33,7 @@ Install the ican package via pypi
 pip install ican
 ```
 
-## Config
+## Confige  :toolbox: 
 
 Config is done via the .ican file in your project's root diarectory.  Alternate file names can be configured via a master config in your home directory.
 
@@ -44,7 +56,7 @@ regex = __version__\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)
 
 ```
 
-## Use  
+## Use  :muscle:
 
 You can use ican via the CLI in a typical fashion, using the format below
 
@@ -52,7 +64,7 @@ You can use ican via the CLI in a typical fashion, using the format below
 ican [command] [arguments] [options] 
 ```
 
-## Commands
+## Commands  :dog2:
 
 | Command      | Arguments             | Description   |
 | -------------| --------------------  | ------------- |
@@ -61,7 +73,7 @@ ican [command] [arguments] [options]
 | init       | none.                | This command would initialize your project in the current directory.                                |
 
 
-## Options
+## Options  :roll_eyes:
 
 The output and parsing of `ican` can be controlled with the following options.
 
@@ -72,7 +84,7 @@ The output and parsing of `ican` can be controlled with the following options.
 | `--version`            | This will displpay the current version of ican.              |
 | `--canonical`          | Test if the pep440 version conforms to pypi's specs          |
 
-## Examples
+## Examples  :eyes:
 
 ```shell
 $ ican init
