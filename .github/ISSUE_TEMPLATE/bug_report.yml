@@ -48,14 +48,11 @@ body:
     attributes:
       label: Environment
       description: |
-        For older commitizen versions, please include the output of the following commands manually
+        Anything that could help us.
       placeholder: |
-        - commitizen version: `cz version`
-        - python version: `python --version`
-        - operating system: `python3 -c "import platform; print(platform.system())"`
-
-        ```bash
-        cz version --report
-        ```
+        1. ican version
+        2. python version
+        3. OS and version
+        4. .ican config file
     validations:
       required: true
