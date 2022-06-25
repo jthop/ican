@@ -10,7 +10,7 @@
 [![works badge](https://cdn.jsdelivr.net/gh/nikku/works-on-my-machine@v0.2.0/badge.svg)](https://github.com/nikku/works-on-my-machine)
 
 
-# ican  	:raising_hand_man:
+# ican  :wave:
 
 any deploy/build task you ask of it, the response is always: ican
 
@@ -33,7 +33,7 @@ Install the ican package via pypi
 pip install ican
 ```
 
-## Confige  :toolbox: 
+## Confige  :toolbox:
 
 Config is done via the .ican file in your project's root diarectory.  Alternate file names can be configured via a master config in your home directory.
 
@@ -56,7 +56,7 @@ regex = __version__\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)
 
 ```
 
-## Use  :muscle:
+## Use  :muscle: 
 
 You can use ican via the CLI in a typical fashion, using the format below
 
@@ -73,7 +73,7 @@ ican [command] [arguments] [options]
 | init       | none.                | This command would initialize your project in the current directory.                                |
 
 
-## Options  :roll_eyes:
+## Options  :roll_eyes:  
 
 The output and parsing of `ican` can be controlled with the following options.
 
@@ -84,7 +84,7 @@ The output and parsing of `ican` can be controlled with the following options.
 | `--version`            | This will displpay the current version of ican.              |
 | `--canonical`          | Test if the pep440 version conforms to pypi's specs          |
 
-## Examples  :eyes:
+## Examples  :eyes: 
 
 ```shell
 $ ican init
