@@ -28,7 +28,7 @@ homepage = "https://github.com/jthop/ican"
 repository = "https://github.com/jthop/ican"
 
 [tool.yapf]
-based_on_style = google
+based_on_style = "google"
 
 [tool.flake8]
 ignore = ['E203', 'E231', 'E241']
