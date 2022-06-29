@@ -23,7 +23,7 @@ class Ican(object):
     Object which will orchestrate entire program
     """
 
-    def __init__(self, dry_run=None):
+    def __init__(self, dry_run=None, init=False):
         self.dryrun = dry_run
 
         self.version = None
@@ -41,6 +41,8 @@ class Ican(object):
 
         # Config
         self.config = Config(parent=self)
+        if init:
+            self.config.init()
         self.config.parse()
 
         # Now config is parsed.  We can parse from config

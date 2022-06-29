@@ -134,7 +134,7 @@ We recommend the following commands:
         parser.add_argument('--verbose', action="store_true")
         args = self.fetch_args(parser)
 
-        i = Ican(self.dry_run)
+        i = Ican()
         style = getattr(i.version, args['style'])
         logger.warning(f"{args['style']}: {style}")
 
@@ -147,7 +147,10 @@ We recommend the following commands:
         parser.add_argument('--dry-run', action="store_true")
         parser.add_argument('--verbose', action="store_true")
         args = self.fetch_args(parser)
-        logger.warning('running init')
+
+        i = Ican(self.dry_run, init=True)
+        logger.warning('init complete')
+
         return
 
 

@@ -9,11 +9,11 @@ signature = True
 
 [file1]
 file = ./ican/__init__.py
-regex = __version__\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)
+variable = __version__
 style = semantic
 
 [file2]
 file = ./ican/__init__.py
-regex = __public_version__\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)
+variable = __public_version__
 style = public
 

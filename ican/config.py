@@ -29,7 +29,7 @@ class Config(object):
         },
         'file1': {
             'file': '*.py',
-            'regex': '__version__\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)',
+            'variable': '__version__',
             'style': 'semantic'
         }
     }
@@ -76,7 +76,7 @@ class Config(object):
 
         return None
 
-    def set_defaults(self):
+    def init(self):
         """
         Set default config and save
         """
@@ -115,12 +115,13 @@ class Config(object):
         sections.remove('options')
         for s in sections:
             file = self.parser.get(s, 'file', fallback=None)
-            regex = self.parser.get(s, 'regex', fallback=None)
+            variable = self.parser.get(s, 'variable', fallback=None)
             style = self.parser.get(s, 'style', fallback='semantic')
+            regex = self.parser.get(s, 'regex', fallback=None)
             
-            # First throw an error if need be
-            if file is None or regex is None:
-                logger.debug(f'Skipping {s}, missing file or regex')
+            # Instead of raising exp, we can just look for more files
+            if file is None or (variable is None and regex is None):
+                logger.debug(f'Skipping {s}, missing file/variable/regex')
                 continue
 
             # Case with *.py for all python files
@@ -140,10 +141,10 @@ class Config(object):
         specify default config, which we load here as well.
         """
 
-        # if self.defaults:
-        #     self.set_defaults()
-        # else:
-        self.search_for_config()
+        if self.defaults:
+            self.set_defaults()
+        else:
+            self.search_for_config()
 
         # By now we may have git_root or config_root
         self.ch_dir_root()

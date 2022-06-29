@@ -19,11 +19,15 @@ from .exceptions import SourceCodeFileMissing
 
 
 class SourceCode(object):
-    def __init__(self, parent, file, regex, style='semantic'):
+
+    VARIABLE_RE = 'regex': '{{var}}\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)'
+
+    def __init__(self, parent, file, variable=None, style='semantic', regex=None):
         self.parent = parent
         self.file = Path(file)
-        self.regex = regex
+        self.variable = variable
         self.style = style
+        self.regex = regex
 
         self.updated = False
         self.valid = False
