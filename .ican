@@ -1,5 +1,5 @@
 [version]
-current = 0.1.4+build.97
+current = 0.2.0+build.98
 
 [options]
 auto-tag = True

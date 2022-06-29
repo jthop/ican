@@ -27,23 +27,26 @@ ican = "ican.cli:entry"
 homepage = "https://github.com/jthop/ican"
 repository = "https://github.com/jthop/ican"
 
+[tool.yapf]
+#based_on_style = yapf
+based_on_style = google
+
+[tool.flake8]
+ignore = ['E203', 'E231', 'E241']
+max-line-length = 88
+count = true
+max-complexity = 10
+
 [tool.black]
-line-length = 88
+line-length = 100
 include = '\.pyi?$'
 exclude = '''
 /(
     \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | _build
-  | buck-out
-  | build
+  | \.github
   | dist
-  # The following are specific to Black, you probably don't want those.
-  | blib2to3
-  | tests/data
-  | profiling
 )/
 '''
+
+[tool.pydocstyle]
+

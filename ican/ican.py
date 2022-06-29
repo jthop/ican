@@ -23,6 +23,13 @@ class Ican(object):
     Object which will orchestrate entire program
     """
 
+    @property
+    def dry_run(self):
+        if self.dryrun:
+            logger.info('Skipping file write due to --dry-run')
+            return True
+        return False
+
     def __init__(self, dry_run=None, init=False):
         self.dryrun = dry_run
 
@@ -39,10 +46,15 @@ class Ican(object):
         logger.debug('Investigating a project git repo.')
         self.git = Git()
 
-        # Config
+        # Create config obj.  If init, set defaults.
+        # Otherwise, search for existing config file.
         self.config = Config(parent=self)
         if init:
             self.config.init()
+        else:
+            self.config.search_for_config()
+
+        # Now we have default or existing config, we can parse
         self.config.parse()
 
         # Now config is parsed.  We can parse from config
@@ -62,12 +74,16 @@ class Ican(object):
 
         return
 
-    @property
-    def dry_run(self):
-        if self.dryrun:
-            logger.info('Skipping file write due to --dry-run')
-            return True
-        return False
+    def show(self, style):
+        """
+        Show the <STYLE> version
+        """
+
+        v = getattr(self.version, style)
+        if v is None:
+            return f'version style: {style} not available'
+        return v
+
 
     def bump(self, part):
         """

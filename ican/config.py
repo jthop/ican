@@ -18,21 +18,19 @@ class Config(object):
     """
     Object which will orchestrate entire program
     """
+
+    ver = dict(current = '0.1.0')
+    opt = dict(
+        auto_tag = False,
+        auto_commit = False,
+        auto_push = False,
+        signature = False)
+    file = dict(file = '*.py',
+        style = 'semantic',
+        variable = '__version__')
+
     CONFIG_FILE = '.ican'
-    DEFAULT_CONFIG = {
-        'version': {'current': '0.1.0'},
-        'options': {
-            'auto_tag': False,
-            'auto_commit': False,
-            'auto_push': False,
-            'signature': False
-        },
-        'file1': {
-            'file': '*.py',
-            'variable': '__version__',
-            'style': 'semantic'
-        }
-    }
+    DEFAULT_CONFIG = dict(version=ver, options=opt, file1=file)
 
     def __init__(self, parent=None):
         self.config_file = None
@@ -86,6 +84,7 @@ class Config(object):
         if not self.parent.dry_run:
             config.write(open(file, "w"))
         self.config_file = file
+        return
 
     def search_for_config(self):
         f = Config.CONFIG_FILE
@@ -107,44 +106,13 @@ class Config(object):
             msg = f"Could not find config file [{f}]  " \
             "Try using a default config with '--init',"
             raise ValueError(msg)
-
-    def parse_source_files(self):
-        # FILES TO WRITE
-        sections = self.parser.sections().copy()
-        sections.remove('version')
-        sections.remove('options')
-        for s in sections:
-            file = self.parser.get(s, 'file', fallback=None)
-            variable = self.parser.get(s, 'variable', fallback=None)
-            style = self.parser.get(s, 'style', fallback='semantic')
-            regex = self.parser.get(s, 'regex', fallback=None)
-            
-            # Instead of raising exp, we can just look for more files
-            if file is None or (variable is None and regex is None):
-                logger.debug(f'Skipping {s}, missing file/variable/regex')
-                continue
-
-            # Case with *.py for all python files
-            if '*' in file:
-                files = self.search_for_files(file)
-                for f in files:
-                    u = SourceCode(self, f, regex, style)
-                    self.source_files.append(u)
-            # This is the normal case, 1 file per section
-            else:
-                u = SourceCode(self, file, regex, style)
-                self.source_files.append(u)
+        return
 
     def parse(self):
         """
         We search for a config in several locations.  Also, the user may 
         specify default config, which we load here as well.
         """
-
-        if self.defaults:
-            self.set_defaults()
-        else:
-            self.search_for_config()
 
         # By now we may have git_root or config_root
         self.ch_dir_root()
@@ -178,4 +146,61 @@ class Config(object):
 
         self.parse_source_files()
 
+        return None
+
+    def parse_source_files(self):
+        # FILES TO WRITE
+        sections = self.parser.sections().copy()
+        sections.remove('version')
+        sections.remove('options')
+        for s in sections:
+            file = self.parser.get(s, 'file', fallback=None)
+            variable = self.parser.get(s, 'variable', fallback=None)
+            style = self.parser.get(s, 'style', fallback='semantic')
+            regex = self.parser.get(s, 'regex', fallback=None)
+
+            # Instead of raising exp, we can just look for more files
+            if file is None :
+                logger.debug(f'Skipping {s}, missing file reference')
+                continue
+            elif variable is None and regex is None:
+                logger.debug(f'Skipping {s}, found no variable or regex config')
+                continue
+
+            # Case with *.py for all python files
+            if '*' in file:
+                files = self.search_for_files(file)
+                for f in files:
+                    u = SourceCode(
+                        self,
+                        f,
+                        style=style,
+                        variable=variable,
+                        regex=regex
+                    )
+                    self.source_files.append(u)
+            # This is the normal case, 1 file per section
+            else:
+                u = SourceCode(
+                    self,
+                    file,
+                    style=style,
+                    variable=variable,
+                    regex=regex
+                )
+                self.source_files.append(u)
+
+    def search_for_files(self, f):
+        """
+        First we look in current_dir + all subdirs
+        """
+
+        logger.debug(f'Config parser searching for: {f}')
+
+        root = self.path
+        #self.debug(f'Searching for {f} in dir {root}')
+        matches = [x for x in Path(root).rglob(f)]
+        if len(matches) > 0:
+            logger.debug(f'Config parser found: {len(matches)} files')
+            return matches
         return None

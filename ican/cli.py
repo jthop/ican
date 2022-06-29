@@ -59,6 +59,7 @@ We recommend the following commands:
 
         # use dispatch pattern to invoke method with same name
         getattr(self, args.command)()
+        
         return
 
     def _register_excepthook(self):
@@ -96,6 +97,7 @@ We recommend the following commands:
             self.dry_run = args['dry_run']
 
         set_logger_level(self.verbose, self.dry_run)
+
         return args
 
     def bump(self):
@@ -117,6 +119,7 @@ We recommend the following commands:
         i = Ican(self.dry_run)
         i.bump(part.lower())
         logger.warning(f'Version: {i.version.semantic}')
+
         return
 
 
@@ -134,9 +137,9 @@ We recommend the following commands:
         parser.add_argument('--verbose', action="store_true")
         args = self.fetch_args(parser)
 
-        i = Ican()
-        style = getattr(i.version, args['style'])
-        logger.warning(f"{args['style']}: {style}")
+        i = Ican(self.dry_run)
+        v = i.show(args['style'])
+        logger.warning(v)
 
         return
 

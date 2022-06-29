@@ -20,9 +20,9 @@ from .exceptions import SourceCodeFileMissing
 
 class SourceCode(object):
 
-    VARIABLE_RE = 'regex': '{{var}}\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)'
+    VARIABLE_RE = r"{{var}}\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)"
 
-    def __init__(self, parent, file, variable=None, style='semantic', regex=None):
+    def __init__(self, parent, file, style='semantic', variable=None, regex=None):
         self.parent = parent
         self.file = Path(file)
         self.variable = variable
@@ -37,6 +37,10 @@ class SourceCode(object):
                 f'config references non existant file: {self.file}'
             )
         self.valid = True
+
+        if variable is not None:
+            self.regex = SourceCode.VARIABLE_RE.replace("{{var}}", variable)
+            logger.debug(f'user supplied variable to regex: {self.regex}')
 
         if self.regex:
             try:
