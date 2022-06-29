@@ -28,7 +28,6 @@ homepage = "https://github.com/jthop/ican"
 repository = "https://github.com/jthop/ican"
 
 [tool.yapf]
-#based_on_style = yapf
 based_on_style = google
 
 [tool.flake8]
@@ -49,4 +48,3 @@ exclude = '''
 '''
 
 [tool.pydocstyle]
-
