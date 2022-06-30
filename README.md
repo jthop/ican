@@ -35,7 +35,7 @@ pip install ican
 
 ## Confige  :toolbox:
 
-Config is done via the .ican file in your project's root diarectory.  Alternate file names can be configured via a master config in your home directory.
+Config is done via the .ican file in your project's root diarectory.
 
 Sample .ican file
 
@@ -52,8 +52,22 @@ signature = True
 [file1]
 file = ./ican/__init__.py
 style = semantic
-regex = __version__\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)
+variable = __version__
+```
 
+This config tells ican to look for a variable named `__version__` in the `__init__.py` file and replace it with the new semantic version.  
+
+When looking for a variable, ican will look for any string followed by an `=` symbol, followed by a value in either single or double quotes.  There can be spaces or no spaces on either side of the `=` symbol.  This should cover most use cases.  
+
+### User-supplied regex
+
+If your use case is more complicated, you can omit the `variable` line in your config file and instead include a `regex` value instead.  This should be a pyton formatted regex string with a named group to identify the `version` we are to replace.
+
+```ini
+[file1]
+file = ./ican/__init__.py
+style = semantic
+regex = __version__\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)
 ```
 
 ## Use  :muscle: 
