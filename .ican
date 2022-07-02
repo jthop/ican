@@ -1,7 +1,8 @@
 [version]
-current = 0.1.6+build.106
+current = 0.1.6+build.109
 
 [options]
+log-file = ican.log
 
 [file: version]
 file = ./ican/__init__.py

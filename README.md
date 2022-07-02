@@ -10,7 +10,7 @@
 [![works badge](https://cdn.jsdelivr.net/gh/nikku/works-on-my-machine@v0.2.0/badge.svg)](https://github.com/nikku/works-on-my-machine)
 
 
-# ican  :wave:
+# :wave: ican
 
 any deploy/build task you ask of it, the response is always: ican
 
@@ -25,7 +25,7 @@ can you deploy my new version by building a docker container and starting it?
 dev@macbook:~/proj$ ican 
 ```
 
-## Install  :floppy_disk:
+## :floppy_disk: Install
 
 Install the ican package via pypi
 
@@ -33,44 +33,79 @@ Install the ican package via pypi
 pip install ican
 ```
 
-## Confige  :toolbox:
+## :toolbox: Confige
 
 Config is done via the .ican file in your project's root diarectory.
 
-Sample .ican file
+Sample .ican config file
 
 ```ini
 [version]
 current = 0.1.6+build.40
 
 [options]
-auto-tag = True
-auto-commit = True
-auto-push = True
-signature = True
+log-file = ican.log
 
-[file1]
-file = ./ican/__init__.py
+[file: version]
+file = ./src/__init__.py
 style = semantic
 variable = __version__
+
+[pipeline: release]
+step1 = ./clean_my_project.sh
+step2 = git commit -a"
+step3 = git tag -a {{tag}} --sign
+step4 = git push origin master {{tag}}
+
 ```
 
-This config tells ican to look for a variable named `__version__` in the `__init__.py` file and replace it with the new semantic version.  
+### :exclamation:
+Take note, all sections must be unique.  So if you define more than one <file: [LABEL]> section, make sure each one has a unique label.
 
-When looking for a variable, ican will look for any string followed by an `=` symbol, followed by a value in either single or double quotes.  There can be spaces or no spaces on either side of the `=` symbol.  This should cover most use cases.  
+### Overview
+
+First of all this config defines the current version as `0.1.6` with build # 40.
+
+All operations will be logged to the ican.log file.
+
+If we bump that version ican will look in the ./src/__init__.py file for a variable named __version__ and set that variable to the bumped version value.
+
+The release pipeline is defined, which will run if a new release is triggered.  It has 4 steps, which are all simply commands executed at the shell.
+
+
+### Definitions
+
+
+| Section          | Key             | Value                                           |
+| -----------------| ----------------|-------------------------------------------------|
+| version          | current         | This is the value that ican stores the current version number in. |
+| -----------------|-----------------|-------------------------------------------------|
+| options          | log-file        |All operations are logged to disk in this file.  To turn logging off, do not define the log-file. |
+| -----------------|-----------------|-------------------------------------------------|
+| file: [LABEL]    | file            | The filename of a file ican will update with new versions.  You can use a standard unix glob (*.py) if desired. |
+| file: [LABEL]    | style           | The version style to use.  Choices are [semantic, public, pep440, git] |
+| file: [LABEL]    | variable        | The variable name pointing to the version string that ican will update when versions are bumped. |
+| file: [LABEL]    | regex           | User-supplied python formattted regex string defining how to replace the file's version. |
+| -----------------|-----------------|-------------------------------------------------|
+| pipeline: [LABEL]| stepN (step1...)| Pipeline step.  These represent a command run in the shell. |
+| -----------------|-----------------|-------------------------------------------------|
+
 
 ### User-supplied regex
 
-If your use case is more complicated, you can omit the `variable` line in your config file and instead include a `regex` value instead.  This should be a pyton formatted regex string with a named group to identify the `version` we are to replace.
+When looking for a variable, ican will look for any string followed by an `=` symbol, followed by a value in either single or double quotes.  There can be spaces or no spaces on either side of the `=` symbol.  This should cover most use cases.
+
+If your use case is more complicated, you can omit the `variable` line in your config file and instead include a `regex` value instead.  This should be a pyton formatted regex string with a named group to identify the `version` ican will replace.
+
 
 ```ini
 [file1]
-file = ./ican/__init__.py
+file = ./src/__init__.py
 style = semantic
 regex = __version__\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)
 ```
 
-## Use  :muscle: 
+## :muscle: Use
 
 You can use ican via the CLI in a typical fashion, using the format below
 
@@ -78,16 +113,16 @@ You can use ican via the CLI in a typical fashion, using the format below
 ican [command] [arguments] [options] 
 ```
 
-## Commands  :dog2:
+## :dog2: Commands
 
 | Command      | Arguments             | Description   |
 | -------------| --------------------  | ------------- |
-| bump       | **PART** `required`  |The **PART** would be: The segment of the semantic version to increase.  <br />Choices are [*major*, *minor*, *patch*, *prerelease*] |
-| show       | **STYLE** `required` | The **STYLE** would be: The version style you want. <br />Choices are [*semantic*, *public*, *pep440*, *git*] |
-| init       | none.                | This command would initialize your project in the current directory.                                |
+| bump       | **PART** `required`     |The **PART** would be: The segment of the semantic version to increase.  <br />Choices are [*major*, *minor*, *patch*, *prerelease*] |
+| show       | **STYLE** `required`    | The **STYLE** would be: The version style you want. <br />Choices are [*semantic*, *public*, *pep440*, *git*] |
+| init       | none.                   | This command would initialize your project in the current directory.                                |
 
 
-## Options  :roll_eyes:  
+## :roll_eyes: Options
 
 The output and parsing of `ican` can be controlled with the following options.
 
@@ -98,7 +133,7 @@ The output and parsing of `ican` can be controlled with the following options.
 | `--version`            | This will displpay the current version of ican.              |
 | `--canonical`          | Test if the pep440 version conforms to pypi's specs          |
 
-## Examples  :eyes: 
+## :eyes: Examples
 
 ```shell
 $ ican init
@@ -123,10 +158,12 @@ $ ican show public
 # Oh no a bug, let's patch
 $ ican bump patch
 0.3.1+build.102
+* release pipeline output... *
 
 # Finally, our long awaited 1.0 release.
 $ ican bump major
 1.0.0+build.103
+* release pipeline output... *
 
 # Of course, our 1.0 release will be on pypi
 $ ican show public

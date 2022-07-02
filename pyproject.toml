@@ -4,17 +4,20 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ican"
-description = "Yet another deployment system.  Manage version bumping, git, etc."
+description = "ican is a simple version bumper/build pipeline orchestrator"
 readme = "README.md"
 keywords = ["api", "auth"]
 license = {text = "MIT"}
 classifiers = [
     "Development Status :: 5 - Production/Stable",
+    "Natural Language :: English",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
     "License :: OSI Approved :: MIT License",
+    "Environment :: Console",
+    "Topic :: Software Development :: Version Control",
 ]
-dependencies = [
-    'importlib-metadata; python_version<"3.8"',
-]
+dependencies = ['importlib-metadata; python_version<"3.11"']
 dynamic = ["version"]
 
 [tool.setuptools.dynamic]
@@ -27,25 +30,3 @@ ican = "ican.cli:entry"
 "Homepage" = "https://github.com/jthop/ican"
 "Bug Tracker" = "https://github.com/jthop/ican/issues"
 
-
-[tool.yapf]
-based_on_style = "google"
-
-[tool.flake8]
-ignore = ['E203', 'E231', 'E241']
-max-line-length = 88
-count = true
-max-complexity = 10
-
-[tool.black]
-line-length = 100
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.git
-  | \.github
-  | dist
-)/
-'''
-
-[tool.pydocstyle]
