@@ -2,6 +2,7 @@
 
 import re
 from types import SimpleNamespace
+from .log import ok_to_write
 from .log import logger
 
 #######################################
@@ -310,7 +311,7 @@ class Version(object):
         
         part = self._frozen.part
         if part in ['major', 'minor', 'patch']:
-            logger.debug('release will trigger deployment pipeline')
+            logger.debug('* VERSION: release pipeline will trigger')
             return True
         return False
 

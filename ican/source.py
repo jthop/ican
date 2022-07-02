@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 
 from .log import logger
+from .log import ok_to_write
 from . import exceptions
 from .exceptions import UserSuppliedRegexError
 from .exceptions import SourceCodeFileOpenError
@@ -22,8 +23,8 @@ class SourceCode(object):
 
     VARIABLE_RE = r"{{var}}\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)"
 
-    def __init__(self, parent, file, style='semantic', variable=None, regex=None):
-        self.parent = parent
+    def __init__(self, label, file, style='semantic', variable=None, regex=None):
+        self.label = f'{label.upper()}[{file}]'
         self.file = Path(file)
         self.variable = variable
         self.style = style
@@ -40,7 +41,7 @@ class SourceCode(object):
 
         if variable is not None:
             self.regex = SourceCode.VARIABLE_RE.replace("{{var}}", variable)
-            logger.debug(f'user supplied variable to regex: {self.regex}')
+            logger.debug(f'* CODE: variable -> regex - {self.regex}')
 
         if self.regex:
             try:
@@ -71,7 +72,7 @@ class SourceCode(object):
 
         self.new_version = getattr(version, self.style)
         logger.debug(
-            f'Updating `{self.file}` with {self.new_version}'
+            f'+ CODE: updating {self.label} with {self.new_version}'
         )
 
         try:
@@ -88,16 +89,16 @@ class SourceCode(object):
 
             # Check if we found a match or not
             if n == 0:
-                logger.debug(f'No match found in {self.file}.')
+                logger.debug(f'- CODE: no match - {self.label}.')
                 return
-            logger.debug(f'Found {n} matches.')
+            logger.debug(f'+ CODE: found {n} matches')
 
             # Write the updated file
-            if not self.parent.parent.dry_run:
+            if ok_to_write():
                 f.seek(0)
                 f.write(updated)
                 f.truncate()
 
         self.updated = True
-        logger.debug(f'Rewrite of file `{self.file}` complete.')
+        logger.debug(f'+ CODE: update of {self.label} COMPLETE')
         return True

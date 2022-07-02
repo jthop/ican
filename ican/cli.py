@@ -24,7 +24,7 @@ from .exceptions import IcanException
 class CLI(object):
     usage='''ican <command> [<args>]
 
-We recommend the following commands:
+Some of our most popular commands:
    bump [PART]      increment the PART of the version
                     [minor, major, patch, prerelease, build]
    show [STYLE]     display current version with STYLE
@@ -37,19 +37,17 @@ We recommend the following commands:
         self._register_excepthook()
 
         parser = argparse.ArgumentParser(
-            description='ican - bump versions, git, docker',
+            description='ican - version bumper and lightweight build pipelines',
             usage=CLI.usage,
             prog='ican'
         )
-
-        parser.add_argument('command', help='Subcommand to run')    # need
+        parser.add_argument('command', help='command-specific-arguments')    # need
         parser.add_argument(
             '--version', 
             action='version',
+            help='display ican version',
             version=f'ican v{__version__}'
         )
-        # parse_args defaults to [1:] for args, but you need to
-        # exclude the rest of the args too, or validation will fail
 
         args = parser.parse_args(sys.argv[1:2])
         if not hasattr(self, args.command):
@@ -61,6 +59,7 @@ We recommend the following commands:
         getattr(self, args.command)()
         
         return
+
 
     def _register_excepthook(self):
         self._original_excepthook = sys.excepthook
@@ -87,23 +86,24 @@ We recommend the following commands:
         TWO argvs, ie the command (git) and the subcommand (commit)
         """
         
+        parser.add_argument(
+            '--dry-run',
+            help='files will not be written - best with --verbose',
+            action="store_true"
+        )
+        parser.add_argument(
+            '--verbose',
+            help='display all debug information available',
+            action="store_true"
+        )
         args = vars(parser.parse_args(sys.argv[2:]))
-
-        self.verbose = False
-        self.dry_run = False
-        if args.get('verbose'):
-            self.verbose = args['verbose']
-        if args.get('dry_run'):
-            self.dry_run = args['dry_run']
-
-        set_logger_level(self.verbose, self.dry_run)
+        set_logger_level(args['verbose'], args['dry_run'])
 
         return args
 
     def bump(self):
         parser = argparse.ArgumentParser(
             description='increment the [PART] of the version')
-        
         parser.add_argument(
             "part", 
             nargs='?',
@@ -111,22 +111,18 @@ We recommend the following commands:
             choices=['major', 'minor', 'patch', 'prerelease', 'build'],
             help="what to bump"
         )
-        parser.add_argument('--dry-run', action="store_true")
-        parser.add_argument('--verbose', action="store_true")
         args = self.fetch_args(parser)
-        
         part = args['part']
-        i = Ican(self.dry_run)
+
+        i = Ican()
         i.bump(part.lower())
         logger.warning(f'Version: {i.version.semantic}')
 
         return
 
-
     def show(self):
         parser = argparse.ArgumentParser(
             description='show the [STYLE] of current version')
-
         parser.add_argument(
             "style", 
             nargs='?',
@@ -134,21 +130,17 @@ We recommend the following commands:
             choices=['semantic', 'public', 'pep440', 'git'],
             help="version style to show"
         )
-        parser.add_argument('--verbose', action="store_true")
         args = self.fetch_args(parser)
 
-        i = Ican(self.dry_run)
+        i = Ican()
         v = i.show(args['style'])
         logger.warning(v)
 
         return
 
-
     def init(self):
         parser = argparse.ArgumentParser(
             description='initialize your project in the current directory')
-        parser.add_argument('--dry-run', action="store_true")
-        parser.add_argument('--verbose', action="store_true")
         args = self.fetch_args(parser)
 
         i = Ican(self.dry_run, init=True)

@@ -1,19 +1,21 @@
 [version]
-current = 0.1.6+build.101
+current = 0.1.6+build.106
 
 [options]
-auto-tag = True
-auto-commit = True
-auto-push = True
-signature = True
 
-[file1]
+[file: version]
 file = ./ican/__init__.py
 variable = __version__
 style = semantic
 
-[file2]
+[file: public]
 file = ./ican/__init__.py
 variable = __public_version__
 style = public
+
+[pipeline: release]
+step1 = git add .
+step2 = git commit -m "{{msg}}"
+step3 = git tag -a {{tag}} --sign
+step4 = git push origin master {{tag}}
 

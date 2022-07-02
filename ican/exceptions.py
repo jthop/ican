@@ -18,11 +18,6 @@ class ExitCode():
     GIT_UNUSABLE = 10
     GIT_ROOT_ERROR = 11
     GIT_DESCRIBE_ERROR = 12
-    GIT_ADD_ERROR = 13
-    GIT_COMMIT_ERROR = 14
-    GIT_TAG_ERROR = 15
-    GIT_PUSH_ERROR = 16
-    GPG_SIGNING_ERROR = 17
     
     VERSION_PARSE_ERROR = 20
     VERSION_METADATA_ERROR = 21
@@ -101,21 +96,6 @@ class GitRootError(IcanException):
 
 class GitDescribeError(IcanException):
     exit_code = ExitCode.GIT_DESCRIBE_ERROR
-
-class GitAddError(IcanException):
-    exit_code = ExitCode.GIT_ADD_ERROR
-
-class GitCommitError(IcanException):
-    exit_code = ExitCode.GIT_COMMIT_ERROR
-
-class GitTagError(IcanException):
-    exit_code = ExitCode.GIT_TAG_ERROR
-
-class GitPushError(IcanException):
-    exit_code = ExitCode.GIT_PUSH_ERROR
-
-class GPGSigningError(IcanException):
-    exit_code = ExitCode.GPG_SIGNING_ERROR
 
 ########################
 

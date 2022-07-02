@@ -8,6 +8,7 @@ from .config import Config
 from .version import Version
 from .git import Git
 from .log import logger
+from .log import ok_to_write
 from .emojis import rnd_good_emoji
 from .exceptions import GitDescribeError
 
@@ -23,32 +24,21 @@ class Ican(object):
     Object which will orchestrate entire program
     """
 
-    @property
-    def dry_run(self):
-        if self.dryrun:
-            logger.info('Skipping file write due to --dry-run')
-            return True
-        return False
-
-    def __init__(self, dry_run=None, init=False):
-        self.dryrun = dry_run
-
+    def __init__(self, init=False):
         self.version = None
         self.git = None
         self.config = None
 
         logger.debug(f'   ---=== Welcome to ican v{__version__} ===---')
-        logger.debug('Verbose output selected.')
-        if self.dryrun:
-            logger.info('--dry-run detected.  No files will be written to.')
-        
+        logger.debug('* ICAN: Verbose output selected.')
+
         # Git init - Do this early incase we need git.root
-        logger.debug('Investigating a project git repo.')
+        logger.debug('* ICAN: searching for project git repo.')
         self.git = Git()
 
         # Create config obj.  If init, set defaults.
         # Otherwise, search for existing config file.
-        self.config = Config(parent=self)
+        self.config = Config(self.git.root)
         if init:
             self.config.init()
         else:
@@ -59,7 +49,7 @@ class Ican(object):
 
         # Now config is parsed.  We can parse from config
         self.version = Version.parse(self.config.current_version)
-        logger.debug(f'Parsed version {self.version.semantic} from config')
+        logger.debug(f'* ICAN: parsed version {self.version.semantic} from config')
 
         try:
             self.version._git_metadata = self.git.describe()
@@ -68,9 +58,9 @@ class Ican(object):
             logger.info('Git style versions will be disabled.')
             logger.info('Possibly this is a new repo with no tags.')
             self.git.disable()
-            
+
         else:
-            logger.debug(f'Set git-version metadata: {self.version.git}')
+            logger.debug(f'* ICAN: found git metadata: {self.version.git}')
 
         return
 
@@ -81,39 +71,40 @@ class Ican(object):
 
         v = getattr(self.version, style)
         if v is None:
-            return f'version style: {style} not available'
+            return f'version STYLE: {style} not available'
         return v
-
 
     def bump(self, part):
         """
         This is pretty much the full process
         """
 
-        logger.debug(f'Beginning bump of `{part}`...')
+        logger.debug(f'+ ICAN: beginning BUMP of {part.upper()}')
 
         # Use the Version API to bump 'part'
         self.version.bump(part)
-        logger.debug(f'+ New value of {part}: {getattr(self.version, part)}')
+        logger.debug(f'+ ICAN: new value of {part}: {getattr(self.version, part)}')
 
+        # Update the user's files with new version
         for file in self.config.source_files:
             file.update(self.version)
 
-        # Write the new version to config file
-        self.config.persist_version(self.version.semantic)
-
         # Pipeline
         if self.version.new_release:
-            # The actual auto_commit and auto_tag
-            if self.config.auto_commit and not self.dry_run:
-                self.git.add()
-                self.git.commit(f'auto-commit triggered by version bump')
+            if self.config.pipelines.get('release'):
+                self.run_pipeline('release')
 
-            if self.config.auto_tag and not self.dry_run:
-                msg = f'auto-generated release: {self.version.semantic}'
-                self.git.tag(self.version.tag, self.config.signature, msg)
 
-            if self.config.auto_push and not self.dry_run:
-                self.git.push(self.version.tag)
+        # Once all else is successful, persist the new version
+        self.config.persist_version(self.version.semantic)
 
         return self
+
+    def run_pipeline(self, label):
+        logger.debug('+ ICAN: RELEASE pipeline triggered')
+
+        pl = self.config.pipelines.get(label)
+        ctx = {}
+        ctx['tag'] = self.version.tag
+        ctx['msg'] = f'auto commit for {self.version.tag}.'
+        pl.run(ctx)

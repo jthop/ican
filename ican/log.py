@@ -11,14 +11,6 @@ __all__ = [
     'ERROR'
 ]
 
-def set_logger_level(verbose, dry_run):
-    if verbose:
-        logger.setLevel(logging.DEBUG)
-    elif dry_run:
-        logger.setLevel(logging.INFO)
-    else:
-        logger.setLevel(logging.WARNING)
-
 
 class CustomFormatter(logging.Formatter):
     """Logging colored formatter, adapted from https://stackoverflow.com/a/56944256/3638629"""
@@ -73,3 +65,22 @@ console = logging.StreamHandler()
 format_str = '%(message)s'
 console.setFormatter(CustomFormatter(format_str))
 logger.addHandler(console)
+logger.__dry_run__ = False
+
+def set_logger_level(verbose, dry_run):
+    if verbose:
+        logger.setLevel(logging.DEBUG)
+    elif dry_run:
+        logger.setLevel(logging.INFO)
+    else:
+        logger.setLevel(logging.WARNING)
+
+    if dry_run:
+        logger.__dry_run__ = True
+        logger.info('--dry-run detected - no files will be modified')
+
+def ok_to_write():
+    if not logger.__dry_run__:
+        return True
+    logger.info('Skipping file write due to --dry-run')
+    return False

@@ -24,8 +24,9 @@ version = {attr = "ican.__public_version__"}
 ican = "ican.cli:entry"
 
 [project.urls]
-homepage = "https://github.com/jthop/ican"
-repository = "https://github.com/jthop/ican"
+"Homepage" = "https://github.com/jthop/ican"
+"Bug Tracker" = "https://github.com/jthop/ican/issues"
+
 
 [tool.yapf]
 based_on_style = "google"
