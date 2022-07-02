@@ -1,4 +1,6 @@
 import logging
+import sys
+from . import __version__
 from .emojis import rnd_good_emoji
 from .emojis import rnd_bad_emoji
 
@@ -29,16 +31,17 @@ class CustomFormatter(logging.Formatter):
     INVERT = '\033[7m'
     RESET = '\u001b[0m'
 
-    def __init__(self, fmt, emoji=True):
+    def __init__(self, fmt, style='%', emoji=True):
         super().__init__()
         self.fmt = fmt
+        self.plain_fmt = '{message}'
+        self.style = style
         self.FORMATS = {
             logging.DEBUG: self.GREEN + self.fmt + self.RESET,
             logging.INFO: self.INVERT + self.YELLOW + self.fmt + self.RESET,
-            logging.WARNING: self.BLUE + self.fmt + self.RESET,
+            logging.WARNING: self.BLUE + self.plain_fmt + self.RESET,
             logging.ERROR: self.RED + self.fmt + self.RESET,
-            logging.CRITICAL: self.INVERT + self.RED +\
-                self.fmt + self.RESET
+            logging.CRITICAL: self.INVERT + self.RED + self.fmt + self.RESET
         }
         if emoji:
             warning = self.FORMATS[logging.WARNING]
@@ -53,34 +56,66 @@ class CustomFormatter(logging.Formatter):
             self.FORMATS[logging.CRITICAL] = rnd_bad_emoji(3) +\
                 "  " + critical + "  " + rnd_bad_emoji(3)
 
-
     def format(self, record):
         log_fmt = self.FORMATS.get(record.levelno)
-        formatter = logging.Formatter(log_fmt)
+        formatter = logging.Formatter(log_fmt, style=self.style)
         return formatter.format(record)
 
 
-logger = logging.getLogger('ican')
-console = logging.StreamHandler()
-format_str = '%(message)s'
-console.setFormatter(CustomFormatter(format_str))
-logger.addHandler(console)
-logger.__dry_run__ = False
+def setup_log_record_factory():
+    old_factory = logging.getLogRecordFactory()
 
-def set_logger_level(verbose, dry_run):
+    def record_factory(*args, **kwargs):
+        shorty = args[2].replace('.py','')
+        file_lineno = f'{shorty}@{args[3]}'
+        custom = list(args)
+        custom[2] = file_lineno
+        custom[3] = ''
+        record = old_factory(*tuple(custom), **kwargs)
+        record.custom_attribute = 0xdecafbad
+        return record
+
+    logging.setLogRecordFactory(record_factory)
+
+
+def setup_console_handler(verbose, dry_run):
     if verbose:
-        logger.setLevel(logging.DEBUG)
+        level = logging.DEBUG
     elif dry_run:
-        logger.setLevel(logging.INFO)
+        level = logging.INFO
     else:
-        logger.setLevel(logging.WARNING)
+        level = logging.WARNING
+    logger.__dry_run__ = False
 
+    logger.setLevel(level)
+    console = logging.StreamHandler(sys.stderr)
+    console.setLevel(level)
+    #format_str = '{filename:<20}{lineno}  {message}'
+    format_str = '{filename:<16} {message}'
+    formatter = CustomFormatter(format_str, style="{")
+    console.setFormatter(formatter)
+    logger.addHandler(console)
+
+    logger.debug(f' ---===::: Welcome to ican v{__version__} :::===---')
     if dry_run:
-        logger.__dry_run__ = True
-        logger.info('--dry-run detected - no files will be modified')
+            logger.__dry_run__ = True
+            logger.info('--dry-run detected - no files will be modified')
+
+def setup_file_handler(filename):
+    format_str = '%(asctime)s | %(levelname)s | %(message)s'
+    date_format = '%m-%d-%Y %H:%M:%S'
+    formatter = logging.Formatter(format_str, date_format)
+    file_handler = logging.FileHandler(filename)
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
 
 def ok_to_write():
     if not logger.__dry_run__:
         return True
-    logger.info('Skipping file write due to --dry-run')
+    logger.info('Skipping file write @ --dry-run')
     return False
+
+
+logger = logging.getLogger('ican')
+#setup_log_record_factory()

@@ -9,6 +9,7 @@ from .source import SourceCode
 from .pipeline import PipeLine
 from .log import logger
 from .log import ok_to_write
+from .log import setup_file_handler
 
 
 #######################################
@@ -41,6 +42,8 @@ class Config(object):
         self.parser = ConfigParser()
 
         self.current_version = None
+        self.log_to_disk = False
+        self.log_file = ''
         self.source_files = []
         self.pipelines = {}
 
@@ -64,7 +67,7 @@ class Config(object):
         Update the version in the config file then write it so we know the
         new version next time
         """
-        logger.debug(f'+ CONFIG: persisting version info - {version_str}')
+        logger.debug(f'persisting version - {version_str}')
 
         self.parser.set('version', 'current', version_str)
         if ok_to_write():
@@ -76,6 +79,7 @@ class Config(object):
         """
         Set default config and save
         """
+        logger.debug(f'command init - setting default config')
         self.parser.read_dict(Config.DEFAULT_CONFIG)
 
         file = Path(self.ran_from, Config.CONFIG_FILE)
@@ -85,6 +89,7 @@ class Config(object):
         return
 
     def search_for_config(self):
+        logger.debug(f'searching for config file')
         f = Config.CONFIG_FILE
         dirs = [
             self.git_root,
@@ -99,6 +104,7 @@ class Config(object):
             if c.exists():
                 self.parser.read(c)
                 self.config_file = c
+                logger.debug(f'config found @ {c}')
                 break
         else:
             msg = f"Could not find config file [{f}]  " \
@@ -120,8 +126,11 @@ class Config(object):
             'version', 'current', fallback='0.1.0'
         )
 
-        # OPTIONS
-        #self.auto_tag = self.parser.getboolean('options', 'auto-tag', fallback=False)
+        # OPTIONS - log file setup
+        self.log_to_disk = self.parser.getboolean('options', 'log_to_disk', fallback=False)
+        self.log_file = self.parser.get('options', 'log_file', fallback='ican.log')
+        if self.log_to_disk:
+            setup_file_handler(self.log_file)
 
         self.parse_source_files()
         self.parse_pipelines()
@@ -136,7 +145,7 @@ class Config(object):
                 continue
 
             label = s.split(':')[1].strip().lower()
-            logger.debug(f'* CONFIG: parsing {label.upper()} pipeline')
+            logger.debug(f'parsing {label.upper()} pipeline')
             list_tuples = self.parser.items(s)
 
             pl = PipeLine(label=label, steps=list_tuples)
@@ -157,14 +166,15 @@ class Config(object):
             style = self.parser.get(s, 'style', fallback='semantic')
             regex = self.parser.get(s, 'regex', fallback=None)
 
-            logger.debug(f'* CONFIG: parsing {label.upper()} (file to update)')
             # Instead of raising exp, we can just look for more files
             if file is None:
-                logger.debug(f'* CONFIG: skipping source - missing file ({label})')
+                logger.debug(f'skipping source - missing file ({label})')
                 continue
             elif variable is None and regex is None:
-                logger.debug(f'* CONFIG: skipping source - missing variable/regex')
+                logger.debug(f'skipping source - missing variable/regex')
                 continue
+
+            logger.debug(f'parsing version file {label.upper()}[{file}]')
 
             # Case with *.py for all python files
             if '*' in file:
@@ -192,6 +202,6 @@ class Config(object):
         #self.debug(f'Searching for {f} in dir {root}')
         matches = [x for x in Path(root).rglob(f)]
         if len(matches) > 0:
-            logger.debug(f'* CONFIG: found: {len(matches)} files')
+            logger.debug(f'found: {len(matches)} files')
             return matches
         return None

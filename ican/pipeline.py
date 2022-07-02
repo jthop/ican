@@ -29,11 +29,11 @@ class PipeLine(object):
         self.compiled = re.compile(PipeLine.TEMPLATE)
 
         if steps is None:
-            logger.error('- PIPELINE: must include at least 1 step')
+            logger.error('must include at least 1 step')
 
         if steps:
             for k, v in steps:
-                logger.debug(f'* PIPELINE: {label.upper()}.{k} - {v}')
+                logger.debug(f'{label.upper()}.{k} - {v}')
                 step = SimpleNamespace(label=k, cmd=v)
                 self.steps.append(step)
 
@@ -67,6 +67,6 @@ class PipeLine(object):
         for step in self.steps:
             cmd = self._render(step.cmd, ctx)
             label = step.label
-            logger.debug(f'PIPELINE: rendered {cmd}')
+            logger.debug(f'rendered {cmd}')
             if ok_to_write():
                 result = self.run_cmd(cmd)

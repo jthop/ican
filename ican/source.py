@@ -41,7 +41,7 @@ class SourceCode(object):
 
         if variable is not None:
             self.regex = SourceCode.VARIABLE_RE.replace("{{var}}", variable)
-            logger.debug(f'* CODE: variable -> regex - {self.regex}')
+            logger.debug(f'regex generated for {variable}')
 
         if self.regex:
             try:
@@ -72,7 +72,7 @@ class SourceCode(object):
 
         self.new_version = getattr(version, self.style)
         logger.debug(
-            f'+ CODE: updating {self.label} with {self.new_version}'
+            f'{self.label} - updating to {self.new_version}'
         )
 
         try:
@@ -89,9 +89,9 @@ class SourceCode(object):
 
             # Check if we found a match or not
             if n == 0:
-                logger.debug(f'- CODE: no match - {self.label}.')
+                logger.debug(f'{self.label} - NO MATCHES!')
                 return
-            logger.debug(f'+ CODE: found {n} matches')
+            logger.debug(f'{self.label} - found {n} matches')
 
             # Write the updated file
             if ok_to_write():
@@ -100,5 +100,5 @@ class SourceCode(object):
                 f.truncate()
 
         self.updated = True
-        logger.debug(f'+ CODE: update of {self.label} COMPLETE')
+        logger.debug(f'{self.label} - update COMPLETE')
         return True

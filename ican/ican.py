@@ -3,7 +3,6 @@
 import os
 from pathlib import Path
 
-from . import __version__
 from .config import Config
 from .version import Version
 from .git import Git
@@ -29,11 +28,9 @@ class Ican(object):
         self.git = None
         self.config = None
 
-        logger.debug(f'   ---=== Welcome to ican v{__version__} ===---')
-        logger.debug('* ICAN: Verbose output selected.')
+        logger.debug('Verbose output selected.')
 
         # Git init - Do this early incase we need git.root
-        logger.debug('* ICAN: searching for project git repo.')
         self.git = Git()
 
         # Create config obj.  If init, set defaults.
@@ -49,7 +46,7 @@ class Ican(object):
 
         # Now config is parsed.  We can parse from config
         self.version = Version.parse(self.config.current_version)
-        logger.debug(f'* ICAN: parsed version {self.version.semantic} from config')
+        logger.debug(f'discovered {self.version.semantic} @ CONFIG.version')
 
         try:
             self.version._git_metadata = self.git.describe()
@@ -60,7 +57,7 @@ class Ican(object):
             self.git.disable()
 
         else:
-            logger.debug(f'* ICAN: found git metadata: {self.version.git}')
+            logger.debug(f'discovered {self.version.git} @ GIT.version')
 
         return
 
@@ -79,11 +76,13 @@ class Ican(object):
         This is pretty much the full process
         """
 
-        logger.debug(f'+ ICAN: beginning BUMP of {part.upper()}')
+        logger.debug(f'beginning bump of <{part.upper()}>')
 
         # Use the Version API to bump 'part'
         self.version.bump(part)
-        logger.debug(f'+ ICAN: new value of {part}: {getattr(self.version, part)}')
+        logger.debug(
+            f'new value of <{part.upper()}> - {getattr(self.version, part)}'
+        )
 
         # Update the user's files with new version
         for file in self.config.source_files:
@@ -101,7 +100,7 @@ class Ican(object):
         return self
 
     def run_pipeline(self, label):
-        logger.debug('+ ICAN: RELEASE pipeline triggered')
+        logger.debug('RELEASE pipeline triggered')
 
         pl = self.config.pipelines.get(label)
         ctx = {}

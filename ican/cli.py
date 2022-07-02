@@ -9,7 +9,7 @@ import sys
 from . import __version__
 from .ican import Ican
 from .log import logger
-from .log import set_logger_level
+from .log import setup_console_handler
 from .emojis import rnd_good_emoji
 from .exceptions import IcanException
 
@@ -97,7 +97,7 @@ Some of our most popular commands:
             action="store_true"
         )
         args = vars(parser.parse_args(sys.argv[2:]))
-        set_logger_level(args['verbose'], args['dry_run'])
+        setup_console_handler(args['verbose'], args['dry_run'])
 
         return args
 
@@ -115,7 +115,9 @@ Some of our most popular commands:
         part = args['part']
 
         i = Ican()
+
         i.bump(part.lower())
+        logger.debug('bump() COMPLETE')
         logger.warning(f'Version: {i.version.semantic}')
 
         return
@@ -134,6 +136,7 @@ Some of our most popular commands:
 
         i = Ican()
         v = i.show(args['style'])
+        logger.debug('show() COMPLETE')
         logger.warning(v)
 
         return
@@ -144,7 +147,7 @@ Some of our most popular commands:
         args = self.fetch_args(parser)
 
         i = Ican(self.dry_run, init=True)
-        logger.warning('init complete')
+        logger.warning('init COMPLETE')
 
         return
 
