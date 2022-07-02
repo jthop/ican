@@ -33,7 +33,7 @@ Install the ican package via pypi
 pip install ican
 ```
 
-## :toolbox: Confige
+## :toolbox: Sample Config
 
 Config is done via the .ican file in your project's root diarectory.
 
@@ -53,42 +53,54 @@ variable = __version__
 
 [pipeline: release]
 step1 = ./clean_my_project.sh
-step2 = git commit -a"
+step2 = git commit -a
 step3 = git tag -a {{tag}} --sign
 step4 = git push origin master {{tag}}
 
 ```
 
-### :exclamation:
+### Sample config explanation
+
+- This config defines the current version as `0.1.6` with build # 40.
+- All operations will be logged to the `ican.log` file.
+- ican will update a variable named `__version__` in `./src/__init__.py` any time the bump command is run.
+  - ican will use the `semantic` style of the version when updating this file.
+- The release pipeline will run on bump [patch, minor, or major].
+  - This pipeline has 4 steps defined.
+  - All pipeline steps are shell-based commands.
+
+### Important
 Take note, all sections must be unique.  So if you define more than one <file: [LABEL]> section, make sure each one has a unique label.
 
-### Overview
+### :thumbsup: :sunglasses:
+```ini
+[file: src_init]
+file = ./src/__init__.py
+...
+[file: main]
+file = ./src/__main__.py
+```
 
-First of all this config defines the current version as `0.1.6` with build # 40.
+### :thumbsdown: :skull_and_crossbones:
+```ini
+[file: py_code]
+file = ./src/__init__.py
+...
+[file: py_code]
+file = ./src/__main__.py
+```
 
-All operations will be logged to the ican.log file.
-
-If we bump that version ican will look in the ./src/__init__.py file for a variable named __version__ and set that variable to the bumped version value.
-
-The release pipeline is defined, which will run if a new release is triggered.  It has 4 steps, which are all simply commands executed at the shell.
-
-
-### Definitions
-
+## :triangular_ruler: Config
 
 | Section          | Key             | Value                                           |
 | -----------------| ----------------|-------------------------------------------------|
 | version          | current         | This is the value that ican stores the current version number in. |
-| -----------------|-----------------|-------------------------------------------------|
 | options          | log-file        |All operations are logged to disk in this file.  To turn logging off, do not define the log-file. |
-| -----------------|-----------------|-------------------------------------------------|
 | file: [LABEL]    | file            | The filename of a file ican will update with new versions.  You can use a standard unix glob (*.py) if desired. |
 | file: [LABEL]    | style           | The version style to use.  Choices are [semantic, public, pep440, git] |
 | file: [LABEL]    | variable        | The variable name pointing to the version string that ican will update when versions are bumped. |
 | file: [LABEL]    | regex           | User-supplied python formattted regex string defining how to replace the file's version. |
-| -----------------|-----------------|-------------------------------------------------|
 | pipeline: [LABEL]| stepN (step1...)| Pipeline step.  These represent a command run in the shell. |
-| -----------------|-----------------|-------------------------------------------------|
 
 
 ### User-supplied regex
@@ -117,9 +129,9 @@ ican [command] [arguments] [options]
 
 | Command      | Arguments             | Description   |
 | -------------| --------------------  | ------------- |
-| bump       | **PART** `required`     |The **PART** would be: The segment of the semantic version to increase.  <br />Choices are [*major*, *minor*, *patch*, *prerelease*] |
-| show       | **STYLE** `required`    | The **STYLE** would be: The version style you want. <br />Choices are [*semantic*, *public*, *pep440*, *git*] |
-| init       | none.                   | This command would initialize your project in the current directory.                                |
+| bump       | **PART** `required`     |The **PART** is the segment of the semantic version to increment.  <br />Choices are [*major*, *minor*, *patch*, *prerelease*] |
+| show       | **STYLE** `required`    | The **STYLE** is the version format to show. <br />Choices are [*semantic*, *public*, *pep440*, *git*] |
+| init       | none.                   | This command would initialize your project with default config in the current directory.                                |
 
 
 ## :roll_eyes: Options
@@ -135,7 +147,7 @@ The output and parsing of `ican` can be controlled with the following options.
 
 ## :eyes: Examples
 
-```shell
+```bash
 $ ican init
 
 ...
@@ -158,12 +170,12 @@ $ ican show public
 # Oh no a bug, let's patch
 $ ican bump patch
 0.3.1+build.102
-* release pipeline output... *
+release pipeline output...
 
 # Finally, our long awaited 1.0 release.
 $ ican bump major
 1.0.0+build.103
-* release pipeline output... *
+release pipeline output...
 
 # Of course, our 1.0 release will be on pypi
 $ ican show public
