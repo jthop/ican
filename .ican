@@ -1,5 +1,5 @@
 [version]
-current = 0.1.9+build.117
+current = 0.1.10+build.118
 
 [options]
 log-file = ican.log
@@ -25,3 +25,5 @@ step4 = git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
 step5 = git push origin master {{tag}}
 step6 = rm /tmp/commit.txt
 
+[pipeline: build]
+step1 = echo "Good Build"

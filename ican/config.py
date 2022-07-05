@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 from configparser import ConfigParser
+from configparser import DuplicateSectionError
 from types import SimpleNamespace
 
 from .source import SourceCode
@@ -10,6 +11,9 @@ from .pipeline import PipeLine
 from .log import logger
 from .log import ok_to_write
 from .log import setup_file_handler
+from .exceptions import NoConfigFound
+from .exceptions import DuplicateConfigSections
+from .exceptions import ConfigWriteError
 
 
 #######################################
@@ -42,8 +46,7 @@ class Config(object):
         self.parser = ConfigParser()
 
         self.current_version = None
-        self.log_to_disk = False
-        self.log_file = ''
+        self.log_file = None
         self.source_files = []
         self.pipelines = {}
         self.aliases = {}
@@ -63,6 +66,18 @@ class Config(object):
         elif self.path:
             os.chdir(str(self.path).rstrip('\n'))
 
+    def save(self):
+        if ok_to_write():
+            if not self.config_file:
+                f = Path(self.ran_from, Config.CONFIG_FILE)
+                self.config_file = f
+            try:
+                self.parser.write(open(self.config_file, "w"))
+                logger.debug('wrote config file')
+            except Exception as e:
+                raise ConfigWriteError(e)
+        return
+
     def persist_version(self, version_str):
         """
         Update the version in the config file then write it so we know the
@@ -71,9 +86,7 @@ class Config(object):
         logger.debug(f'persisting version - {version_str}')
 
         self.parser.set('version', 'current', version_str)
-        if ok_to_write():
-            self.parser.write(open(self.config_file, "w"))
-
+        self.save()
         return None
 
     def init(self):
@@ -82,11 +95,7 @@ class Config(object):
         """
         logger.debug(f'command init - setting default config')
         self.parser.read_dict(Config.DEFAULT_CONFIG)
-
-        file = Path(self.ran_from, Config.CONFIG_FILE)
-        if not ok_to_write():
-            config.write(open(file, "w"))
-        self.config_file = file
+        self.save()
         return
 
     def search_for_config(self):
@@ -103,14 +112,15 @@ class Config(object):
                 continue
             c = Path(d, f)
             if c.exists():
-                self.parser.read(c)
+                try:
+                    self.parser.read(c)
+                except DuplicateSectionError:
+                    raise DuplicateConfigSections()
                 self.config_file = c
                 logger.debug(f'config found @ {c}')
                 break
         else:
-            msg = f"Could not find config file [{f}]  " \
-            "Try using a default config with '--init',"
-            raise ValueError(msg)
+            raise NoConfigFound()
         return
 
     def parse(self):
@@ -128,9 +138,8 @@ class Config(object):
         )
 
         # OPTIONS - log file setup
-        self.log_to_disk = self.parser.getboolean('options', 'log_to_disk', fallback=False)
-        self.log_file = self.parser.get('options', 'log_file', fallback='ican.log')
-        if self.log_to_disk:
+        self.log_file = self.parser.get('options', 'log_file', fallback=None)
+        if self.log_file:
             setup_file_handler(self.log_file)
 
         self.parse_source_files()

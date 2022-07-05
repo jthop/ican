@@ -3,7 +3,7 @@
 """
 
 import sys
-
+from . import __version__
 from .log import logger
 
 
@@ -12,8 +12,9 @@ class ExitCode():
     
     NO_CONFIG_FOUND = 1
     INVALID_CONFIG = 2
-    CONFIG_WRITE_ERROR = 3
-    NO_CURRENT_VERSION = 4
+    DUPLICATE_CONFIG_SECTIONS = 3
+    CONFIG_WRITE_ERROR = 4
+    NO_CURRENT_VERSION = 5
     
     GIT_UNUSABLE = 10
     GIT_ROOT_ERROR = 11
@@ -57,8 +58,8 @@ class IcanException(Exception):
         elif hasattr(self.__class__, "msg"):
             self.msg = self.__class__.msg
 
-        # Go ahead and merge the exit_code into msg
-        m = f'{self.msg} (code {self.exit_code})'
+        # Merge the exit_code, msg, and version
+        m = f'{self.msg} (code-{self.exit_code}) v{__version__}'
         self.msg = m
 
     def __str__(self):
@@ -71,9 +72,14 @@ class DryRunExit(IcanException):
 
 class NoConfigFound(IcanException):
     exit_code = ExitCode.NO_CONFIG_FOUND
+    msg = 'Cannot find ican config.  Maybe try `ican init`'
 
 class InvalidConfig(IcanException):
     exit_code = ExitCode.INVALID_CONFIG
+
+class DuplicateConfigSections(IcanException):
+    exit_code = ExitCode.DUPLICATE_CONFIG_SECTIONS
+    msg = 'Duplicate sections in config file. Did you create file/pipeline labels?'
 
 class ConfigWriteError(IcanException):
     exit_code = ExitCode.CONFIG_WRITE_ERROR

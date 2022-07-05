@@ -78,7 +78,7 @@ class Git(object):
         try:
             u = self.command(cmd)
         except Exception as e:
-            raise GitUnusable(e)
+            return False
 
         return u
 
