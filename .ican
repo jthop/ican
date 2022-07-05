@@ -1,8 +1,11 @@
 [version]
-current = 0.1.6+build.109
+current = 0.1.7+build.113
 
 [options]
 log-file = ican.log
+
+[aliases]
+deploy = test first
 
 [file: version]
 file = ./ican/__init__.py
@@ -16,7 +19,8 @@ style = public
 
 [pipeline: release]
 step1 = git add .
-step2 = git commit -m "{{msg}}"
-step3 = git tag -a {{tag}} --sign
-step4 = git push origin master {{tag}}
-
+step2 = echo "{{msg}}" > /tmp/commit.txt
+step3 = git commit -F /tmp/commit.txt
+step4 = git tag -a {{tag}} --sign
+step5 = git push origin master {{tag}}
+step6 = rm /tmp/commit.txt

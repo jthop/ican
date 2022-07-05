@@ -35,6 +35,8 @@ Some of our most popular commands:
 
     def __init__(self):
         self._register_excepthook()
+        self.i = Ican()
+        self.aliases = self.i.config.aliases
 
         parser = argparse.ArgumentParser(
             description='ican - version bumper and lightweight build pipelines',
@@ -49,8 +51,17 @@ Some of our most popular commands:
             version=f'ican v{__version__}'
         )
 
+        # if config.alias was used, insert it into sys.argv
+        command = sys.argv[1]
+        if self.aliases.get(command):
+            built_in = self.aliases.get(command)
+            sys.argv.pop(1)   #delete the alias command
+            sys.argv[1:1] = built_in
+
+        # now parse our upsated args
         args = parser.parse_args(sys.argv[1:2])
         if not hasattr(self, args.command):
+            # no method for the command
             logger.error('Unrecognized command')
             parser.print_help()
             exit(1)
@@ -114,11 +125,9 @@ Some of our most popular commands:
         args = self.fetch_args(parser)
         part = args['part']
 
-        i = Ican()
-
-        i.bump(part.lower())
+        self.i.bump(part.lower())
         logger.debug('bump() COMPLETE')
-        logger.warning(f'Version: {i.version.semantic}')
+        logger.warning(f'Version: {self.i.version.semantic}')
 
         return
 
@@ -134,8 +143,7 @@ Some of our most popular commands:
         )
         args = self.fetch_args(parser)
 
-        i = Ican()
-        v = i.show(args['style'])
+        v = self.i.show(args['style'])
         logger.debug('show() COMPLETE')
         logger.warning(v)
 
@@ -146,10 +154,21 @@ Some of our most popular commands:
             description='initialize your project in the current directory')
         args = self.fetch_args(parser)
 
-        i = Ican(self.dry_run, init=True)
+        del self.i
+        self.i = Ican(init=True)
         logger.warning('init COMPLETE')
 
         return
+
+    def test(self):
+        parser = argparse.ArgumentParser(description='test')
+        parser.add_argument(
+            "first",
+            nargs='?',
+            help="first test arg"
+        )
+        args = self.fetch_args(parser)
+        print(f'10-4 with arg {args["first"]}')
 
 
 def entry():

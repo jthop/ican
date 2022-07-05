@@ -51,16 +51,18 @@ class PipeLine(object):
         )
         return result
 
-    def _run_cmd(self, cmd=[]):
-        env = os.environ.copy()
+    def _run_cmd(self, _cmd=[]):
+        cmd = _cmd.split(' ')
 
         result = subprocess.run(
-            cmd,
-            check=True,
+            _cmd,
+            shell=True,
             capture_output=True,
-            env=env
-        ).stdout
+            text=True
+        )
 
+        #result.stderr
+        #result.stdout
         return result
 
     def run(self, ctx={}):
@@ -69,4 +71,5 @@ class PipeLine(object):
             label = step.label
             logger.debug(f'rendered {cmd}')
             if ok_to_write():
-                result = self.run_cmd(cmd)
+                result = self._run_cmd(cmd)
+                logger.debug(f'result: {result.stdout}{result.stderr}')

@@ -1,0 +1,26 @@
+07-02-2022 11:09:49 | DEBUG | parsing version file VERSION[./ican/__init__.py]
+07-02-2022 11:09:49 | DEBUG | regex generated for __version__
+07-02-2022 11:09:49 | DEBUG | parsing version file PUBLIC[./ican/__init__.py]
+07-02-2022 11:09:49 | DEBUG | regex generated for __public_version__
+07-02-2022 11:09:49 | DEBUG | parsing RELEASE pipeline
+07-02-2022 11:09:49 | DEBUG | RELEASE.step1 - git add .
+07-02-2022 11:09:49 | DEBUG | RELEASE.step2 - git commit -m "{{msg}}"
+07-02-2022 11:09:49 | DEBUG | RELEASE.step3 - git tag -a {{tag}} --sign
+07-02-2022 11:09:49 | DEBUG | RELEASE.step4 - git push origin master {{tag}}
+07-02-2022 11:09:49 | DEBUG | discovered 0.1.6+build.107 @ CONFIG.version
+07-02-2022 11:09:49 | DEBUG | discovered 0.1.4-dev.11+5cd6b55.107 @ GIT.version
+07-02-2022 11:09:49 | DEBUG | beginning bump of <BUILD>
+07-02-2022 11:09:49 | DEBUG | new value of <BUILD> - build.108
+07-02-2022 11:09:49 | DEBUG | VERSION[./ican/__init__.py] - updating to 0.1.6+build.108
+07-02-2022 11:09:49 | DEBUG | VERSION[./ican/__init__.py] - found 1 matches
+07-02-2022 11:09:49 | INFO | Skipping file write @ --dry-run
+07-02-2022 11:09:49 | DEBUG | VERSION[./ican/__init__.py] - update COMPLETE
+07-02-2022 11:09:49 | DEBUG | PUBLIC[./ican/__init__.py] - updating to 0.1.6
+07-02-2022 11:09:49 | DEBUG | PUBLIC[./ican/__init__.py] - found 1 matches
+07-02-2022 11:09:49 | INFO | Skipping file write @ --dry-run
+07-02-2022 11:09:49 | DEBUG | PUBLIC[./ican/__init__.py] - update COMPLETE
+07-02-2022 11:09:49 | DEBUG | persisting version - 0.1.6+build.108
+07-02-2022 11:09:49 | INFO | Skipping file write @ --dry-run
+07-02-2022 11:09:49 | DEBUG | bump() COMPLETE
+07-02-2022 11:09:49 | WARNING | Version: 0.1.6+build.108
+07-02-2022 11:11:56 | WARNING | Version: 0.1.6+build.108

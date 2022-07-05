@@ -46,6 +46,7 @@ class Config(object):
         self.log_file = ''
         self.source_files = []
         self.pipelines = {}
+        self.aliases = {}
 
     @property
     def path(self):
@@ -134,7 +135,18 @@ class Config(object):
 
         self.parse_source_files()
         self.parse_pipelines()
+        self.parse_aliases()
 
+        return
+
+    def parse_aliases(self):
+        # aliases
+        if not self.parser.has_section('aliases'):
+            return
+
+        for alias, built_in in self.parser.items('aliases'):
+            cmd_with_args = built_in.strip().split(' ')
+            self.aliases[alias] = cmd_with_args
         return
 
     def parse_pipelines(self):

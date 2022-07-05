@@ -5,6 +5,10 @@ from types import SimpleNamespace
 from .log import ok_to_write
 from .log import logger
 
+
+__version__ = '0.2'
+
+
 #######################################
 #
 #   Version Class
