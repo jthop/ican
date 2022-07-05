@@ -1,5 +1,5 @@
 [version]
-current = 0.1.7+build.115
+current = 0.1.8+build.116
 
 [options]
 log-file = ican.log

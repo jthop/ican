@@ -21,7 +21,7 @@ from . import exceptions
 
 class PipeLine(object):
 
-    TEMPLATE = r"{{(?P<var>.*)}}"
+    TEMPLATE = r"{{(?P<var>.*?)}}"
 
     def __init__(self, label=None, steps=None):
         self.label = label
