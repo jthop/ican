@@ -1,5 +1,5 @@
 [version]
-current = 0.1.8+build.116
+current = 0.1.9+build.117
 
 [options]
 log-file = ican.log
@@ -21,7 +21,7 @@ style = public
 step1 = git add .
 step2 = echo "{{msg}}" > /tmp/commit.txt
 step3 = git commit -F /tmp/commit.txt
-step4 = git tag -a {{tag}} -m "automated tag for release {{tag}} " --sign
+step4 = git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
 step5 = git push origin master {{tag}}
 step6 = rm /tmp/commit.txt
 

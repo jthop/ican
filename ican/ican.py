@@ -92,7 +92,9 @@ class Ican(object):
         if self.version.new_release:
             if self.config.pipelines.get('release'):
                 self.run_pipeline('release')
-
+        elif part == 'build':
+            if self.config.pipelines.get('build'):
+                self.run_pipeline('build')
 
         # Once all else is successful, persist the new version
         self.config.persist_version(self.version.semantic)
