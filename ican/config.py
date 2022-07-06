@@ -4,6 +4,8 @@ import os
 from pathlib import Path
 from configparser import ConfigParser
 from configparser import DuplicateSectionError
+from configparser import ParsingError
+
 from types import SimpleNamespace
 
 from .source import SourceCode
@@ -14,7 +16,7 @@ from .log import setup_file_handler
 from .exceptions import NoConfigFound
 from .exceptions import DuplicateConfigSections
 from .exceptions import ConfigWriteError
-
+from .exceptions import InvalidConfig
 
 #######################################
 #
@@ -29,6 +31,7 @@ class Config(object):
     """
 
     default_ver = dict(current = '0.1.0')
+    default_options = dict(log_file = 'ican.log')
     default_file = dict(file = '*.py',
         style = 'semantic',
         variable = '__version__')
@@ -36,12 +39,12 @@ class Config(object):
     CONFIG_FILE = '.ican'
     DEFAULT_CONFIG = dict(
         version=default_ver,
+        options=default_options,
         file1=default_file
     )
 
-    def __init__(self, git_root=None):
+    def __init__(self, init=None):
         self.config_file = None
-        self.git_root = git_root
         self.ran_from = Path.cwd()
         self.parser = ConfigParser()
 
@@ -50,6 +53,12 @@ class Config(object):
         self.source_files = []
         self.pipelines = {}
         self.aliases = {}
+        self.pre_parsed = False
+        self.parsed = False
+
+        if init:
+            self.init()
+        return
 
     @property
     def path(self):
@@ -57,14 +66,19 @@ class Config(object):
             return self.config_file.parent
         return None
 
+    @property
+    def ready(self):
+        if self.parsed and self.pre_parsed and self.config_file:
+            return True
+        return False
+
     def ch_dir_root(self):
         """chdir to the config root, so if we run from another dir, relative
         file paths, etc still work as expected.
         """
-        if self.git_root:
-            os.chdir(str(self.git_root).rstrip('\n'))
-        elif self.path:
+        if self.path:
             os.chdir(str(self.path).rstrip('\n'))
+        return
 
     def save(self):
         if ok_to_write():
@@ -87,22 +101,22 @@ class Config(object):
 
         self.parser.set('version', 'current', version_str)
         self.save()
-        return None
+        return
 
     def init(self):
-        """
-        Set default config and save
+        """Set default config and save
         """
         logger.debug(f'command init - setting default config')
         self.parser.read_dict(Config.DEFAULT_CONFIG)
         self.save()
-        return
+        return self
 
-    def search_for_config(self):
+    def search_for_config(self, lazy=False):
+        """Find our config file.  Can improve this.
+        """
         logger.debug(f'searching for config file')
         f = Config.CONFIG_FILE
         dirs = [
-            self.git_root,
             self.ran_from,
             self.ran_from.parent,
             self.ran_from.parent.parent
@@ -116,40 +130,52 @@ class Config(object):
                     self.parser.read(c)
                 except DuplicateSectionError:
                     raise DuplicateConfigSections()
+                except ParsingError:
+                    raise InvalidConfig()
+
                 self.config_file = c
                 logger.debug(f'config found @ {c}')
                 break
         else:
+            if lazy:
+                return
             raise NoConfigFound()
         return
 
-    def parse(self):
-        """
-        We search for a config in several locations.  Also, the user may
-        specify default config, which we load here as well.
+    def pre_parse(self, lazy=False):
+        """Get the minimum config needed.  Need log_file so we can log,
+        and aliases for the command parser.  Do the rest after commands
+        are parsed.
         """
 
-        # By now we may have git_root or config_root
+        if not self.config_file:
+            self.search_for_config(lazy)
+
         self.ch_dir_root()
-
-        # Current version
-        self.current_version = self.parser.get(
-            'version', 'current', fallback='0.1.0'
-        )
-
-        # OPTIONS - log file setup
         self.log_file = self.parser.get('options', 'log_file', fallback=None)
         if self.log_file:
             setup_file_handler(self.log_file)
+        self.parse_aliases()
+        self.pre_parsed = True
+        return self
 
+    def parse(self):
+        """The parse() method parses the entire config file.  You
+        can pre_parse before running parse or not.  Either way it should
+        all end up parsed.
+        """
+        if not self.pre_parsed:
+            self.pre_parse()
+
+        self.current_version = self.parser.get(
+            'version', 'current', fallback='0.1.0'
+        )
         self.parse_source_files()
         self.parse_pipelines()
-        self.parse_aliases()
-
-        return
+        self.parsed = True
+        return self
 
     def parse_aliases(self):
-        # aliases
         if not self.parser.has_section('aliases'):
             return
 
@@ -159,7 +185,6 @@ class Config(object):
         return
 
     def parse_pipelines(self):
-        # Pipelines
         for s in self.parser.sections():
             if not s.startswith('pipeline:'):
                 # Not interested in this section
@@ -167,11 +192,9 @@ class Config(object):
 
             label = s.split(':')[1].strip().lower()
             logger.debug(f'parsing {label.upper()} pipeline')
-            list_tuples = self.parser.items(s)
-
-            pl = PipeLine(label=label, steps=list_tuples)
+            left_right_tuple = self.parser.items(s)
+            pl = PipeLine(label=label, steps=left_right_tuple)
             self.pipelines[label] = pl
-
         return
 
     def parse_source_files(self):
@@ -226,3 +249,5 @@ class Config(object):
             logger.debug(f'found: {len(matches)} files')
             return matches
         return None
+
+

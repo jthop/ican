@@ -315,7 +315,7 @@ class Version(object):
         
         part = self._frozen.part
         if part in ['major', 'minor', 'patch']:
-            logger.debug('* VERSION: release pipeline will trigger')
+            logger.debug('version level = RELEASE')
             return True
         return False
 

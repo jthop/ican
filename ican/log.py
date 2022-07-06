@@ -87,7 +87,7 @@ def setup_console_handler(verbose, dry_run):
         level = logging.WARNING
     logger.__dry_run__ = False
 
-    logger.setLevel(level)
+    logger.setLevel(logging.DEBUG)
     console = logging.StreamHandler(sys.stderr)
     console.setLevel(level)
     #format_str = '{filename:<20}{lineno}  {message}'

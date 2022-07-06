@@ -1,8 +1,8 @@
 [version]
-current = 0.1.10+build.118
+current = 0.1.13+build.151
 
 [options]
-log-file = ican.log
+log_file = ican.log
 
 [aliases]
 deploy = test first
@@ -19,11 +19,11 @@ style = public
 
 [pipeline: release]
 step1 = git add .
-step2 = echo "{{msg}}" > /tmp/commit.txt
-step3 = git commit -F /tmp/commit.txt
-step4 = git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
-step5 = git push origin master {{tag}}
-step6 = rm /tmp/commit.txt
+step2 = git commit -m "auto-commit for {{tag}}"
+step3 = git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+step4 = git push origin master {{tag}}
 
 [pipeline: build]
-step1 = echo "Good Build"
+step1 = touch /tmp/test.txt
+step2 = echo {{tag}}
+

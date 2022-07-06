@@ -4,6 +4,7 @@
 import os
 import re
 import subprocess
+import shlex
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -42,34 +43,45 @@ class PipeLine(object):
         {{var}} = ctx['var']
         """
 
-        result = self.compiled.sub(
-            lambda m: ctx.get(
-                m.group('var'),
-                'MISSING'
-            ),
-            cmd
+        result, n = self.compiled.subn(
+            lambda m: ctx.get(m.group('var'), 'N/A'),cmd
         )
+
+        if n > 0:
+            logger.debug(f'rendered cmd: {result}')
         return result
 
-    def _run_cmd(self, _cmd=[]):
-        cmd = _cmd.split(' ')
+    def _run_cmd(self, cmd):
+        """Here is where we actually run the pipeline steps via the
+        shell.
 
+        Args:
+            cmd: This should be a tuple or list of command, args such as:
+            ['git', 'commit', '-a']
+
+        Returns:
+            result: the result object will have attributes of both
+            stdout and stderr representing the results of the subprocess
+        """
+
+        if type(cmd) not in (tuple, list):
+            cmd = shlex.split(cmd)
+
+        logger.debug(f'running cmd - {cmd}')
         result = subprocess.run(
-            _cmd,
-            shell=True,
-            capture_output=True,
+            cmd,
+            shell=False,
+            capture_output=False,
             text=True
-        )
+        ).stdout
 
-        #result.stderr
-        #result.stdout
+        if result:
+            logger.debug(f'cmd result - {result}')
         return result
 
     def run(self, ctx={}):
         for step in self.steps:
             cmd = self._render(step.cmd, ctx)
             label = step.label
-            logger.debug(f'rendered {cmd}')
             if ok_to_write():
                 result = self._run_cmd(cmd)
-                logger.debug(f'result: {result.stdout}{result.stderr}')

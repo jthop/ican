@@ -10,6 +10,7 @@ from .log import logger
 from .log import ok_to_write
 from .emojis import rnd_good_emoji
 from .exceptions import GitDescribeError
+from .exceptions import ConfigNotReady
 
 #######################################
 #
@@ -23,26 +24,23 @@ class Ican(object):
     Object which will orchestrate entire program
     """
 
-    def __init__(self, init=False):
+    def __init__(self, config=None):
         self.version = None
         self.git = None
-        self.config = None
+        self.config = config
+        self.ready = False
 
-        logger.debug('Verbose output selected.')
+        # make sure the config is fully parsed
+        if not self.config.pre_parsed:
+            self.config.parse()
+        elif not self.config.parsed:
+            self.config.parse()
+        # Here if still config not ready, it will never be ready
+        if not self.config.ready:
+            raise ConfigNotReady()
 
         # Git init - Do this early incase we need git.root
         self.git = Git()
-
-        # Create config obj.  If init, set defaults.
-        # Otherwise, search for existing config file.
-        self.config = Config(self.git.root)
-        if init:
-            self.config.init()
-        else:
-            self.config.search_for_config()
-
-        # Now we have default or existing config, we can parse
-        self.config.parse()
 
         # Now config is parsed.  We can parse from config
         self.version = Version.parse(self.config.current_version)
@@ -88,24 +86,32 @@ class Ican(object):
         for file in self.config.source_files:
             file.update(self.version)
 
-        # Pipeline
-        if self.version.new_release:
-            if self.config.pipelines.get('release'):
-                self.run_pipeline('release')
-        elif part == 'build':
-            if self.config.pipelines.get('build'):
-                self.run_pipeline('build')
+        # Run the appropriate pipeline
+        self.run_pipeline(part)
 
         # Once all else is successful, persist the new version
         self.config.persist_version(self.version.semantic)
 
         return self
 
-    def run_pipeline(self, label):
-        logger.debug('RELEASE pipeline triggered')
+    def run_pipeline(self, part):
+        # Pipeline
+        if self.version.new_release and self.config.pipelines.get('release'):
+            pll = 'release'
+        elif part == 'build' and self.config.pipelines.get('build'):
+            pll = 'build'
+        else:
+            return
 
-        pl = self.config.pipelines.get(label)
-        ctx = {}
-        ctx['tag'] = self.version.tag
-        ctx['msg'] = f'auto commit for {self.version.tag}.'
+        logger.debug(f'running pipeline.{pll.upper()}')
+        pl = self.config.pipelines.get(pll)
+
+        # Prep the ctx dictionary
+        ctx = dict()
+        vars = dir(self.version)
+        for v in vars:
+            if not v.startswith('_') and not callable(getattr(self.version, v)):
+                ctx[v] = getattr(self.version, v)
         pl.run(ctx)
+        return
+

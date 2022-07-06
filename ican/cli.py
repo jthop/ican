@@ -7,6 +7,7 @@ import argparse
 import sys
 
 from . import __version__
+from .config import Config
 from .ican import Ican
 from .log import logger
 from .log import setup_console_handler
@@ -22,7 +23,7 @@ from .exceptions import IcanException
 
 
 class CLI(object):
-    usage='''ican <command> [<args>]
+    usage="""ican <command> [<args>]
 
 Some of our most popular commands:
    bump [PART]      increment the PART of the version
@@ -31,12 +32,15 @@ Some of our most popular commands:
                     [semantic, public, pep440, git]
    init             initialize the current directory with a 
                     config file
-'''
+"""
 
     def __init__(self):
         self._register_excepthook()
-        self.i = Ican()
-        self.aliases = self.i.config.aliases
+        self._arg_pop()
+        if '--version' not in sys.argv:
+            self.config = Config()
+            self.config.pre_parse(lazy=True)
+            self._substitute_aliases()
 
         parser = argparse.ArgumentParser(
             description='ican - version bumper and lightweight build pipelines',
@@ -51,14 +55,7 @@ Some of our most popular commands:
             version=f'ican v{__version__}'
         )
 
-        # if config.alias was used, insert it into sys.argv
-        command = sys.argv[1]
-        if self.aliases.get(command):
-            built_in = self.aliases.get(command)
-            sys.argv.pop(1)   #delete the alias command
-            sys.argv[1:1] = built_in
-
-        # now parse our upsated args
+        # now parse our updated args
         args = parser.parse_args(sys.argv[1:2])
         if not hasattr(self, args.command):
             # no method for the command
@@ -68,16 +65,57 @@ Some of our most popular commands:
 
         # use dispatch pattern to invoke method with same name
         getattr(self, args.command)()
-        
         return
 
+    def _arg_pop(self):
+        """Here we will pop --verbose and --dry_run out asap,
+        that way logging can be setup before we parse the config
+        file, etc.
+        """
+
+        verbose = False
+        dry_run = False
+
+        for i in range(1, len(sys.argv)):
+            if sys.argv[i] == '--verbose':
+                verbose = True
+                sys.argv.pop(i)
+            elif sys.argv[i] == '--dry_run':
+                dry_run = True
+                sys.argv.pop(i)
+        setup_console_handler(verbose, dry_run)
+        return
+
+    def _substitute_aliases(self):
+        """At this point we have parsed the config and know any
+        user-defined aliases.  We need to substitute them into
+        sys.argv for a seamless alias experience.
+        """
+
+        aliases = self.config.aliases
+        # if config.alias was used, insert it into sys.argv
+        if len(sys.argv) < 2:
+            # nothing to substitute here because no command
+            return
+        command = sys.argv[1]
+        if aliases.get(command):
+            built_in = aliases.get(command)
+            sys.argv.pop(1)   #delete the alias command
+            sys.argv[1:1] = built_in
+        return
 
     def _register_excepthook(self):
+        """Register our custom exception handler
+        """
+
         self._original_excepthook = sys.excepthook
         sys.excepthook = self._excepthook
+        return
 
     def _excepthook(self, type, value, tracekback, debug=False):
-        """ """
+        """Custom exception handler
+        """
+
         if isinstance(value, IcanException):
             if value.msg:
                 value.output_method(value.msg)
@@ -91,28 +129,10 @@ Some of our most popular commands:
         else:
             self._original_excepthook(type, value, tracekback)
 
-    def fetch_args(self, parser):
-        """
-        now that we're inside a subcommand, ignore the first
-        TWO argvs, ie the command (git) and the subcommand (commit)
-        """
-        
-        parser.add_argument(
-            '--dry-run',
-            help='files will not be written - best with --verbose',
-            action="store_true"
-        )
-        parser.add_argument(
-            '--verbose',
-            help='display all debug information available',
-            action="store_true"
-        )
-        args = vars(parser.parse_args(sys.argv[2:]))
-        setup_console_handler(args['verbose'], args['dry_run'])
-
-        return args
-
     def bump(self):
+        """dispatched here with command bump
+        """
+
         parser = argparse.ArgumentParser(
             description='increment the [PART] of the version')
         parser.add_argument(
@@ -122,16 +142,19 @@ Some of our most popular commands:
             choices=['major', 'minor', 'patch', 'prerelease', 'build'],
             help="what to bump"
         )
-        args = self.fetch_args(parser)
-        part = args['part']
+        args = parser.parse_args(sys.argv[2:])
 
-        self.i.bump(part.lower())
+        i = Ican(config=self.config)
+        i.bump(args.part.lower())
         logger.debug('bump() COMPLETE')
-        logger.warning(f'Version: {self.i.version.semantic}')
+        logger.warning(f'Version: {i.version.semantic}')
 
         return
 
     def show(self):
+        """dispatched here with command show
+        """
+
         parser = argparse.ArgumentParser(
             description='show the [STYLE] of current version')
         parser.add_argument(
@@ -141,34 +164,41 @@ Some of our most popular commands:
             choices=['semantic', 'public', 'pep440', 'git'],
             help="version style to show"
         )
-        args = self.fetch_args(parser)
+        args = parser.parse_args(sys.argv[2:])
 
-        v = self.i.show(args['style'])
+        i = Ican(config=self.config)
+        v = i.show(args.style)
         logger.debug('show() COMPLETE')
         logger.warning(v)
 
         return
 
     def init(self):
+        """dispatched here with command init
+        """
+
         parser = argparse.ArgumentParser(
             description='initialize your project in the current directory')
-        args = self.fetch_args(parser)
+        args = parser.parse_args(sys.argv[2:])
 
-        del self.i
-        self.i = Ican(init=True)
+        c = Config(init=True).parse()
+        i = Ican(config=c)
         logger.warning('init COMPLETE')
 
         return
 
     def test(self):
+        """dispatched here with command test
+        """
+
         parser = argparse.ArgumentParser(description='test')
         parser.add_argument(
             "first",
             nargs='?',
             help="first test arg"
         )
-        args = self.fetch_args(parser)
-        print(f'10-4 with arg {args["first"]}')
+        args = parser.parse_args(sys.argv[2:])
+        print(f'10-4 with arg {args.first}')
 
 
 def entry():

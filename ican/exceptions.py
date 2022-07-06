@@ -14,7 +14,8 @@ class ExitCode():
     INVALID_CONFIG = 2
     DUPLICATE_CONFIG_SECTIONS = 3
     CONFIG_WRITE_ERROR = 4
-    NO_CURRENT_VERSION = 5
+    CONFIG_NOT_READY = 5
+    NO_CURRENT_VERSION = 6
     
     GIT_UNUSABLE = 10
     GIT_ROOT_ERROR = 11
@@ -83,6 +84,10 @@ class DuplicateConfigSections(IcanException):
 
 class ConfigWriteError(IcanException):
     exit_code = ExitCode.CONFIG_WRITE_ERROR
+
+class ConfigNotReady(IcanException):
+    exit_code = ExitCode.CONFIG_NOT_READY
+    msg = 'Config file not available'
 
 class NoCurrentVersion(IcanException):
     exit_code = ExitCode.NO_CURRENT_VERSION
