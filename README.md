@@ -44,7 +44,10 @@ Sample .ican config file
 current = 0.1.6+build.40
 
 [options]
-log-file = ican.log
+log_file = ican.log
+
+[aliases]
+deploy = bump build
 
 [file: version]
 file = ./src/__init__.py
@@ -72,6 +75,8 @@ step4 = git push origin master {{tag}}
 ### Important
 Take note, all sections must be unique.  So if you define more than one <file: [LABEL]> section, make sure each one has a unique label.
 
+The same is true for `pipeline` sections.  Each pipeline section must have a unique label.
+
 ### :thumbsup: :sunglasses:
 ```ini
 [file: src_init]
@@ -92,15 +97,17 @@ file = ./src/__main__.py
 
 ## :triangular_ruler: Config
 
-| Section          | Key             | Value                                           |
-| -----------------| ----------------|-------------------------------------------------|
-| version          | current         | This is the value that ican stores the current version number in. |
-| options          | log-file        |All operations are logged to disk in this file.  To turn logging off, do not define the log-file. |
-| file: [LABEL]    | file            | The filename of a file ican will update with new versions.  You can use a standard unix glob (*.py) if desired. |
-| file: [LABEL]    | style           | The version style to use.  Choices are [semantic, public, pep440, git] |
-| file: [LABEL]    | variable        | The variable name pointing to the version string that ican will update when versions are bumped. |
-| file: [LABEL]    | regex           | User-supplied python formattted regex string defining how to replace the file's version. |
-| pipeline: [LABEL]| stepN (step1...)| Pipeline step.  These represent a command run in the shell. |
+| Section           | Key             | Value                                           |
+| ----------------- | ----------------|-------------------------------------------------|
+| version           | current         | This is the value that ican stores the current version number in. |
+| options           | log_file        | All operations are logged to disk in this file.  To turn logging off, do not define the log_file. |
+| aliases           | ALIAS           | True command it replaces - such as bump, show, or init.  Args can be included as well, such as `bump patch` |
+| file: [LABEL]     | file            | The filename of a file ican will update with new versions.  You can use a standard unix glob (*.py) if desired. |
+| file: [LABEL]     | style           | The version style to use.  Choices are [semantic, public, pep440, git] |
+| file: [LABEL]     | variable        | The variable name pointing to the version string that ican will update when versions are bumped. |
+| file: [LABEL]     | regex           | User-supplied python formattted regex string defining how to replace the file's version. |
+| pipeline: release | STEP            | Pipeline cli step.  If the label is `release` the pipeline runs on major, minor, and patch bumps |
+| pipeline: build   | STEP            | Pipeline cli step.  If the label is `build` they will run only on build and prerelease bumps    |
 
 
 ### User-supplied regex
@@ -143,7 +150,6 @@ The output and parsing of `ican` can be controlled with the following options.
 | `--verbose`            | To aid in your debugging, verbose prints all messages.       |
 | `--dry-run`            | Useful if used WITH --verbose, will not modify any files.    |
 | `--version`            | This will displpay the current version of ican.              |
-| `--canonical`          | Test if the pep440 version conforms to pypi's specs          |
 
 ## :eyes: Examples
 

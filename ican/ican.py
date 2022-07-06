@@ -10,7 +10,7 @@ from .log import logger
 from .log import ok_to_write
 from .emojis import rnd_good_emoji
 from .exceptions import GitDescribeError
-from .exceptions import ConfigNotReady
+from .exceptions import NoConfigFound
 
 #######################################
 #
@@ -36,8 +36,8 @@ class Ican(object):
         elif not self.config.parsed:
             self.config.parse()
         # Here if still config not ready, it will never be ready
-        if not self.config.ready:
-            raise ConfigNotReady()
+        if not self.config.config_file:
+            raise NoConfigFound()
 
         # Git init - Do this early incase we need git.root
         self.git = Git()

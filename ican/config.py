@@ -13,7 +13,6 @@ from .pipeline import PipeLine
 from .log import logger
 from .log import ok_to_write
 from .log import setup_file_handler
-from .exceptions import NoConfigFound
 from .exceptions import DuplicateConfigSections
 from .exceptions import ConfigWriteError
 from .exceptions import InvalidConfig
@@ -43,7 +42,7 @@ class Config(object):
         file1=default_file
     )
 
-    def __init__(self, init=None):
+    def __init__(self, init=False):
         self.config_file = None
         self.ran_from = Path.cwd()
         self.parser = ConfigParser()
@@ -65,12 +64,6 @@ class Config(object):
         if self.config_file:
             return self.config_file.parent
         return None
-
-    @property
-    def ready(self):
-        if self.parsed and self.pre_parsed and self.config_file:
-            return True
-        return False
 
     def ch_dir_root(self):
         """chdir to the config root, so if we run from another dir, relative
@@ -111,7 +104,7 @@ class Config(object):
         self.save()
         return self
 
-    def search_for_config(self, lazy=False):
+    def search_for_config(self):
         """Find our config file.  Can improve this.
         """
         logger.debug(f'searching for config file')
@@ -135,21 +128,20 @@ class Config(object):
 
                 self.config_file = c
                 logger.debug(f'config found @ {c}')
-                break
+                return True
         else:
-            if lazy:
-                return
-            raise NoConfigFound()
+            # Cannot find config file.  Ok, maybe the plan is init.
+            return None
         return
 
-    def pre_parse(self, lazy=False):
+    def pre_parse(self):
         """Get the minimum config needed.  Need log_file so we can log,
         and aliases for the command parser.  Do the rest after commands
         are parsed.
         """
 
         if not self.config_file:
-            self.search_for_config(lazy)
+            self.search_for_config()
 
         self.ch_dir_root()
         self.log_file = self.parser.get('options', 'log_file', fallback=None)

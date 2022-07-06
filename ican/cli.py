@@ -39,7 +39,7 @@ Some of our most popular commands:
         self._arg_pop()
         if '--version' not in sys.argv:
             self.config = Config()
-            self.config.pre_parse(lazy=True)
+            self.config.pre_parse()
             self._substitute_aliases()
 
         parser = argparse.ArgumentParser(

@@ -1318,3 +1318,42 @@
 07-05-2022 23:02:26 | DEBUG | version level = RELEASE
 07-05-2022 23:02:26 | DEBUG | version level = RELEASE
 07-05-2022 23:02:26 | DEBUG | running cmd - ['git', 'add', '.']
+07-05-2022 23:02:26 | DEBUG | rendered cmd: git commit -m "auto-commit for v0.1.14"
+07-05-2022 23:02:26 | DEBUG | running cmd - ['git', 'commit', '-m', 'auto-commit for v0.1.14']
+07-05-2022 23:02:26 | DEBUG | rendered cmd: git tag -a v0.1.14 -m "automated tag for release v0.1.14" --sign
+07-05-2022 23:02:26 | DEBUG | running cmd - ['git', 'tag', '-a', 'v0.1.14', '-m', 'automated tag for release v0.1.14', '--sign']
+07-05-2022 23:02:26 | DEBUG | rendered cmd: git push origin master v0.1.14
+07-05-2022 23:02:26 | DEBUG | running cmd - ['git', 'push', 'origin', 'master', 'v0.1.14']
+07-05-2022 23:02:27 | DEBUG | persisting version - 0.1.14+build.152
+07-05-2022 23:02:27 | DEBUG | wrote config file
+07-05-2022 23:02:27 | DEBUG | bump() COMPLETE
+07-05-2022 23:02:27 | WARNING | Version: 0.1.14+build.152
+07-05-2022 23:32:41 | ERROR | Unrecognized command
+07-05-2022 23:32:51 | DEBUG | parsing version file VERSION[./ican/__init__.py]
+07-05-2022 23:32:51 | DEBUG | regex generated for __version__
+07-05-2022 23:32:51 | DEBUG | parsing version file PUBLIC[./ican/__init__.py]
+07-05-2022 23:32:51 | DEBUG | regex generated for __public_version__
+07-05-2022 23:32:51 | DEBUG | parsing RELEASE pipeline
+07-05-2022 23:32:51 | DEBUG | RELEASE.step1 - git add .
+07-05-2022 23:32:51 | DEBUG | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-05-2022 23:32:51 | DEBUG | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-05-2022 23:32:51 | DEBUG | RELEASE.step4 - git push origin master {{tag}}
+07-05-2022 23:32:51 | DEBUG | parsing BUILD pipeline
+07-05-2022 23:32:51 | DEBUG | BUILD.step1 - touch /tmp/test.txt
+07-05-2022 23:32:51 | DEBUG | BUILD.step2 - echo {{tag}}
+07-05-2022 23:32:51 | DEBUG | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-05-2022 23:32:51 | DEBUG | discovered 0.1.14+build.152 @ CONFIG.version
+07-05-2022 23:32:51 | DEBUG | discovered 0.1.14-dev.DIRTY+cbf77ec.152 @ GIT.version
+07-05-2022 23:32:51 | DEBUG | beginning bump of <PATCH>
+07-05-2022 23:32:51 | DEBUG | new value of <PATCH> - 15
+07-05-2022 23:32:51 | DEBUG | VERSION[./ican/__init__.py] - updating to 0.1.15+build.153
+07-05-2022 23:32:51 | DEBUG | VERSION[./ican/__init__.py] - found 1 matches
+07-05-2022 23:32:51 | DEBUG | VERSION[./ican/__init__.py] - update COMPLETE
+07-05-2022 23:32:51 | DEBUG | PUBLIC[./ican/__init__.py] - updating to 0.1.15
+07-05-2022 23:32:51 | DEBUG | PUBLIC[./ican/__init__.py] - found 1 matches
+07-05-2022 23:32:51 | DEBUG | PUBLIC[./ican/__init__.py] - update COMPLETE
+07-05-2022 23:32:51 | DEBUG | version level = RELEASE
+07-05-2022 23:32:51 | DEBUG | running pipeline.RELEASE
+07-05-2022 23:32:51 | DEBUG | version level = RELEASE
+07-05-2022 23:32:51 | DEBUG | version level = RELEASE
+07-05-2022 23:32:51 | DEBUG | running cmd - ['git', 'add', '.']
