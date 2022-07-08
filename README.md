@@ -136,9 +136,10 @@ ican [command] [arguments] [options]
 
 | Command      | Arguments             | Description   |
 | -------------| --------------------  | ------------- |
-| bump       | **PART** `required`     |The **PART** is the segment of the semantic version to increment.  <br />Choices are [*major*, *minor*, *patch*, *prerelease*] |
-| show       | **STYLE** `required`    | The **STYLE** is the version format to show. <br />Choices are [*semantic*, *public*, *pep440*, *git*] |
-| init       | none.                   | This command would initialize your project with default config in the current directory.                                |
+| bump       | **PART** `required`     | Increments the **PART** of the semantic version.  <br />Choices are [*major*, *minor*, *patch*, *prerelease*] |
+| show       | **STYLE** `required`    | Shows the current version with the format **STYLE**. <br />Choices are [*semantic*, *public*, *pep440*, *git*] |
+| rollback   | none                    | Rollback to the previously persisted version.  
+| init       | none                    | Initialize your project with default config in the current directory.                            |
 
 
 ## :roll_eyes: Options
