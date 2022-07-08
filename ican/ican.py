@@ -71,8 +71,7 @@ class Ican(object):
         return v
 
     def bump(self, part):
-        """
-        This is pretty much the full process
+        """This is pretty much the full process
         """
 
         logger.debug(f'beginning bump of <{part.upper()}>')
@@ -96,9 +95,10 @@ class Ican(object):
         return self
 
     def rollback(self):
+        """When all else fails, this should bring the version back
+        to your prior saved version.  It will also update all source
+        files you have configured.
         """
-        """
-
         if not self.config.previous_version:
             raise RollbackNotPossible()
 
@@ -111,7 +111,7 @@ class Ican(object):
             file.update(self.version)
 
         # Now that everything else is finished, persist version
-        self.config.rollback()
+        self.config.persist_version(self.config.previous_version)
 
     def run_pipeline(self, part):
         # Pipeline

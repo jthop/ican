@@ -1413,3 +1413,73 @@
 07-08-2022 02:05:36 | DEBUG | version level = RELEASE
 07-08-2022 02:05:36 | DEBUG | version level = RELEASE
 07-08-2022 02:05:36 | DEBUG | running cmd - ['git', 'add', '.']
+07-08-2022 02:05:36 | DEBUG | rendered cmd: git commit -m "auto-commit for v0.1.16"
+07-08-2022 02:05:36 | DEBUG | running cmd - ['git', 'commit', '-m', 'auto-commit for v0.1.16']
+07-08-2022 02:05:36 | DEBUG | rendered cmd: git tag -a v0.1.16 -m "automated tag for release v0.1.16" --sign
+07-08-2022 02:05:36 | DEBUG | running cmd - ['git', 'tag', '-a', 'v0.1.16', '-m', 'automated tag for release v0.1.16', '--sign']
+07-08-2022 02:05:36 | DEBUG | rendered cmd: git push origin master v0.1.16
+07-08-2022 02:05:36 | DEBUG | running cmd - ['git', 'push', 'origin', 'master', 'v0.1.16']
+07-08-2022 02:05:37 | DEBUG | persisting version - 0.1.16+build.154
+07-08-2022 02:05:37 | DEBUG | wrote config file
+07-08-2022 02:05:37 | DEBUG | bump() COMPLETE
+07-08-2022 02:05:37 | WARNING | Version: 0.1.16+build.154
+07-08-2022 09:17:20 | DEBUG | parsing file config VERSION[./ican/__init__.py]
+07-08-2022 09:17:20 | DEBUG | regex generated for __version__
+07-08-2022 09:17:20 | DEBUG | parsing file config PUBLIC[./ican/__init__.py]
+07-08-2022 09:17:20 | DEBUG | regex generated for __public_version__
+07-08-2022 09:17:20 | DEBUG | parsing RELEASE pipeline
+07-08-2022 09:17:20 | DEBUG | RELEASE.step1 - git add .
+07-08-2022 09:17:20 | DEBUG | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-08-2022 09:17:20 | DEBUG | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-08-2022 09:17:20 | DEBUG | RELEASE.step4 - git push origin master {{tag}}
+07-08-2022 09:17:20 | DEBUG | parsing BUILD pipeline
+07-08-2022 09:17:20 | DEBUG | BUILD.step1 - touch /tmp/test.txt
+07-08-2022 09:17:20 | DEBUG | BUILD.step2 - echo {{tag}}
+07-08-2022 09:17:20 | DEBUG | discovered 0.1.16+build.154 @ CONFIG.version
+07-08-2022 09:17:20 | DEBUG | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-08-2022 09:17:20 | DEBUG | discovered 0.1.16-dev.DIRTY+ab856ab.154 @ GIT.version
+07-08-2022 09:17:20 | DEBUG | beginning bump of <BUILD>
+07-08-2022 09:17:20 | DEBUG | new value of <BUILD> - build.155
+07-08-2022 09:17:20 | DEBUG | VERSION[./ican/__init__.py] - updating to 0.1.16+build.155
+07-08-2022 09:17:20 | DEBUG | VERSION[./ican/__init__.py] - found 1 matches
+07-08-2022 09:17:20 | DEBUG | VERSION[./ican/__init__.py] - update COMPLETE
+07-08-2022 09:17:20 | DEBUG | PUBLIC[./ican/__init__.py] - updating to 0.1.16
+07-08-2022 09:17:20 | DEBUG | PUBLIC[./ican/__init__.py] - found 1 matches
+07-08-2022 09:17:20 | DEBUG | PUBLIC[./ican/__init__.py] - update COMPLETE
+07-08-2022 09:17:20 | DEBUG | running pipeline.BUILD
+07-08-2022 09:17:20 | DEBUG | running cmd - ['touch', '/tmp/test.txt']
+07-08-2022 09:17:20 | DEBUG | rendered cmd: echo v0.1.16
+07-08-2022 09:17:20 | DEBUG | running cmd - ['echo', 'v0.1.16']
+07-08-2022 09:17:20 | DEBUG | persisting version - 0.1.16+build.155
+07-08-2022 09:17:20 | DEBUG | wrote config file
+07-08-2022 09:17:20 | DEBUG | bump() COMPLETE
+07-08-2022 09:17:20 | WARNING | Version: 0.1.16+build.155
+07-08-2022 09:40:28 | ERROR | Unrecognized command
+07-08-2022 09:41:02 | DEBUG | parsing file config VERSION[./ican/__init__.py]
+07-08-2022 09:41:02 | DEBUG | regex generated for __version__
+07-08-2022 09:41:02 | DEBUG | parsing file config PUBLIC[./ican/__init__.py]
+07-08-2022 09:41:02 | DEBUG | regex generated for __public_version__
+07-08-2022 09:41:02 | DEBUG | parsing RELEASE pipeline
+07-08-2022 09:41:02 | DEBUG | RELEASE.step1 - git add .
+07-08-2022 09:41:02 | DEBUG | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-08-2022 09:41:02 | DEBUG | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-08-2022 09:41:02 | DEBUG | RELEASE.step4 - git push origin master {{tag}}
+07-08-2022 09:41:02 | DEBUG | parsing BUILD pipeline
+07-08-2022 09:41:02 | DEBUG | BUILD.step1 - touch /tmp/test.txt
+07-08-2022 09:41:02 | DEBUG | BUILD.step2 - echo {{tag}}
+07-08-2022 09:41:02 | DEBUG | discovered 0.1.16+build.155 @ CONFIG.version
+07-08-2022 09:41:02 | DEBUG | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-08-2022 09:41:02 | DEBUG | discovered 0.1.16-dev.DIRTY+ab856ab.155 @ GIT.version
+07-08-2022 09:41:02 | DEBUG | beginning bump of <PATCH>
+07-08-2022 09:41:02 | DEBUG | new value of <PATCH> - 17
+07-08-2022 09:41:02 | DEBUG | VERSION[./ican/__init__.py] - updating to 0.1.17+build.156
+07-08-2022 09:41:02 | DEBUG | VERSION[./ican/__init__.py] - found 1 matches
+07-08-2022 09:41:02 | DEBUG | VERSION[./ican/__init__.py] - update COMPLETE
+07-08-2022 09:41:02 | DEBUG | PUBLIC[./ican/__init__.py] - updating to 0.1.17
+07-08-2022 09:41:02 | DEBUG | PUBLIC[./ican/__init__.py] - found 1 matches
+07-08-2022 09:41:02 | DEBUG | PUBLIC[./ican/__init__.py] - update COMPLETE
+07-08-2022 09:41:02 | DEBUG | version level = RELEASE
+07-08-2022 09:41:02 | DEBUG | running pipeline.RELEASE
+07-08-2022 09:41:02 | DEBUG | version level = RELEASE
+07-08-2022 09:41:02 | DEBUG | version level = RELEASE
+07-08-2022 09:41:02 | DEBUG | running cmd - ['git', 'add', '.']

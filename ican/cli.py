@@ -23,14 +23,12 @@ from .exceptions import IcanException
 
 
 class CLI(object):
-    usage="""ican <command> [<args>]
+    usage="""ican <COMMAND> [<ARGS>]
 
-Some of our most popular commands:
-  bump [PART]      increment the PART of the version
-                   [minor, major, patch, prerelease, build]
-  show [STYLE]     display current version with STYLE
-                   [semantic, public, pep440, git]
-  rollback         restore the previously persisted version
+commands:
+  bump [PART]      increment version [minor, major, patch, prerelease, build]
+  show [STYLE]     show version [semantic, public, pep440, git]
+  rollback         restore the previous version
   init             initialize a config in the current directory
 """
 
@@ -42,18 +40,17 @@ Some of our most popular commands:
             self.config.pre_parse()
             self._substitute_aliases()
 
-        parser = argparse.ArgumentParser(
-            description='ican - version bumper and lightweight build pipelines',
-            usage=CLI.usage,
-            prog='ican'
-        )
-        parser.add_argument('command', help='command-specific-arguments')    # need
+        parser = argparse.ArgumentParser(usage=CLI.usage,prog='ican')
+        parser.add_argument('--dry_run',help='do not write any files', action='store_true')
+        parser.add_argument('--verbose',help='display debug information', action='store_true')
+        parser.add_argument('command', help=argparse.SUPPRESS)
         parser.add_argument(
             '--version', 
             action='version',
             help='display ican version',
             version=f'ican v{__version__}'
         )
+
 
         # now parse our updated args
         args = parser.parse_args(sys.argv[1:2])
@@ -75,14 +72,16 @@ Some of our most popular commands:
 
         verbose = False
         dry_run = False
-
         for i in range(1, len(sys.argv)):
             if sys.argv[i] == '--verbose':
                 verbose = True
                 sys.argv.pop(i)
-            elif sys.argv[i] == '--dry_run':
+                break
+        for i in range(1, len(sys.argv)):
+            if sys.argv[i] == '--dry_run':
                 dry_run = True
                 sys.argv.pop(i)
+                break
         setup_console_handler(verbose, dry_run)
         return
 
@@ -134,14 +133,18 @@ Some of our most popular commands:
         """
 
         parser = argparse.ArgumentParser(
-            description='increment the [PART] of the version')
+            description='PART choices [major, minor, patch, prerelease, build]',
+            usage='ican bump [PART]')
         parser.add_argument(
             "part", 
             nargs='?',
             default='build',
             choices=['major', 'minor', 'patch', 'prerelease', 'build'],
-            help="what to bump"
+            help=argparse.SUPPRESS
         )
+        # add --dry_run and --verbose only to be included in --help
+        parser.add_argument('--dry_run',help='do not write any files', action='store_true')
+        parser.add_argument('--verbose',help='display debug information', action='store_true')
         args = parser.parse_args(sys.argv[2:])
 
         i = Ican(config=self.config)
@@ -156,14 +159,17 @@ Some of our most popular commands:
         """
 
         parser = argparse.ArgumentParser(
-            description='show the [STYLE] of current version')
+            description='STYLE choices [semantic, public, pep440, git]',
+            usage='ican show [STYLE]')
         parser.add_argument(
             "style", 
             nargs='?',
             default='semantic',
             choices=['semantic', 'public', 'pep440', 'git'],
-            help="version style to show"
+            help=argparse.SUPPRESS
         )
+        # add --verbose only to be included in --help
+        parser.add_argument('--verbose',help='display debug information', action='store_true')
         args = parser.parse_args(sys.argv[2:])
 
         i = Ican(config=self.config)
@@ -178,8 +184,10 @@ Some of our most popular commands:
         persisted version.
         """
 
-        parser = argparse.ArgumentParser(
-            description='restore the previously persisted version')
+        parser = argparse.ArgumentParser(usage='ican rollback')
+        # add --dry_run and --verbose only to be included in --help
+        parser.add_argument('--dry_run',help='do not write any files', action='store_true')
+        parser.add_argument('--verbose',help='display debug information', action='store_true')
         args = parser.parse_args(sys.argv[2:])
 
         i = Ican(config=self.config)
@@ -191,8 +199,10 @@ Some of our most popular commands:
         """dispatched here with command init
         """
 
-        parser = argparse.ArgumentParser(
-            description='initialize your project in the current directory')
+        parser = argparse.ArgumentParser(usage='ican init')
+        # add --dry_run and --verbose only to be included in --help
+        parser.add_argument('--dry_run',help='do not write any files', action='store_true')
+        parser.add_argument('--verbose',help='display debug information', action='store_true')
         args = parser.parse_args(sys.argv[2:])
 
         c = Config(init=True).parse()
@@ -205,12 +215,11 @@ Some of our most popular commands:
         """dispatched here with command test
         """
 
-        parser = argparse.ArgumentParser(description='test')
-        parser.add_argument(
-            "first",
-            nargs='?',
-            help="first test arg"
-        )
+        parser = argparse.ArgumentParser(usage='ican test [ARGS]')
+        # add --dry-run and --verbose only to be included in --help
+        parser.add_argument('--dry-run',help='do not write any files', action='store_true')
+        parser.add_argument('--verbose',help='display debug information', action='store_true')
+        parser.add_argument("first", nargs='?', help=argparse.SUPPRESS)
         args = parser.parse_args(sys.argv[2:])
         print(f'10-4 with arg {args.first}')
 

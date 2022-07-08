@@ -106,11 +106,6 @@ class Config(object):
         self.version = new_version
         return
 
-    def rollback(self):
-        if self.previous_version:
-            self.persist_version(self.previous_version)
-        return
-
     def init(self):
         """Set default config and save
         """
