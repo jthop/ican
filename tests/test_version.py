@@ -60,7 +60,14 @@ class TestVersion(unittest.TestCase):
         ver.bump('build')
         self.assertFalse(ver.new_release)
 
+    def test_bumped_false(self):
+        ver = Version(1,2,3,'beta.1','build.99')
+        self.assertFalse(ver.bumped)
 
+    def test_bumped_true(self):
+        ver = Version(1,2,3,'beta.1','build.99')
+        ver.bump('build')
+        self.assertTrue(ver.bumped)
 
 if __name__ == '__main__':
     unittest.main()

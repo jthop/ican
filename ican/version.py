@@ -128,22 +128,6 @@ class Version(object):
         raise AttributeError("prerelease is readonly")
 
     @property
-    def prerelease_int(self):
-        """
-        Parse an int from prerelease... 
-        """
-
-        if not self.prerelease:
-            return None
-        match = Version.last_number_re.search(self.prerelease)
-        if match:
-            return int(match.group(1))
-
-    @prerelease_int.setter
-    def prerelease_int(self, value):
-        raise AttributeError("prerelease_int is readonly")
-
-    @property
     def build(self):
         return self._build
 
@@ -164,10 +148,17 @@ class Version(object):
         if match:
             return int(match.group(1))
 
-    @build_int.setter
-    def build_int(self, value):
-        raise AttributeError("build_int is readonly")
+    @property
+    def prerelease_int(self):
+        """
+        Parse an int from prerelease...
+        """
 
+        if not self.prerelease:
+            return None
+        match = Version.last_number_re.search(self.prerelease)
+        if match:
+            return int(match.group(1))
 
 ##########################################
 #
@@ -175,7 +166,6 @@ class Version(object):
 #    semantic, public, pep440, git
 #
 ##########################################
-
 
     @property
     def semantic(self):
@@ -189,10 +179,6 @@ class Version(object):
         if self._build:
             v = f'{v}+{self._build}'
         return v
-
-    @semantic.setter
-    def semantic(self, value):
-        raise AttributeError("semantic is readonly")
 
     @property
     def pep440(self):
@@ -223,10 +209,6 @@ class Version(object):
 
         v = f'{base}{prerelease}{build}'
         return v
-
-    @pep440.setter
-    def pep440(self, value):
-        raise AttributeError("pep440 is readonly")
     
     @property
     def public(self):
@@ -237,10 +219,6 @@ class Version(object):
         """
 
         return f'{self._major}.{self._minor}.{self._patch}'
-
-    @public.setter
-    def public(self, value):
-        raise AttributeError("public is readonly")
 
     @property
     def git(self):
@@ -279,10 +257,6 @@ class Version(object):
         v = f'{tag}{pre}+{build}'
         return v
 
-    @git.setter
-    def git(self, value):
-        raise AttributeError("git is readonly")
-
 
 ##########################################
 #
@@ -292,21 +266,26 @@ class Version(object):
 
 
     @property
-    def original(self):
+    def bumped(self):
+        """Use this property to determine if a version instance
+        has already been bumped or not.  Initially on creation a
+        version.bumped will be False.  Aftter a .bump() it will
+        return True.
         """
-        Use the data stored in _frozen to return a Version instance
+        if self._frozen.part:
+            return True
+        return False
+
+    @property
+    def original(self):
+        """Use the data stored in _frozen to return a Version instance
         of the original data, in case a bump has been made and some
         type of comparison is desired.
 
         _frozen.part: the part of the original version that was
         bumped.  Will be None until a bump occurs.
         """
-        
         return Version.parse(self._frozen.semantic)
-
-    @original.setter
-    def original(self, value):
-        raise AttributeError("original is readonly")
 
     @property
     def new_release(self):
@@ -319,17 +298,9 @@ class Version(object):
             return True
         return False
 
-    @new_release.setter
-    def new_release(self, value):
-        raise AttributeError("new_release is readonly")
-
     @property
     def tag(self):
         return f'v{self.public}'
-
-    @tag.setter
-    def tag(self, value):
-        raise AttributeError("tag is readonly")
 
 
 ##########################################

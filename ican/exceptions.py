@@ -15,7 +15,8 @@ class ExitCode():
     DUPLICATE_CONFIG_SECTIONS = 3
     CONFIG_WRITE_ERROR = 4
     NO_CURRENT_VERSION = 5
-    
+    ROLLBACK_NOT_POSSIBLE = 7
+
     GIT_UNUSABLE = 10
     GIT_ROOT_ERROR = 11
     GIT_DESCRIBE_ERROR = 12
@@ -91,6 +92,10 @@ class NoCurrentVersion(IcanException):
         "Check if current version is specified in config file, like:\n"
         "version = 0.4.3\n"
     )
+
+class RollbackNotPossible(IcanException):
+    exit_code = ExitCode.ROLLBACK_NOT_POSSIBLE
+    msg = 'Rollback is not possible because no previous version exists.'
 
 ########################
 

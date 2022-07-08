@@ -1,4 +1,12 @@
 # -*- coding: utf-8 -*-
+"""
+
+   ___ ___  _  _ ___ ___ ___
+  / __/ _ \| \| | __|_ _/ __|
+ | (_| (_) | .` | _| | | (_ |
+  \___\___/|_|\_|_| |___\___|.py
+
+"""
 
 import os
 from pathlib import Path
@@ -47,7 +55,8 @@ class Config(object):
         self.ran_from = Path.cwd()
         self.parser = ConfigParser()
 
-        self.current_version = None
+        self.version = None
+        self.previous_version = None
         self.log_file = None
         self.source_files = []
         self.pipelines = {}
@@ -85,15 +94,21 @@ class Config(object):
                 raise ConfigWriteError(e)
         return
 
-    def persist_version(self, version_str):
+    def persist_version(self, new_version):
+        """Update the version in the config file then write it so we
+        know the new version next time.  Save previous in case
+        we need it to rollback.
         """
-        Update the version in the config file then write it so we know the
-        new version next time
-        """
-        logger.debug(f'persisting version - {version_str}')
-
-        self.parser.set('version', 'current', version_str)
+        logger.debug(f'persisting version - {new_version}')
+        self.parser.set('version', 'previous', self.version)
+        self.parser.set('version', 'current', new_version)
         self.save()
+        self.version = new_version
+        return
+
+    def rollback(self):
+        if self.previous_version:
+            self.persist_version(self.previous_version)
         return
 
     def init(self):
@@ -104,35 +119,25 @@ class Config(object):
         self.save()
         return self
 
-    def search_for_config(self):
-        """Find our config file.  Can improve this.
+    def locate_config_file(self):
+        """Find our config file.
         """
         logger.debug(f'searching for config file')
         f = Config.CONFIG_FILE
-        dirs = [
-            self.ran_from,
-            self.ran_from.parent,
-            self.ran_from.parent.parent
-        ]
-        for d in dirs:
-            if d is None:
-                continue
-            c = Path(d, f)
-            if c.exists():
-                try:
-                    self.parser.read(c)
-                except DuplicateSectionError:
-                    raise DuplicateConfigSections()
-                except ParsingError:
-                    raise InvalidConfig()
-
-                self.config_file = c
-                logger.debug(f'config found @ {c}')
+        dir = Path.cwd()
+        root = Path(dir.root)
+        while True:
+            cfg = Path(dir, f)
+            if cfg.exists():
+                self.config_file = cfg
+                logger.debug(f'config found @ {cfg}')
                 return True
-        else:
-            # Cannot find config file.  Ok, maybe the plan is init.
-            return None
-        return
+            dir = dir.parent
+            if dir == root:
+                # quit right before we'd be writing in the root
+                logger.debug(f'cannot find config file!')
+                break
+        return None
 
     def pre_parse(self):
         """Get the minimum config needed.  Need log_file so we can log,
@@ -141,7 +146,18 @@ class Config(object):
         """
 
         if not self.config_file:
-            self.search_for_config()
+            if not self.locate_config_file():
+                """
+                No config found.  Silently continue to give the user a
+                chance to init and pass that config in soon.
+                """
+                return self
+            try:
+                self.parser.read(self.config_file)
+            except DuplicateSectionError:
+                raise DuplicateConfigSections()
+            except ParsingError:
+                raise InvalidConfig()
 
         self.ch_dir_root()
         self.log_file = self.parser.get('options', 'log_file', fallback=None)
@@ -159,9 +175,9 @@ class Config(object):
         if not self.pre_parsed:
             self.pre_parse()
 
-        self.current_version = self.parser.get(
-            'version', 'current', fallback='0.1.0'
-        )
+        self.version = self.parser.get('version', 'current', fallback='0.1.0')
+        self.previous_version = self.parser.get('version', 'previous', fallback=None)
+
         self.parse_source_files()
         self.parse_pipelines()
         self.parsed = True
@@ -198,8 +214,8 @@ class Config(object):
 
             label = s.split(':')[1].strip().lower()
             file = self.parser.get(s, 'file', fallback=None)
-            variable = self.parser.get(s, 'variable', fallback=None)
             style = self.parser.get(s, 'style', fallback='semantic')
+            variable = self.parser.get(s, 'variable', fallback=None)
             regex = self.parser.get(s, 'regex', fallback=None)
 
             # Instead of raising exp, we can just look for more files
@@ -210,11 +226,10 @@ class Config(object):
                 logger.debug(f'skipping source - missing variable/regex')
                 continue
 
-            logger.debug(f'parsing version file {label.upper()}[{file}]')
-
+            logger.debug(f'parsing file config {label.upper()}[{file}]')
             # Case with *.py for all python files
             if '*' in file:
-                files = self.search_for_files(file)
+                files = self._find_wildcard_filename(file)
             else:
                 files = [file]
             for f in files:
@@ -227,18 +242,15 @@ class Config(object):
                 )
                 self.source_files.append(u)
 
-    def search_for_files(self, f):
-        """
-        First we look in current_dir + all subdirs
+    def _find_wildcard_filename(self, f):
+        """Search for all files if config has '*' in the
+        filename field.  Search root dir + all subdirs.
         """
 
-        logger.debug(f'* CONFIG: searching for - {f}')
-
-        root = self.path
-        #self.debug(f'Searching for {f} in dir {root}')
-        matches = [x for x in Path(root).rglob(f)]
-        if len(matches) > 0:
-            logger.debug(f'found: {len(matches)} files')
+        logger.debug(f'file section * in filename - {f}')
+        matches = [x for x in Path(self.path).rglob(f)]
+        if matches:
+            logger.debug(f'wildcard found: {len(matches)} files')
             return matches
         return None
 

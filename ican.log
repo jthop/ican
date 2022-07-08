@@ -1357,3 +1357,59 @@
 07-05-2022 23:32:51 | DEBUG | version level = RELEASE
 07-05-2022 23:32:51 | DEBUG | version level = RELEASE
 07-05-2022 23:32:51 | DEBUG | running cmd - ['git', 'add', '.']
+07-05-2022 23:32:51 | DEBUG | rendered cmd: git commit -m "auto-commit for v0.1.15"
+07-05-2022 23:32:51 | DEBUG | running cmd - ['git', 'commit', '-m', 'auto-commit for v0.1.15']
+07-05-2022 23:32:51 | DEBUG | rendered cmd: git tag -a v0.1.15 -m "automated tag for release v0.1.15" --sign
+07-05-2022 23:32:51 | DEBUG | running cmd - ['git', 'tag', '-a', 'v0.1.15', '-m', 'automated tag for release v0.1.15', '--sign']
+07-05-2022 23:32:51 | DEBUG | rendered cmd: git push origin master v0.1.15
+07-05-2022 23:32:51 | DEBUG | running cmd - ['git', 'push', 'origin', 'master', 'v0.1.15']
+07-05-2022 23:32:52 | DEBUG | persisting version - 0.1.15+build.153
+07-05-2022 23:32:52 | DEBUG | wrote config file
+07-05-2022 23:32:52 | DEBUG | bump() COMPLETE
+07-05-2022 23:32:52 | WARNING | Version: 0.1.15+build.153
+07-08-2022 01:39:21 | DEBUG | parsing file config VERSION[./ican/__init__.py]
+07-08-2022 01:39:21 | DEBUG | regex generated for __version__
+07-08-2022 01:39:21 | DEBUG | parsing file config PUBLIC[./ican/__init__.py]
+07-08-2022 01:39:21 | DEBUG | regex generated for __public_version__
+07-08-2022 01:39:21 | DEBUG | parsing RELEASE pipeline
+07-08-2022 01:39:21 | DEBUG | RELEASE.step1 - git add .
+07-08-2022 01:39:21 | DEBUG | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-08-2022 01:39:21 | DEBUG | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-08-2022 01:39:21 | DEBUG | RELEASE.step4 - git push origin master {{tag}}
+07-08-2022 01:39:21 | DEBUG | parsing BUILD pipeline
+07-08-2022 01:39:21 | DEBUG | BUILD.step1 - touch /tmp/test.txt
+07-08-2022 01:39:21 | DEBUG | BUILD.step2 - echo {{tag}}
+07-08-2022 01:39:21 | DEBUG | discovered 0.1.15+build.153 @ CONFIG.version
+07-08-2022 01:39:21 | DEBUG | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-08-2022 01:39:21 | DEBUG | discovered 0.1.15-dev.DIRTY+151e0cc.153 @ GIT.version
+07-08-2022 01:39:21 | DEBUG | show() COMPLETE
+07-08-2022 01:39:21 | WARNING | 0.1.15+build.153
+07-08-2022 02:05:29 | ERROR | Unrecognized command
+07-08-2022 02:05:36 | DEBUG | parsing file config VERSION[./ican/__init__.py]
+07-08-2022 02:05:36 | DEBUG | regex generated for __version__
+07-08-2022 02:05:36 | DEBUG | parsing file config PUBLIC[./ican/__init__.py]
+07-08-2022 02:05:36 | DEBUG | regex generated for __public_version__
+07-08-2022 02:05:36 | DEBUG | parsing RELEASE pipeline
+07-08-2022 02:05:36 | DEBUG | RELEASE.step1 - git add .
+07-08-2022 02:05:36 | DEBUG | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-08-2022 02:05:36 | DEBUG | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-08-2022 02:05:36 | DEBUG | RELEASE.step4 - git push origin master {{tag}}
+07-08-2022 02:05:36 | DEBUG | parsing BUILD pipeline
+07-08-2022 02:05:36 | DEBUG | BUILD.step1 - touch /tmp/test.txt
+07-08-2022 02:05:36 | DEBUG | BUILD.step2 - echo {{tag}}
+07-08-2022 02:05:36 | DEBUG | discovered 0.1.15+build.153 @ CONFIG.version
+07-08-2022 02:05:36 | DEBUG | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-08-2022 02:05:36 | DEBUG | discovered 0.1.15-dev.DIRTY+151e0cc.153 @ GIT.version
+07-08-2022 02:05:36 | DEBUG | beginning bump of <PATCH>
+07-08-2022 02:05:36 | DEBUG | new value of <PATCH> - 16
+07-08-2022 02:05:36 | DEBUG | VERSION[./ican/__init__.py] - updating to 0.1.16+build.154
+07-08-2022 02:05:36 | DEBUG | VERSION[./ican/__init__.py] - found 1 matches
+07-08-2022 02:05:36 | DEBUG | VERSION[./ican/__init__.py] - update COMPLETE
+07-08-2022 02:05:36 | DEBUG | PUBLIC[./ican/__init__.py] - updating to 0.1.16
+07-08-2022 02:05:36 | DEBUG | PUBLIC[./ican/__init__.py] - found 1 matches
+07-08-2022 02:05:36 | DEBUG | PUBLIC[./ican/__init__.py] - update COMPLETE
+07-08-2022 02:05:36 | DEBUG | version level = RELEASE
+07-08-2022 02:05:36 | DEBUG | running pipeline.RELEASE
+07-08-2022 02:05:36 | DEBUG | version level = RELEASE
+07-08-2022 02:05:36 | DEBUG | version level = RELEASE
+07-08-2022 02:05:36 | DEBUG | running cmd - ['git', 'add', '.']

@@ -8,9 +8,9 @@ from .version import Version
 from .git import Git
 from .log import logger
 from .log import ok_to_write
-from .emojis import rnd_good_emoji
 from .exceptions import GitDescribeError
 from .exceptions import NoConfigFound
+from .exceptions import RollbackNotPossible
 
 #######################################
 #
@@ -25,6 +25,9 @@ class Ican(object):
     """
 
     def __init__(self, config=None):
+        """Typically ican will be instantiated by cli with a half parsed
+        config.  We pre-parse so logging can begin.
+        """
         self.version = None
         self.git = None
         self.config = config
@@ -39,12 +42,12 @@ class Ican(object):
         if not self.config.config_file:
             raise NoConfigFound()
 
-        # Git init - Do this early incase we need git.root
-        self.git = Git()
-
         # Now config is parsed.  We can parse from config
-        self.version = Version.parse(self.config.current_version)
+        self.version = Version.parse(self.config.version)
         logger.debug(f'discovered {self.version.semantic} @ CONFIG.version')
+
+        # Git init
+        self.git = Git()
 
         try:
             self.version._git_metadata = self.git.describe()
@@ -53,10 +56,8 @@ class Ican(object):
             logger.info('Git style versions will be disabled.')
             logger.info('Possibly this is a new repo with no tags.')
             self.git.disable()
-
         else:
             logger.debug(f'discovered {self.version.git} @ GIT.version')
-
         return
 
     def show(self, style):
@@ -93,6 +94,24 @@ class Ican(object):
         self.config.persist_version(self.version.semantic)
 
         return self
+
+    def rollback(self):
+        """
+        """
+
+        if not self.config.previous_version:
+            raise RollbackNotPossible()
+
+        # delete old, create new self.version
+        del self.version
+        self.version = Version.parse(self.config.previous_version)
+
+        # Update the source files
+        for file in self.config.source_files:
+            file.update(self.version)
+
+        # Now that everything else is finished, persist version
+        self.config.rollback()
 
     def run_pipeline(self, part):
         # Pipeline

@@ -26,12 +26,12 @@ class CLI(object):
     usage="""ican <command> [<args>]
 
 Some of our most popular commands:
-   bump [PART]      increment the PART of the version
-                    [minor, major, patch, prerelease, build]
-   show [STYLE]     display current version with STYLE
-                    [semantic, public, pep440, git]
-   init             initialize the current directory with a 
-                    config file
+  bump [PART]      increment the PART of the version
+                   [minor, major, patch, prerelease, build]
+  show [STYLE]     display current version with STYLE
+                   [semantic, public, pep440, git]
+  rollback         restore the previously persisted version
+  init             initialize a config in the current directory
 """
 
     def __init__(self):
@@ -172,6 +172,20 @@ Some of our most popular commands:
         logger.warning(v)
 
         return
+
+    def rollback(self):
+        """in case of emergency, restore the previously
+        persisted version.
+        """
+
+        parser = argparse.ArgumentParser(
+            description='restore the previously persisted version')
+        args = parser.parse_args(sys.argv[2:])
+
+        i = Ican(config=self.config)
+        i.rollback()
+        logger.debug('rollback() COMPLETE')
+        logger.warning(f'Rollback: {i.version.semantic}')
 
     def init(self):
         """dispatched here with command init
