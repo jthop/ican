@@ -1483,3 +1483,769 @@
 07-08-2022 09:41:02 | DEBUG | version level = RELEASE
 07-08-2022 09:41:02 | DEBUG | version level = RELEASE
 07-08-2022 09:41:02 | DEBUG | running cmd - ['git', 'add', '.']
+07-08-2022 09:41:02 | DEBUG | rendered cmd: git commit -m "auto-commit for v0.1.17"
+07-08-2022 09:41:02 | DEBUG | running cmd - ['git', 'commit', '-m', 'auto-commit for v0.1.17']
+07-08-2022 09:41:02 | DEBUG | rendered cmd: git tag -a v0.1.17 -m "automated tag for release v0.1.17" --sign
+07-08-2022 09:41:02 | DEBUG | running cmd - ['git', 'tag', '-a', 'v0.1.17', '-m', 'automated tag for release v0.1.17', '--sign']
+07-08-2022 09:41:03 | DEBUG | rendered cmd: git push origin master v0.1.17
+07-08-2022 09:41:03 | DEBUG | running cmd - ['git', 'push', 'origin', 'master', 'v0.1.17']
+07-08-2022 09:41:04 | DEBUG | persisting version - 0.1.17+build.156
+07-08-2022 09:41:04 | DEBUG | wrote config file
+07-08-2022 09:41:04 | DEBUG | bump() COMPLETE
+07-08-2022 09:41:04 | WARNING | Version: 0.1.17+build.156
+07-10-2022 08:40:12 | DEBUG | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 08:40:12 | DEBUG | regex generated for __version__
+07-10-2022 08:40:12 | DEBUG | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 08:40:12 | DEBUG | regex generated for __public_version__
+07-10-2022 08:40:12 | DEBUG | parsing RELEASE pipeline
+07-10-2022 08:40:12 | DEBUG | RELEASE.step1 - git add .
+07-10-2022 08:40:12 | DEBUG | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 08:40:12 | DEBUG | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 08:40:12 | DEBUG | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 08:40:12 | DEBUG | parsing BUILD pipeline
+07-10-2022 08:40:12 | DEBUG | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 08:40:12 | DEBUG | BUILD.step2 - echo {{tag}}
+07-10-2022 08:40:12 | DEBUG | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 08:40:12 | DEBUG | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 08:40:12 | DEBUG | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 08:40:12 | DEBUG | show() COMPLETE
+07-10-2022 08:40:12 | WARNING | 0.1.17+build.156
+07-10-2022 15:52:26 | VERBOSE | verbose
+07-10-2022 16:00:01 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:00:01 | VERBOSE | regex generated for __version__
+07-10-2022 16:00:01 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:00:01 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:00:01 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:00:01 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:00:01 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:00:01 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:00:01 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:00:01 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:00:01 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:00:01 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:00:01 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:00:01 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:00:01 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:00:01 | VERBOSE | show() COMPLETE
+07-10-2022 16:00:01 | INFO | 0.1.17+build.156
+07-10-2022 16:01:18 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:01:18 | VERBOSE | regex generated for __version__
+07-10-2022 16:01:18 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:01:18 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:01:18 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:01:18 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:01:18 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:01:18 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:01:18 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:01:18 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:01:18 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:01:18 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:01:18 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:01:18 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:01:18 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:01:38 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:01:38 | VERBOSE | regex generated for __version__
+07-10-2022 16:01:38 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:01:38 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:01:38 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:01:38 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:01:38 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:01:38 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:01:38 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:01:38 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:01:38 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:01:38 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:01:38 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:01:38 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:01:38 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:01:38 | INFO | current semantic version: 0.1.17+build.156
+07-10-2022 16:01:54 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:01:54 | VERBOSE | regex generated for __version__
+07-10-2022 16:01:54 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:01:54 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:01:54 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:01:54 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:01:54 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:01:54 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:01:54 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:01:54 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:01:54 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:01:54 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:01:54 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:01:54 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:01:54 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:01:54 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:03:10 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:03:10 | VERBOSE | regex generated for __version__
+07-10-2022 16:03:10 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:03:10 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:03:10 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:03:10 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:03:10 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:03:10 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:03:10 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:03:10 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:03:10 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:03:10 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:03:10 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:03:10 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:03:10 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:03:10 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:03:13 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:03:13 | VERBOSE | regex generated for __version__
+07-10-2022 16:03:13 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:03:13 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:03:13 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:03:13 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:03:13 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:03:13 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:03:13 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:03:13 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:03:13 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:03:13 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:03:13 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:03:13 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:03:13 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:03:13 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:05:13 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:05:13 | VERBOSE | regex generated for __version__
+07-10-2022 16:05:13 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:05:13 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:05:13 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:05:13 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:05:13 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:05:13 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:05:13 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:05:13 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:05:13 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:05:13 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:05:13 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:05:13 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:05:13 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:05:13 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:05:43 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:05:43 | VERBOSE | regex generated for __version__
+07-10-2022 16:05:43 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:05:43 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:05:43 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:05:43 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:05:43 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:05:43 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:05:43 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:05:43 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:05:43 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:05:43 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:05:43 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:05:43 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:05:43 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:05:43 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:05:51 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:05:51 | VERBOSE | regex generated for __version__
+07-10-2022 16:05:51 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:05:51 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:05:51 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:05:51 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:05:51 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:05:51 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:05:51 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:05:51 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:05:51 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:05:51 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:05:51 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:05:51 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:05:51 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:05:51 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:06:35 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:06:35 | VERBOSE | regex generated for __version__
+07-10-2022 16:06:35 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:06:35 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:06:35 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:06:35 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:06:35 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:06:35 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:06:35 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:06:35 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:06:35 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:06:35 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:06:35 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:06:35 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:06:35 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:06:35 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:06:37 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:06:37 | VERBOSE | regex generated for __version__
+07-10-2022 16:06:37 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:06:37 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:06:37 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:06:37 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:06:37 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:06:37 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:06:37 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:06:37 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:06:37 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:06:37 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:06:37 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:06:37 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:06:37 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:06:37 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:07:04 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:07:04 | VERBOSE | regex generated for __version__
+07-10-2022 16:07:04 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:07:04 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:07:04 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:07:04 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:07:04 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:07:04 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:07:04 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:07:04 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:07:04 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:07:04 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:07:04 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:07:04 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:07:04 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:07:04 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:07:15 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:07:15 | VERBOSE | regex generated for __version__
+07-10-2022 16:07:15 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:07:15 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:07:15 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:07:15 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:07:15 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:07:15 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:07:15 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:07:15 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:07:15 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:07:15 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:07:15 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:07:15 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:07:15 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:07:15 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:07:39 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:07:39 | VERBOSE | regex generated for __version__
+07-10-2022 16:07:39 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:07:39 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:07:39 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:07:39 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:07:39 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:07:39 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:07:39 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:07:39 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:07:39 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:07:39 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:07:39 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:07:39 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:07:39 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:07:39 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:08:12 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:08:12 | VERBOSE | regex generated for __version__
+07-10-2022 16:08:12 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:08:12 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:08:12 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:08:12 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:08:12 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:08:12 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:08:12 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:08:12 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:08:12 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:08:12 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:08:12 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:08:12 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:08:12 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:08:12 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:09:12 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:09:12 | VERBOSE | regex generated for __version__
+07-10-2022 16:09:12 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:09:12 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:09:12 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:09:12 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:09:12 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:09:12 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:09:12 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:09:12 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:09:12 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:09:12 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:09:12 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:09:12 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:09:12 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:09:12 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:09:39 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:09:39 | VERBOSE | regex generated for __version__
+07-10-2022 16:09:39 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:09:39 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:09:39 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:09:39 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:09:39 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:09:39 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:09:39 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:09:39 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:09:39 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:09:39 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:09:39 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:09:39 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:09:39 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:09:39 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:10:37 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:10:37 | VERBOSE | regex generated for __version__
+07-10-2022 16:10:37 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:10:37 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:10:37 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:10:37 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:10:37 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:10:37 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:10:37 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:10:37 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:10:37 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:10:37 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:10:37 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:10:37 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:10:37 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:10:37 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:11:03 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:11:03 | VERBOSE | regex generated for __version__
+07-10-2022 16:11:03 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:11:03 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:11:03 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:11:03 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:11:03 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:11:03 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:11:03 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:11:03 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:11:03 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:11:03 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:11:03 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:11:03 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:11:03 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:11:03 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:11:17 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:11:17 | VERBOSE | regex generated for __version__
+07-10-2022 16:11:17 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:11:17 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:11:17 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:11:17 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:11:17 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:11:17 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:11:17 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:11:17 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:11:17 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:11:17 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:11:17 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:11:17 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:11:17 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:11:17 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:11:43 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:11:43 | VERBOSE | regex generated for __version__
+07-10-2022 16:11:43 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:11:43 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:11:43 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:11:43 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:11:43 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:11:43 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:11:43 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:11:43 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:11:43 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:11:43 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:11:43 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:11:43 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:11:43 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:11:43 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:11:58 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:11:58 | VERBOSE | regex generated for __version__
+07-10-2022 16:11:58 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:11:58 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:11:58 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:11:58 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:11:58 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:11:58 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:11:58 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:11:58 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:11:58 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:11:58 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:11:58 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:11:58 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:11:58 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:11:58 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:12:22 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:12:22 | VERBOSE | regex generated for __version__
+07-10-2022 16:12:22 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:12:22 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:12:22 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:12:22 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:12:22 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:12:22 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:12:22 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:12:22 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:12:22 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:12:22 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:12:22 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:12:22 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:12:22 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:12:22 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 16:52:34 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 16:52:34 | VERBOSE | regex generated for __version__
+07-10-2022 16:52:34 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 16:52:34 | VERBOSE | regex generated for __public_version__
+07-10-2022 16:52:34 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 16:52:34 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 16:52:34 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 16:52:34 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 16:52:34 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 16:52:34 | VERBOSE | parsing BUILD pipeline
+07-10-2022 16:52:34 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 16:52:34 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 16:52:34 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 16:52:34 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 16:52:34 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 16:52:34 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 17:05:35 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:05:35 | VERBOSE | regex generated for __version__
+07-10-2022 17:05:35 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:05:35 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:05:35 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:05:35 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:05:35 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:05:35 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:05:35 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:05:35 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:05:35 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:05:35 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:05:35 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:05:35 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:05:35 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:05:35 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 17:05:57 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:05:57 | VERBOSE | regex generated for __version__
+07-10-2022 17:05:57 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:05:57 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:05:57 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:05:57 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:05:57 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:05:57 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:05:57 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:05:57 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:05:57 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:05:57 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:05:57 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:05:57 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:05:57 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:05:57 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 17:06:23 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:06:23 | VERBOSE | regex generated for __version__
+07-10-2022 17:06:23 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:06:23 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:06:23 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:06:23 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:06:23 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:06:23 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:06:23 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:06:23 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:06:23 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:06:23 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:06:23 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:06:23 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:06:23 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:06:23 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 17:06:56 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:06:56 | VERBOSE | regex generated for __version__
+07-10-2022 17:06:56 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:06:56 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:06:56 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:06:56 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:06:56 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:06:56 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:06:56 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:06:56 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:06:56 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:06:56 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:06:56 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:06:56 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:06:56 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:06:56 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 17:08:19 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:08:19 | VERBOSE | regex generated for __version__
+07-10-2022 17:08:19 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:08:19 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:08:19 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:08:19 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:08:19 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:08:19 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:08:19 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:08:19 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:08:19 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:08:19 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:08:19 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:08:19 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:08:19 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:08:19 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 17:08:50 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:08:50 | VERBOSE | regex generated for __version__
+07-10-2022 17:08:50 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:08:50 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:08:50 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:08:50 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:08:50 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:08:50 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:08:50 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:08:50 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:08:50 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:08:50 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:08:50 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:08:50 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:08:50 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:08:50 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 17:08:59 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:08:59 | VERBOSE | regex generated for __version__
+07-10-2022 17:08:59 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:08:59 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:08:59 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:08:59 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:08:59 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:08:59 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:08:59 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:08:59 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:08:59 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:08:59 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:08:59 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:08:59 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:08:59 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:08:59 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 17:09:31 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:09:31 | VERBOSE | regex generated for __version__
+07-10-2022 17:09:31 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:09:31 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:09:31 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:09:31 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:09:31 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:09:31 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:09:31 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:09:31 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:09:31 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:09:31 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:09:31 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:09:31 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:09:31 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:09:31 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 17:10:11 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:10:11 | VERBOSE | regex generated for __version__
+07-10-2022 17:10:11 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:10:11 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:10:11 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:10:11 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:10:11 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:10:11 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:10:11 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:10:11 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:10:11 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:10:11 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:10:11 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:10:11 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:10:11 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:10:11 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 17:10:53 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:10:53 | VERBOSE | regex generated for __version__
+07-10-2022 17:10:53 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:10:53 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:10:53 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:10:53 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:10:53 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:10:53 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:10:53 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:10:53 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:10:53 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:10:53 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:10:53 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:10:53 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:10:53 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:10:53 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 17:10:59 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:10:59 | VERBOSE | regex generated for __version__
+07-10-2022 17:10:59 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:10:59 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:10:59 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:10:59 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:10:59 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:10:59 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:10:59 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:10:59 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:10:59 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:10:59 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:10:59 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:10:59 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:10:59 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:10:59 | INFO | Current semantic version: 0.1.17+build.156
+07-10-2022 17:29:51 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:29:51 | VERBOSE | regex generated for __version__
+07-10-2022 17:29:51 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:29:51 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:29:51 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:31:16 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:31:16 | VERBOSE | regex generated for __version__
+07-10-2022 17:31:16 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:31:16 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:31:16 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:31:42 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:31:42 | VERBOSE | regex generated for __version__
+07-10-2022 17:31:42 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:31:42 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:31:42 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:31:42 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:31:42 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:31:42 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:31:42 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:31:42 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:31:42 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:31:42 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:31:42 | VERBOSE | parsing WOW pipeline
+07-10-2022 17:31:42 | VERBOSE | WOW.step1 - echo {{tag}}
+07-10-2022 17:31:42 | VERBOSE | WOW.step2 - echo 'wow'
+07-10-2022 17:31:42 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:31:42 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:31:42 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:32:07 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:32:07 | VERBOSE | regex generated for __version__
+07-10-2022 17:32:07 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:32:07 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:32:07 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:32:07 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:32:07 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:32:07 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:32:07 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:32:07 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:32:07 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:32:07 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:32:07 | VERBOSE | parsing WOW pipeline
+07-10-2022 17:32:07 | VERBOSE | WOW.step1 - echo {{tag}}
+07-10-2022 17:32:07 | VERBOSE | WOW.step2 - echo 'wow'
+07-10-2022 17:32:07 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:32:07 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:32:07 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:32:07 | VERBOSE | running pipeline.WOW
+07-10-2022 17:32:07 | VERBOSE | rendered cmd: echo v0.1.17
+07-10-2022 17:32:07 | VERBOSE | running cmd - ['echo', 'v0.1.17']
+07-10-2022 17:32:07 | VERBOSE | running cmd - ['echo', 'wow']
+07-10-2022 17:32:07 | INFO | pipeline.run() COMPLETE
+07-10-2022 17:33:11 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:33:11 | VERBOSE | regex generated for __version__
+07-10-2022 17:33:11 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:33:11 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:33:11 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:33:11 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:33:11 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:33:11 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:33:11 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:33:11 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:33:11 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:33:11 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:33:11 | VERBOSE | parsing WOW pipeline
+07-10-2022 17:33:11 | VERBOSE | WOW.step1 - echo {{tag}}
+07-10-2022 17:33:11 | VERBOSE | WOW.step2 - echo 'wow'
+07-10-2022 17:33:11 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:33:11 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:33:11 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:33:11 | INFO | BEGIN pipeline.run
+07-10-2022 17:33:11 | VERBOSE | running pipeline.WOW
+07-10-2022 17:33:11 | VERBOSE | rendered cmd: echo v0.1.17
+07-10-2022 17:33:11 | VERBOSE | running cmd - ['echo', 'v0.1.17']
+07-10-2022 17:33:11 | VERBOSE | running cmd - ['echo', 'wow']
+07-10-2022 17:33:11 | INFO | END pipeline.run
+07-10-2022 17:33:50 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:33:50 | VERBOSE | regex generated for __version__
+07-10-2022 17:33:50 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:33:50 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:33:50 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:33:50 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:33:50 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:33:50 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:33:50 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:33:50 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:33:50 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:33:50 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:33:50 | VERBOSE | parsing WOW pipeline
+07-10-2022 17:33:50 | VERBOSE | WOW.step1 - echo {{tag}}
+07-10-2022 17:33:50 | VERBOSE | WOW.step2 - echo 'wow'
+07-10-2022 17:33:50 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:33:50 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:33:50 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:33:50 | INFO | BEGIN pipeline[wow].run
+07-10-2022 17:33:50 | VERBOSE | running pipeline.WOW
+07-10-2022 17:33:50 | VERBOSE | rendered cmd: echo v0.1.17
+07-10-2022 17:33:50 | VERBOSE | running cmd - ['echo', 'v0.1.17']
+07-10-2022 17:33:50 | VERBOSE | running cmd - ['echo', 'wow']
+07-10-2022 17:33:50 | INFO | END pipeline[wow].run
+07-10-2022 17:34:20 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:34:20 | VERBOSE | regex generated for __version__
+07-10-2022 17:34:20 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:34:20 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:34:20 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:34:20 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:34:20 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:34:20 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:34:20 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:34:20 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:34:20 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:34:20 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:34:20 | VERBOSE | parsing WOW pipeline
+07-10-2022 17:34:20 | VERBOSE | WOW.step1 - echo {{tag}}
+07-10-2022 17:34:20 | VERBOSE | WOW.step2 - echo 'wow'
+07-10-2022 17:34:20 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:34:20 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:34:20 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:34:20 | INFO | +BEGIN pipeline[wow].run
+07-10-2022 17:34:20 | VERBOSE | running pipeline.WOW
+07-10-2022 17:34:20 | VERBOSE | rendered cmd: echo v0.1.17
+07-10-2022 17:34:20 | VERBOSE | running cmd - ['echo', 'v0.1.17']
+07-10-2022 17:34:20 | VERBOSE | running cmd - ['echo', 'wow']
+07-10-2022 17:34:20 | INFO | +END pipeline[wow].run
+07-10-2022 17:34:45 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:34:45 | VERBOSE | regex generated for __version__
+07-10-2022 17:34:45 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:34:45 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:34:45 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:34:45 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:34:45 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:34:45 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:34:45 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:34:45 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:34:45 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:34:45 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:34:45 | VERBOSE | parsing WOW pipeline
+07-10-2022 17:34:45 | VERBOSE | WOW.step1 - echo {{tag}}
+07-10-2022 17:34:45 | VERBOSE | WOW.step2 - echo 'wow'
+07-10-2022 17:34:45 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:34:45 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:34:45 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:34:45 | INFO | +BEGIN pipeline[wow].run
+07-10-2022 17:34:45 | VERBOSE | running pipeline.WOW
+07-10-2022 17:34:45 | VERBOSE | rendered cmd: echo v0.1.17
+07-10-2022 17:34:45 | VERBOSE | running cmd - ['echo', 'v0.1.17']
+07-10-2022 17:34:45 | VERBOSE | running cmd - ['echo', 'wow']
+07-10-2022 17:34:45 | INFO | +END pipeline[wow].run
+07-10-2022 17:35:29 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 17:35:29 | VERBOSE | regex generated for __version__
+07-10-2022 17:35:29 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 17:35:29 | VERBOSE | regex generated for __public_version__
+07-10-2022 17:35:29 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 17:35:29 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 17:35:29 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 17:35:29 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 17:35:29 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 17:35:29 | VERBOSE | parsing BUILD pipeline
+07-10-2022 17:35:29 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 17:35:29 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 17:35:29 | VERBOSE | parsing WOW pipeline
+07-10-2022 17:35:29 | VERBOSE | WOW.step1 - echo {{tag}}
+07-10-2022 17:35:29 | VERBOSE | WOW.step2 - echo 'wow'
+07-10-2022 17:35:29 | VERBOSE | discovered 0.1.17+build.156 @ CONFIG.version
+07-10-2022 17:35:29 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 17:35:29 | VERBOSE | discovered 0.1.17-dev.3+e70d049.156 @ GIT.version
+07-10-2022 17:35:29 | VERBOSE | beginning bump of <PATCH>
+07-10-2022 17:35:29 | VERBOSE | new value of <PATCH> - 18
+07-10-2022 17:35:29 | VERBOSE | VERSION[./ican/__init__.py] - updating to 0.1.18+build.157
+07-10-2022 17:35:29 | VERBOSE | VERSION[./ican/__init__.py] - found 1 matches
+07-10-2022 17:35:29 | VERBOSE | VERSION[./ican/__init__.py] - update COMPLETE
+07-10-2022 17:35:29 | VERBOSE | PUBLIC[./ican/__init__.py] - updating to 0.1.18
+07-10-2022 17:35:29 | VERBOSE | PUBLIC[./ican/__init__.py] - found 1 matches
+07-10-2022 17:35:29 | VERBOSE | PUBLIC[./ican/__init__.py] - update COMPLETE
+07-10-2022 17:35:29 | VERBOSE | version level = RELEASE
+07-10-2022 17:35:29 | VERBOSE | running pipeline.RELEASE
+07-10-2022 17:35:29 | VERBOSE | version level = RELEASE
+07-10-2022 17:35:29 | VERBOSE | version level = RELEASE
+07-10-2022 17:35:29 | VERBOSE | running cmd - ['git', 'add', '.']

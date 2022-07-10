@@ -1,6 +1,6 @@
 [version]
-current = 0.1.16+build.155
-previous = 0.1.16+build.154
+current = 0.1.17+build.156
+previous = 0.1.16+build.155
 
 [options]
 log_file = ican.log
@@ -28,3 +28,6 @@ step4 = git push origin master {{tag}}
 step1 = touch /tmp/test.txt
 step2 = echo {{tag}}
 
+[pipeline: wow]
+step1 = echo {{tag}}
+step2 = echo 'wow'

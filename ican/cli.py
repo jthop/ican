@@ -10,7 +10,6 @@ from . import __version__
 from .config import Config
 from .ican import Ican
 from .log import logger
-from .log import setup_console_handler
 from .emojis import rnd_good_emoji
 from .exceptions import IcanException
 
@@ -28,6 +27,8 @@ class CLI(object):
 commands:
   bump [PART]      increment version [minor, major, patch, prerelease, build]
   show [STYLE]     show version [semantic, public, pep440, git]
+  run [PIPELINE]   run the specified PIPELINE
+  status [STATE]   set the version STATUS [alpha, beta, rc, dev, release, post]
   rollback         restore the previous version
   init             initialize a config in the current directory
 """
@@ -82,7 +83,7 @@ commands:
                 dry_run = True
                 sys.argv.pop(i)
                 break
-        setup_console_handler(verbose, dry_run)
+        logger.setup(verbose, dry_run)
         return
 
     def _substitute_aliases(self):
@@ -149,8 +150,8 @@ commands:
 
         i = Ican(config=self.config)
         i.bump(args.part.lower())
-        logger.debug('bump() COMPLETE')
-        logger.warning(f'Version: {i.version.semantic}')
+        logger.verbose('bump() COMPLETE')
+        logger.info(f'Version: {i.version.semantic}')
 
         return
 
@@ -174,8 +175,7 @@ commands:
 
         i = Ican(config=self.config)
         v = i.show(args.style)
-        logger.debug('show() COMPLETE')
-        logger.warning(v)
+        logger.info(f'Current {args.style} version: {v}')
 
         return
 
@@ -192,8 +192,8 @@ commands:
 
         i = Ican(config=self.config)
         i.rollback()
-        logger.debug('rollback() COMPLETE')
-        logger.warning(f'Rollback: {i.version.semantic}')
+        logger.verbose('rollback() COMPLETE')
+        logger.info(f'Rollback: {i.version.semantic}')
 
     def init(self):
         """dispatched here with command init
@@ -207,9 +207,30 @@ commands:
 
         c = Config(init=True).parse()
         i = Ican(config=c)
-        logger.warning('init COMPLETE')
+        logger.info('init COMPLETE')
 
         return
+
+    def run(self):
+        """dispatched here with command init
+        """
+
+        parser = argparse.ArgumentParser(
+            description='PIPELINE can be any pipeline defined in your .ican file.',
+            usage='ican run [PIPELINE]')
+        parser.add_argument(
+            "pipeline",
+            help=argparse.SUPPRESS
+        )
+        # add --verbose only to be included in --help
+        parser.add_argument('--dry_run',help='do not write any files', action='store_true')
+        parser.add_argument('--verbose',help='display debug information', action='store_true')
+        args = parser.parse_args(sys.argv[2:])
+
+        i = Ican(config=self.config)
+        logger.info(f'+BEGIN pipeline[{args.pipeline}].run')
+        i.run_pipeline(args.pipeline)
+        logger.info(f'+END pipeline[{args.pipeline}].run')
 
     def test(self):
         """dispatched here with command test
@@ -221,8 +242,8 @@ commands:
         parser.add_argument('--verbose',help='display debug information', action='store_true')
         parser.add_argument("first", nargs='?', help=argparse.SUPPRESS)
         args = parser.parse_args(sys.argv[2:])
+        logger.verbose('verbose')
         print(f'10-4 with arg {args.first}')
-
 
 def entry():
     CLI()

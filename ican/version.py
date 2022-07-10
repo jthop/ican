@@ -2,7 +2,6 @@
 
 import re
 from types import SimpleNamespace
-from .log import ok_to_write
 from .log import logger
 
 
@@ -294,7 +293,7 @@ class Version(object):
         
         part = self._frozen.part
         if part in ['major', 'minor', 'patch']:
-            logger.debug('version level = RELEASE')
+            logger.verbose('version level = RELEASE')
             return True
         return False
 

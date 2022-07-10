@@ -7,7 +7,6 @@ from .config import Config
 from .version import Version
 from .git import Git
 from .log import logger
-from .log import ok_to_write
 from .exceptions import GitDescribeError
 from .exceptions import NoConfigFound
 from .exceptions import RollbackNotPossible
@@ -44,7 +43,7 @@ class Ican(object):
 
         # Now config is parsed.  We can parse from config
         self.version = Version.parse(self.config.version)
-        logger.debug(f'discovered {self.version.semantic} @ CONFIG.version')
+        logger.verbose(f'discovered {self.version.semantic} @ CONFIG.version')
 
         # Git init
         self.git = Git()
@@ -57,7 +56,7 @@ class Ican(object):
             logger.info('Possibly this is a new repo with no tags.')
             self.git.disable()
         else:
-            logger.debug(f'discovered {self.version.git} @ GIT.version')
+            logger.verbose(f'discovered {self.version.git} @ GIT.version')
         return
 
     def show(self, style):
@@ -74,11 +73,11 @@ class Ican(object):
         """This is pretty much the full process
         """
 
-        logger.debug(f'beginning bump of <{part.upper()}>')
+        logger.verbose(f'beginning bump of <{part.upper()}>')
 
         # Use the Version API to bump 'part'
         self.version.bump(part)
-        logger.debug(
+        logger.verbose(
             f'new value of <{part.upper()}> - {getattr(self.version, part)}'
         )
 
@@ -87,7 +86,12 @@ class Ican(object):
             file.update(self.version)
 
         # Run the appropriate pipeline
-        self.run_pipeline(part)
+        if self.version.new_release:
+            self.run_pipeline('release')
+        elif part == 'prerelease':
+            self.run_pipeline('prerelease')
+        elif part == 'build':
+            self.run_pipeline('build')
 
         # Once all else is successful, persist the new version
         self.config.persist_version(self.version.semantic)
@@ -113,17 +117,13 @@ class Ican(object):
         # Now that everything else is finished, persist version
         self.config.persist_version(self.config.previous_version)
 
-    def run_pipeline(self, part):
+    def run_pipeline(self, pipeline):
         # Pipeline
-        if self.version.new_release and self.config.pipelines.get('release'):
-            pll = 'release'
-        elif part == 'build' and self.config.pipelines.get('build'):
-            pll = 'build'
-        else:
+        if self.config.pipelines.get(pipeline) is None:
             return
 
-        logger.debug(f'running pipeline.{pll.upper()}')
-        pl = self.config.pipelines.get(pll)
+        logger.verbose(f'running pipeline.{pipeline.upper()}')
+        pl = self.config.pipelines.get(pipeline)
 
         # Prep the ctx dictionary
         ctx = dict()

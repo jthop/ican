@@ -49,7 +49,7 @@ class Git(object):
         if self.usable:
             self.root = self.find_root()
             r = str(self.root).rstrip('\n')
-            logger.debug(f'found git root @ {r}')
+            logger.verbose(f'found git root @ {r}')
 
     def disable(self):
         self.usable = False

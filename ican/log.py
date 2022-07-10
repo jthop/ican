@@ -1,22 +1,14 @@
+# -*- coding: utf-8 -*-
+
 import logging
 import sys
-from . import __version__
-from .emojis import rnd_good_emoji
-from .emojis import rnd_bad_emoji
+
+#debug=10, info=20, warning=30, error=40, critical=50
 
 
-__all__ = [
-    'logger',
-    'DEBUG',
-    'INFO',
-    'WARNING',
-    'ERROR'
-]
-
-
-class CustomFormatter(logging.Formatter):
+class IcanFormatter(logging.Formatter):
     """Logging colored formatter, adapted from https://stackoverflow.com/a/56944256/3638629"""
-    
+
     BLACK = '\u001b[30;1m'
     RED = '\u001b[31;1m'
     GREEN = '\u001b[32;1m'
@@ -31,91 +23,134 @@ class CustomFormatter(logging.Formatter):
     INVERT = '\033[7m'
     RESET = '\u001b[0m'
 
-    def __init__(self, fmt, style='%', emoji=True):
+    DEFAULT_FORMAT = "%(filename)-12s  %(message)s"
+
+    def __init__(self, fmt=DEFAULT_FORMAT, emoji=True):
         super().__init__()
         self.fmt = fmt
-        self.plain_fmt = '{message}'
-        self.style = style
-        self.FORMATS = {
-            logging.DEBUG: self.GREEN + self.fmt + self.RESET,
-            logging.INFO: self.INVERT + self.YELLOW + self.fmt + self.RESET,
-            logging.WARNING: self.BLUE + self.plain_fmt + self.RESET,
-            logging.ERROR: self.RED + self.fmt + self.RESET,
-            logging.CRITICAL: self.INVERT + self.RED + self.fmt + self.RESET
-        }
+        self.plain = '%(message)s'
+        self.FORMATS = {}
+        self.FORMATS[logging.DEBUG] = self.color(self.MAGENTA)
+        self.FORMATS[IcanLogger.VERBOSE] = self.color(self.YELLOW)
+        self.FORMATS[IcanLogger.DRY_RUN] = self.color(self.BOLD + self.BLUE)
+        self.FORMATS[logging.INFO] = self.color(self.BOLD + self.GREEN, True)
+        self.FORMATS[logging.WARNING] = self.color(self.RED)
+        self.FORMATS[logging.ERROR] = self.color(self.BLINK + self.RED)
+        self.FORMATS[logging.CRITICAL] = self.color(self.INVERT + self.RED)
+
         if emoji:
-            warning = self.FORMATS[logging.WARNING]
-            self.FORMATS[logging.WARNING] = rnd_good_emoji(2) +\
-                "  " + warning + "  " + rnd_good_emoji(2)
+            pass
 
-            error = self.FORMATS[logging.ERROR]
-            self.FORMATS[logging.ERROR] = rnd_bad_emoji(2) +\
-                "  " + error + "  " + rnd_bad_emoji(2)
-
-            critical = self.FORMATS[logging.CRITICAL]
-            self.FORMATS[logging.CRITICAL] = rnd_bad_emoji(3) +\
-                "  " + critical + "  " + rnd_bad_emoji(3)
+    def color(self, format, plain=False):
+        if plain:
+            return format + self.plain + self.RESET
+        return format + self.fmt + self.RESET
 
     def format(self, record):
+        """Use the FORMATS dict to apply color, also we strip
+        .py from the record.filename.
+        """
+
+        record.filename = record.filename.replace('.py', '').upper()
         log_fmt = self.FORMATS.get(record.levelno)
-        formatter = logging.Formatter(log_fmt, style=self.style)
+        formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
 
 
-def setup_log_record_factory():
-    old_factory = logging.getLogRecordFactory()
+class IcanLogger(logging.getLoggerClass()):
+    """
+    assert logging.getLevelName(VERBOSE) == 'VERBOSE'
+    assert logging.getLevelName(DRY_RUN) == 'DRY_RUN'
+    """
 
-    def record_factory(*args, **kwargs):
-        shorty = args[2].replace('.py','')
-        file_lineno = f'{shorty}@{args[3]}'
-        custom = list(args)
-        custom[2] = file_lineno
-        custom[3] = ''
-        record = old_factory(*tuple(custom), **kwargs)
-        record.custom_attribute = 0xdecafbad
-        return record
+    VERBOSE = 11            # like debug, print on console and file
+    DRY_RUN = 15            # dry_run related messages
+    DEFAULT_FILEHANDLER = '%(asctime)s | %(levelname)s | %(message)s'
 
-    logging.setLogRecordFactory(record_factory)
+    def __init__(self, name, level=logging.DEBUG):
+        super().__init__(name, level)
 
+        self._verbose = None
+        self._dry_run = None
+        logging.addLevelName(self.VERBOSE, "VERBOSE")
+        logging.addLevelName(self.DRY_RUN, "DRY_RUN")
 
-def setup_console_handler(verbose, dry_run):
-    if verbose:
-        level = logging.DEBUG
-    elif dry_run:
-        level = logging.INFO
-    else:
-        level = logging.WARNING
-    logger.__dry_run__ = False
+    def _welcome_msg(self):
+        self.info(f'        ---===::: Welcome to ican :::===---')
+        self.verbose('--verbose detected.  Displaying verbose messaging.')
+        self.dry_run('--dry_run detected.  No files will be modified.')
 
-    logger.setLevel(logging.DEBUG)
-    console = logging.StreamHandler(sys.stderr)
-    console.setLevel(level)
-    #format_str = '{filename:<20}{lineno}  {message}'
-    format_str = '{filename:<16} {message}'
-    formatter = CustomFormatter(format_str, style="{")
-    console.setFormatter(formatter)
-    logger.addHandler(console)
+    def _set_dry_run(self, val=True):
+        self._dry_run = val
 
-    logger.debug(f' ---===::: Welcome to ican v{__version__} :::===---')
-    if dry_run:
-            logger.__dry_run__ = True
-            logger.info('--dry-run detected - no files will be modified')
+    def _set_verbose(self, val=True):
+        self._verbose = val
 
-def setup_file_handler(filename):
-    format_str = '%(asctime)s | %(levelname)s | %(message)s'
-    date_format = '%m-%d-%Y %H:%M:%S'
-    formatter = logging.Formatter(format_str, date_format)
-    file_handler = logging.FileHandler(filename)
-    file_handler.setLevel(logging.DEBUG)
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
+    def setup(self, verbose=False, dry_run=False):
+        """We call this right away to configure logging.  We will store both
+        verbose and dry_run here so we can log verbosely without worry and
+        we can use the logger object to determine file writes with the
+        property ok_to_write
+        """
 
-def ok_to_write():
-    if not logger.__dry_run__:
+        console = logging.StreamHandler(sys.stderr)
+        if dry_run:
+            self._set_dry_run()
+            console.setLevel(self.DRY_RUN)
+        if verbose:
+            self._set_verbose()
+            console.setLevel(self.VERBOSE)
+        if not verbose and not dry_run:
+            console.setLevel(logging.INFO)
+
+        console.setFormatter(IcanFormatter())
+        self.addHandler(console)
+        self._welcome_msg()
+
+    def setup_file_handler(self, filename, format=DEFAULT_FILEHANDLER):
+        """ This method sets up our filehandler.  This is separate as console
+        logging can begin right away but we have to parse the config to get
+        the filename for file based logs.
+        """
+
+        formatter = logging.Formatter(format, '%m-%d-%Y %H:%M:%S')
+        file_handler = logging.FileHandler(filename)
+        # File handler gets all messages for now
+        file_handler.setLevel(logging.DEBUG)
+        file_handler.setFormatter(formatter)
+        self.addHandler(file_handler)
+
+    def verbose(self, msg, *args, **kwargs):
+        """Custom logging method for our VERBOSE logging level.  Nothing
+        special it is just like the stock DEBUG, INFO, etc.
+        """
+
+        if self.isEnabledFor(self.VERBOSE):
+            self._log(self.VERBOSE, msg, args, **kwargs)
+
+    def dry_run(self, msg, *args, **kwargs):
+        """This is a bit unusual.  Dry_run is 15, so someone with
+        VERBOSE, 11, would typically get these msgs as well.  But,
+        we ONLY want dry_run people to see them, so we have an
+        extra if statement built in.
+        """
+
+        if self.isEnabledFor(self.DRY_RUN):
+            if self._dry_run:
+                self._log(self.DRY_RUN, msg, args, **kwargs)
+
+    @property
+    def ok_to_write(self):
+        """Every module already imports the logger so this was a convenient
+        place to globally determine if we can write via the dry_run flag.
+        Also we auto-log a msg when this returns false.
+        """
+
+        if self._dry_run:
+            self.dry_run('Detected --dry_run.  File modification denied.')
+            return False
         return True
-    logger.info('Skipping file write @ --dry-run')
-    return False
 
 
+logging.setLoggerClass(IcanLogger)
 logger = logging.getLogger('ican')
-#setup_log_record_factory()

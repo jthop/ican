@@ -5,7 +5,6 @@ import re
 from pathlib import Path
 
 from .log import logger
-from .log import ok_to_write
 from . import exceptions
 from .exceptions import UserSuppliedRegexError
 from .exceptions import SourceCodeFileOpenError
@@ -41,7 +40,7 @@ class SourceCode(object):
 
         if variable is not None:
             self.regex = SourceCode.VARIABLE_RE.replace("{{var}}", variable)
-            logger.debug(f'regex generated for {variable}')
+            logger.verbose(f'regex generated for {variable}')
 
         if self.regex:
             try:
@@ -71,7 +70,7 @@ class SourceCode(object):
         """
 
         self.new_version = getattr(version, self.style)
-        logger.debug(
+        logger.verbose(
             f'{self.label} - updating to {self.new_version}'
         )
 
@@ -89,16 +88,16 @@ class SourceCode(object):
 
             # Check if we found a match or not
             if n == 0:
-                logger.debug(f'{self.label} - NO MATCHES!')
+                logger.verbose(f'{self.label} - NO MATCHES!')
                 return
-            logger.debug(f'{self.label} - found {n} matches')
+            logger.verbose(f'{self.label} - found {n} matches')
 
             # Write the updated file
-            if ok_to_write():
+            if logger.ok_to_write:
                 f.seek(0)
                 f.write(updated)
                 f.truncate()
 
         self.updated = True
-        logger.debug(f'{self.label} - update COMPLETE')
+        logger.verbose(f'{self.label} - update COMPLETE')
         return True

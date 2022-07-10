@@ -17,13 +17,12 @@ from configparser import ParsingError
 from types import SimpleNamespace
 
 from .source import SourceCode
-from .pipeline import PipeLine
+from .pipeline import Pipeline
 from .log import logger
-from .log import ok_to_write
-from .log import setup_file_handler
 from .exceptions import DuplicateConfigSections
 from .exceptions import ConfigWriteError
 from .exceptions import InvalidConfig
+
 
 #######################################
 #
@@ -83,13 +82,13 @@ class Config(object):
         return
 
     def save(self):
-        if ok_to_write():
+        if logger.ok_to_write:
             if not self.config_file:
                 f = Path(self.ran_from, Config.CONFIG_FILE)
                 self.config_file = f
             try:
                 self.parser.write(open(self.config_file, "w"))
-                logger.debug('wrote config file')
+                logger.verbose('wrote config file')
             except Exception as e:
                 raise ConfigWriteError(e)
         return
@@ -99,7 +98,7 @@ class Config(object):
         know the new version next time.  Save previous in case
         we need it to rollback.
         """
-        logger.debug(f'persisting version - {new_version}')
+        logger.verbose(f'persisting version - {new_version}')
         self.parser.set('version', 'previous', self.version)
         self.parser.set('version', 'current', new_version)
         self.save()
@@ -109,7 +108,7 @@ class Config(object):
     def init(self):
         """Set default config and save
         """
-        logger.debug(f'command init - setting default config')
+        logger.verbose(f'command init - setting default config')
         self.parser.read_dict(Config.DEFAULT_CONFIG)
         self.save()
         return self
@@ -117,7 +116,7 @@ class Config(object):
     def locate_config_file(self):
         """Find our config file.
         """
-        logger.debug(f'searching for config file')
+        logger.verbose(f'searching for config file')
         f = Config.CONFIG_FILE
         dir = Path.cwd()
         root = Path(dir.root)
@@ -125,12 +124,12 @@ class Config(object):
             cfg = Path(dir, f)
             if cfg.exists():
                 self.config_file = cfg
-                logger.debug(f'config found @ {cfg}')
+                logger.verbose(f'config found @ {cfg}')
                 return True
             dir = dir.parent
             if dir == root:
                 # quit right before we'd be writing in the root
-                logger.debug(f'cannot find config file!')
+                logger.verbose(f'cannot find config file!')
                 break
         return None
 
@@ -157,7 +156,7 @@ class Config(object):
         self.ch_dir_root()
         self.log_file = self.parser.get('options', 'log_file', fallback=None)
         if self.log_file:
-            setup_file_handler(self.log_file)
+            logger.setup_file_handler(self.log_file)
         self.parse_aliases()
         self.pre_parsed = True
         return self
@@ -194,9 +193,9 @@ class Config(object):
                 continue
 
             label = s.split(':')[1].strip().lower()
-            logger.debug(f'parsing {label.upper()} pipeline')
+            logger.verbose(f'parsing {label.upper()} pipeline')
             left_right_tuple = self.parser.items(s)
-            pl = PipeLine(label=label, steps=left_right_tuple)
+            pl = Pipeline(label=label, steps=left_right_tuple)
             self.pipelines[label] = pl
         return
 
@@ -215,13 +214,13 @@ class Config(object):
 
             # Instead of raising exp, we can just look for more files
             if file is None:
-                logger.debug(f'skipping source - missing file ({label})')
+                logger.verbose(f'skipping source - missing file ({label})')
                 continue
             elif variable is None and regex is None:
-                logger.debug(f'skipping source - missing variable/regex')
+                logger.verbose(f'skipping source - missing variable/regex')
                 continue
 
-            logger.debug(f'parsing file config {label.upper()}[{file}]')
+            logger.verbose(f'parsing file config {label.upper()}[{file}]')
             # Case with *.py for all python files
             if '*' in file:
                 files = self._find_wildcard_filename(file)
@@ -242,10 +241,10 @@ class Config(object):
         filename field.  Search root dir + all subdirs.
         """
 
-        logger.debug(f'file section * in filename - {f}')
+        logger.verbose(f'file section * in filename - {f}')
         matches = [x for x in Path(self.path).rglob(f)]
         if matches:
-            logger.debug(f'wildcard found: {len(matches)} files')
+            logger.verbose(f'wildcard found: {len(matches)} files')
             return matches
         return None
 

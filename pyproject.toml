@@ -30,3 +30,5 @@ ican = "ican.cli:entry"
 "Homepage" = "https://github.com/jthop/ican"
 "Bug Tracker" = "https://github.com/jthop/ican/issues"
 
+[tool.black]
+line-length = 88
