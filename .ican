@@ -1,6 +1,6 @@
 [version]
-current = 0.1.19+build.158
-previous = 0.1.18+build.157
+current = 0.1.20+build.159
+previous = 0.1.19+build.158
 
 [options]
 log_file = ican.log
@@ -18,15 +18,12 @@ file = ./ican/__init__.py
 variable = __public_version__
 style = public
 
-[pipeline: release]
+[pipeline: new.release]
 step1 = git add .
 step2 = git commit -m "auto-commit for {{tag}}"
 step3 = git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
 step4 = git push origin master {{tag}}
 
-[pipeline: build]
-step1 = touch /tmp/test.txt
-step2 = echo {{tag}}
-
 [pipeline: test]
 step1 = echo "foo"
+step2 = env

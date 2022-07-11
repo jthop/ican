@@ -7,9 +7,9 @@ from . import __version__
 from .log import logger
 
 
-class ExitCode():
+class ExitCode:
     EXPECTED_EXIT = 0
-    
+
     NO_CONFIG_FOUND = 1
     INVALID_CONFIG = 2
     DUPLICATE_CONFIG_SECTIONS = 3
@@ -20,7 +20,7 @@ class ExitCode():
     GIT_UNUSABLE = 10
     GIT_ROOT_ERROR = 11
     GIT_DESCRIBE_ERROR = 12
-    
+
     VERSION_PARSE_ERROR = 20
     VERSION_METADATA_ERROR = 21
     VERSION_BUMP_ERROR = 22
@@ -39,20 +39,20 @@ class IcanException(Exception):
         self.exit_code = self.__class__.exit_code
         self.msg = ""
         self.e = []
-        
+
         # Set the message, typically at init
         if args:
             if isinstance(args[0], Exception):
                 self.msg = str(args[0])
 
                 _e = args[0]
-                if hasattr(_e, 'stderr'):
-                    stderr = getattr(_e, 'stderr')
-                    stderr = stderr.decode('utf-8')
-                    stderr = stderr.rstrip('\n')
+                if hasattr(_e, "stderr"):
+                    stderr = getattr(_e, "stderr")
+                    stderr = stderr.decode("utf-8")
+                    stderr = stderr.rstrip("\n")
                     self.e.append(stderr)
-                if hasattr(_e, 'returncode'):
-                    returncode = getattr(_e, 'returncode')
+                if hasattr(_e, "returncode"):
+                    returncode = getattr(_e, "returncode")
                     self.e.append(returncode)
             else:
                 self.msg = args[0]
@@ -60,30 +60,37 @@ class IcanException(Exception):
             self.msg = self.__class__.msg
 
         # Merge the exit_code, msg, and version
-        m = f'{self.msg} (code-{self.exit_code}) v{__version__}'
+        m = f"{self.msg} (code-{self.exit_code}) v{__version__}"
         self.msg = m
 
     def __str__(self):
         return self.msg
 
+
 class DryRunExit(IcanException):
     pass
 
+
 ########################
+
 
 class NoConfigFound(IcanException):
     exit_code = ExitCode.NO_CONFIG_FOUND
-    msg = 'Cannot find ican config.  Maybe try `ican init`'
+    msg = "Cannot find ican config.  Maybe try `ican init`"
+
 
 class InvalidConfig(IcanException):
     exit_code = ExitCode.INVALID_CONFIG
 
+
 class DuplicateConfigSections(IcanException):
     exit_code = ExitCode.DUPLICATE_CONFIG_SECTIONS
-    msg = 'Duplicate sections in config file. Did you create file/pipeline labels?'
+    msg = "Duplicate sections in config file. Did you create file/pipeline labels?"
+
 
 class ConfigWriteError(IcanException):
     exit_code = ExitCode.CONFIG_WRITE_ERROR
+
 
 class NoCurrentVersion(IcanException):
     exit_code = ExitCode.NO_CURRENT_VERSION
@@ -93,47 +100,63 @@ class NoCurrentVersion(IcanException):
         "version = 0.4.3\n"
     )
 
+
 class RollbackNotPossible(IcanException):
     exit_code = ExitCode.ROLLBACK_NOT_POSSIBLE
-    msg = 'Rollback is not possible because no previous version exists.'
+    msg = "Rollback is not possible because no previous version exists."
+
 
 ########################
+
 
 class GitUnusable(IcanException):
     exit_code = ExitCode.GIT_UNUSABLE
 
+
 class GitRootError(IcanException):
     exit_code = ExitCode.GIT_ROOT_ERROR
+
 
 class GitDescribeError(IcanException):
     exit_code = ExitCode.GIT_DESCRIBE_ERROR
 
+
 ########################
+
 
 class VersionParseError(IcanException):
     exit_code = ExitCode.VERSION_PARSE_ERROR
 
+
 class VersionMetadataError(IcanException):
     exit_code = ExitCode.VERSION_METADATA_ERROR
+
 
 class VersionBumpError(IcanException):
     exit_code = ExitCode.VERSION_BUMP_ERROR
 
+
 class VersionPep440Error(IcanException):
     exit_code = ExitCode.VERSION_PEP440_ERROR
+
 
 class VersionGitError(IcanException):
     exit_code = ExitCode.VERSION_GIT_ERROR
 
+
 ########################
+
 
 class SourceCodeFileOpenError(IcanException):
     exit_code = ExitCode.SOURCE_CODE_FILE_OPEN_ERROR
 
+
 class SourceCodeFileMissing(IcanException):
     exit_code = ExitCode.SOURCE_CODE_FILE_MISSING
 
+
 class UserSuppliedRegexError(IcanException):
     exit_code = ExitCode.USER_SUPPLIED_REGEX_ERROR
+
 
 ########################

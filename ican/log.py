@@ -3,40 +3,40 @@
 import logging
 import sys
 
-#debug=10, info=20, warning=30, error=40, critical=50
+# debug=10, info=20, warning=30, error=40, critical=50
 
 
 class IcanFormatter(logging.Formatter):
-    """Logging colored formatter, adapted from https://stackoverflow.com/a/56944256/3638629"""
+    """colors from https://stackoverflow.com/a/56944256/3638629"""
 
-    BLACK = '\u001b[30;1m'
-    RED = '\u001b[31;1m'
-    GREEN = '\u001b[32;1m'
-    YELLOW = '\u001b[33;1m'
-    BLUE = '\u001b[34;7m'
-    MAGENTA = '\u001b[35;1m'
-    CYAN = '\u001b[36;1m'
-    WHITE = '\u001b[37;1m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    BLINK = '\033[5m'
-    INVERT = '\033[7m'
-    RESET = '\u001b[0m'
+    BLACK = "\u001b[30;1m"
+    RED = "\u001b[31;1m"
+    GREEN = "\u001b[32;1m"
+    YELLOW = "\u001b[33;1m"
+    BLUE = "\u001b[34;7m"
+    MAGENTA = "\u001b[35;1m"
+    CYAN = "\u001b[36;1m"
+    WHITE = "\u001b[37;1m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+    BLINK = "\033[5m"
+    INVERT = "\033[7m"
+    RESET = "\u001b[0m"
 
     DEFAULT_FORMAT = "%(filename)-12s  %(message)s"
 
     def __init__(self, fmt=DEFAULT_FORMAT, emoji=True):
         super().__init__()
         self.fmt = fmt
-        self.plain = '%(message)s'
+        self.plain = "%(message)s"
         self.FORMATS = {}
         self.FORMATS[logging.DEBUG] = self.color(self.MAGENTA)
         self.FORMATS[IcanLogger.VERBOSE] = self.color(self.YELLOW)
         self.FORMATS[IcanLogger.DRY_RUN] = self.color(self.BOLD + self.BLUE)
         self.FORMATS[logging.INFO] = self.color(self.BOLD + self.GREEN, True)
         self.FORMATS[logging.WARNING] = self.color(self.RED)
-        self.FORMATS[logging.ERROR] = self.color(self.INVERT + self.RED)
-        self.FORMATS[logging.CRITICAL] = self.color(self.BLINK + self.RED)
+        self.FORMATS[logging.ERROR] = self.color(self.RED)
+        self.FORMATS[logging.CRITICAL] = self.color(self.INVERT + self.RED)
 
         if emoji:
             pass
@@ -51,7 +51,7 @@ class IcanFormatter(logging.Formatter):
         .py from the record.filename.
         """
 
-        record.filename = record.filename.replace('.py', '').upper()
+        record.filename = record.filename.replace(".py", "").upper()
         log_fmt = self.FORMATS.get(record.levelno)
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
@@ -63,9 +63,9 @@ class IcanLogger(logging.getLoggerClass()):
     assert logging.getLevelName(DRY_RUN) == 'DRY_RUN'
     """
 
-    VERBOSE = 11            # like debug, print on console and file
-    DRY_RUN = 15            # dry_run related messages
-    DEFAULT_FILEHANDLER = '%(asctime)s | %(levelname)s | %(message)s'
+    VERBOSE = 11  # like debug, print on console and file
+    DRY_RUN = 15  # dry_run related messages
+    DEFAULT_FILEHANDLER = "%(asctime)s | %(levelname)s | %(message)s"
 
     def __init__(self, name, level=logging.DEBUG):
         super().__init__(name, level)
@@ -76,9 +76,9 @@ class IcanLogger(logging.getLoggerClass()):
         logging.addLevelName(self.DRY_RUN, "DRY_RUN")
 
     def _welcome_msg(self):
-        self.info(f'        ---===::: Welcome to ican :::===---')
-        self.verbose('--verbose detected.  Displaying verbose messaging.')
-        self.dry_run('--dry_run detected.  No files will be modified.')
+        self.info("        ---===::: Welcome to ican :::===---")
+        self.verbose("--verbose detected.  Displaying verbose messaging.")
+        self.dry_run("--dry_run detected.  No files will be modified.")
 
     def _set_dry_run(self, val=True):
         self._dry_run = val
@@ -108,12 +108,12 @@ class IcanLogger(logging.getLoggerClass()):
         self._welcome_msg()
 
     def setup_file_handler(self, filename, format=DEFAULT_FILEHANDLER):
-        """ This method sets up our filehandler.  This is separate as console
+        """This method sets up our filehandler.  This is separate as console
         logging can begin right away but we have to parse the config to get
         the filename for file based logs.
         """
 
-        formatter = logging.Formatter(format, '%m-%d-%Y %H:%M:%S')
+        formatter = logging.Formatter(format, "%m-%d-%Y %H:%M:%S")
         file_handler = logging.FileHandler(filename)
         # File handler gets all messages for now
         file_handler.setLevel(logging.DEBUG)
@@ -147,10 +147,10 @@ class IcanLogger(logging.getLoggerClass()):
         """
 
         if self._dry_run:
-            self.dry_run('Detected --dry_run.  File modification denied.')
+            self.dry_run("Detected --dry_run.  File modification denied.")
             return False
         return True
 
 
 logging.setLoggerClass(IcanLogger)
-logger = logging.getLogger('ican')
+logger = logging.getLogger("ican")

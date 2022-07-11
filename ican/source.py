@@ -5,7 +5,6 @@ import re
 from pathlib import Path
 
 from .log import logger
-from . import exceptions
 from .exceptions import UserSuppliedRegexError
 from .exceptions import SourceCodeFileOpenError
 from .exceptions import SourceCodeFileMissing
@@ -22,8 +21,8 @@ class SourceCode(object):
 
     VARIABLE_RE = r"{{var}}\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)"
 
-    def __init__(self, label, file, style='semantic', variable=None, regex=None):
-        self.label = f'{label.upper()}[{file}]'
+    def __init__(self, label, file, style="semantic", variable=None, regex=None):
+        self.label = f"{label.upper()}[{file}]"
         self.file = Path(file)
         self.variable = variable
         self.style = style
@@ -31,37 +30,37 @@ class SourceCode(object):
 
         self.updated = False
         self.valid = False
-        
+
         if not self.file.exists():
             raise SourceCodeFileMissing(
-                f'config references non existant file: {self.file}'
+                f"config references non existant file: {self.file}"
             )
         self.valid = True
 
         if variable is not None:
             self.regex = SourceCode.VARIABLE_RE.replace("{{var}}", variable)
-            logger.verbose(f'regex generated for {variable}')
+            logger.verbose(f"regex generated for {variable}")
 
         if self.regex:
             try:
                 self.compiled = re.compile(self.regex)
-            except Exception as e:
-                msg = f'Error compiling regex: {self.regex}'
+            except Exception:
+                msg = f"Error compiling regex: {self.regex}"
                 raise UserSuppliedRegexError(msg)
 
     def _to_raw_string(self, str):
-        return fr"{string}"
+        return rf"{str}"
 
     def _replacement(self, match):
         line = match.group(0)
-        old_version = match.group('version')
+        old_version = match.group("version")
         new_line = line.replace(old_version, self.new_version)
-        
+
         return new_line
 
     def update(self, version):
         """
-        his method performs an inplace file update.  
+        his method performs an inplace file update.
         Args:
             filename: The file to run the substitution on
         Returns:
@@ -70,16 +69,14 @@ class SourceCode(object):
         """
 
         self.new_version = getattr(version, self.style)
-        logger.verbose(
-            f'{self.label} - updating to {self.new_version}'
-        )
+        logger.verbose(f"{self.label} - updating to {self.new_version}")
 
         try:
-            f = self.file.open('r+')
+            f = self.file.open("r+")
         except OSError:
-            raise SourceCodeFileOpenError(f'Error opening {self.file}')
+            raise SourceCodeFileOpenError(f"Error opening {self.file}")
 
-        with self.file.open('r+') as f:
+        with self.file.open("r+") as f:
             # Read entire file into string
             original = f.read()
 
@@ -88,9 +85,9 @@ class SourceCode(object):
 
             # Check if we found a match or not
             if n == 0:
-                logger.verbose(f'{self.label} - NO MATCHES!')
+                logger.verbose(f"{self.label} - NO MATCHES!")
                 return
-            logger.verbose(f'{self.label} - found {n} matches')
+            logger.verbose(f"{self.label} - found {n} matches")
 
             # Write the updated file
             if logger.ok_to_write:
@@ -99,5 +96,5 @@ class SourceCode(object):
                 f.truncate()
 
         self.updated = True
-        logger.verbose(f'{self.label} - update COMPLETE')
+        logger.verbose(f"{self.label} - update COMPLETE")
         return True

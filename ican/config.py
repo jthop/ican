@@ -16,6 +16,7 @@ from configparser import ParsingError
 
 from types import SimpleNamespace
 
+from .base import Base
 from .source import SourceCode
 from .pipeline import Pipeline
 from .log import logger
@@ -31,22 +32,18 @@ from .exceptions import InvalidConfig
 #######################################
 
 
-class Config(object):
+class Config(Base):
     """
     Object which will orchestrate entire program
     """
 
-    default_ver = dict(current = '0.1.0')
-    default_options = dict(log_file = 'ican.log')
-    default_file = dict(file = '*.py',
-        style = 'semantic',
-        variable = '__version__')
+    default_ver = dict(current="0.1.0")
+    default_options = dict(log_file="ican.log")
+    default_file = dict(file="*.py", style="semantic", variable="__version__")
 
-    CONFIG_FILE = '.ican'
+    CONFIG_FILE = ".ican"
     DEFAULT_CONFIG = dict(
-        version=default_ver,
-        options=default_options,
-        file1=default_file
+        version=default_ver, options=default_options, file1=default_file
     )
 
     def __init__(self, init=False):
@@ -54,7 +51,7 @@ class Config(object):
         self.ran_from = Path.cwd()
         self.parser = ConfigParser()
 
-        self.version = None
+        self.current_version = None
         self.previous_version = None
         self.log_file = None
         self.source_files = []
@@ -70,7 +67,7 @@ class Config(object):
     @property
     def path(self):
         if self.config_file:
-            return self.config_file.parent
+            return self.config_file.parent.absolute()
         return None
 
     def ch_dir_root(self):
@@ -78,7 +75,7 @@ class Config(object):
         file paths, etc still work as expected.
         """
         if self.path:
-            os.chdir(str(self.path).rstrip('\n'))
+            os.chdir(str(self.path).rstrip("\n"))
         return
 
     def save(self):
@@ -88,7 +85,7 @@ class Config(object):
                 self.config_file = f
             try:
                 self.parser.write(open(self.config_file, "w"))
-                logger.verbose('wrote config file')
+                logger.verbose("wrote config file")
             except Exception as e:
                 raise ConfigWriteError(e)
         return
@@ -98,25 +95,23 @@ class Config(object):
         know the new version next time.  Save previous in case
         we need it to rollback.
         """
-        logger.verbose(f'persisting version - {new_version}')
-        self.parser.set('version', 'previous', self.version)
-        self.parser.set('version', 'current', new_version)
+        logger.verbose(f"persisting version - {new_version}")
+        self.parser.set("version", "previous", self.current_version)
+        self.parser.set("version", "current", new_version)
         self.save()
-        self.version = new_version
+        self.current_version = new_version
         return
 
     def init(self):
-        """Set default config and save
-        """
-        logger.verbose(f'command init - setting default config')
+        """Set default config and save"""
+        logger.verbose(f"command init - setting default config")
         self.parser.read_dict(Config.DEFAULT_CONFIG)
         self.save()
         return self
 
     def locate_config_file(self):
-        """Find our config file.
-        """
-        logger.verbose(f'searching for config file')
+        """Find our config file."""
+        logger.verbose(f"searching for config file")
         f = Config.CONFIG_FILE
         dir = Path.cwd()
         root = Path(dir.root)
@@ -124,27 +119,26 @@ class Config(object):
             cfg = Path(dir, f)
             if cfg.exists():
                 self.config_file = cfg
-                logger.verbose(f'config found @ {cfg}')
+                logger.verbose(f"config found @ {cfg}")
                 return True
             dir = dir.parent
             if dir == root:
                 # quit right before we'd be writing in the root
-                logger.verbose(f'cannot find config file!')
+                logger.verbose(f"cannot find config file!")
                 break
         return None
 
     def pre_parse(self):
-        """Get the minimum config needed.  Need log_file so we can log,
-        and aliases for the command parser.  Do the rest after commands
-        are parsed.
+        """Partially parse the config.  Enough to log, use aliases in
+        the cli parser, also grab version since it's easy and is needed
+        for show().
         """
 
         if not self.config_file:
+            # Only time we could already have self.config_file is if we
+            # ran an init
             if not self.locate_config_file():
-                """
-                No config found.  Silently continue to give the user a
-                chance to init and pass that config in soon.
-                """
+                # Silently continue on.  There is still a chance for init()
                 return self
             try:
                 self.parser.read(self.config_file)
@@ -153,8 +147,11 @@ class Config(object):
             except ParsingError:
                 raise InvalidConfig()
 
+        self.current_version = self.parser.get("version", "current", fallback="0.1.0")
+        self.previous_version = self.parser.get("version", "previous", fallback=None)
+        self.log_file = self.parser.get("options", "log_file", fallback=None)
+
         self.ch_dir_root()
-        self.log_file = self.parser.get('options', 'log_file', fallback=None)
         if self.log_file:
             logger.setup_file_handler(self.log_file)
         self.parse_aliases()
@@ -169,31 +166,28 @@ class Config(object):
         if not self.pre_parsed:
             self.pre_parse()
 
-        self.version = self.parser.get('version', 'current', fallback='0.1.0')
-        self.previous_version = self.parser.get('version', 'previous', fallback=None)
-
         self.parse_source_files()
         self.parse_pipelines()
         self.parsed = True
         return self
 
     def parse_aliases(self):
-        if not self.parser.has_section('aliases'):
+        if not self.parser.has_section("aliases"):
             return
 
-        for alias, built_in in self.parser.items('aliases'):
-            cmd_with_args = built_in.strip().split(' ')
+        for alias, built_in in self.parser.items("aliases"):
+            cmd_with_args = built_in.strip().split(" ")
             self.aliases[alias] = cmd_with_args
         return
 
     def parse_pipelines(self):
         for s in self.parser.sections():
-            if not s.startswith('pipeline:'):
+            if not s.startswith("pipeline:"):
                 # Not interested in this section
                 continue
 
-            label = s.split(':')[1].strip().lower()
-            logger.verbose(f'parsing {label.upper()} pipeline')
+            label = s.split(":")[1].strip().lower()
+            logger.verbose(f"parsing {label.upper()} pipeline")
             left_right_tuple = self.parser.items(s)
             pl = Pipeline(label=label, steps=left_right_tuple)
             self.pipelines[label] = pl
@@ -202,38 +196,32 @@ class Config(object):
     def parse_source_files(self):
         # FILES TO WRITE
         for s in self.parser.sections():
-            if not s.startswith('file:'):
+            if not s.startswith("file:"):
                 # Not interested in this section
                 continue
 
-            label = s.split(':')[1].strip().lower()
-            file = self.parser.get(s, 'file', fallback=None)
-            style = self.parser.get(s, 'style', fallback='semantic')
-            variable = self.parser.get(s, 'variable', fallback=None)
-            regex = self.parser.get(s, 'regex', fallback=None)
+            label = s.split(":")[1].strip().lower()
+            file = self.parser.get(s, "file", fallback=None)
+            style = self.parser.get(s, "style", fallback="semantic")
+            variable = self.parser.get(s, "variable", fallback=None)
+            regex = self.parser.get(s, "regex", fallback=None)
 
             # Instead of raising exp, we can just look for more files
             if file is None:
-                logger.verbose(f'skipping source - missing file ({label})')
+                logger.verbose(f"skipping source - missing file ({label})")
                 continue
             elif variable is None and regex is None:
-                logger.verbose(f'skipping source - missing variable/regex')
+                logger.verbose(f"skipping source - missing variable/regex")
                 continue
 
-            logger.verbose(f'parsing file config {label.upper()}[{file}]')
+            logger.verbose(f"parsing file config {label.upper()}[{file}]")
             # Case with *.py for all python files
-            if '*' in file:
+            if "*" in file:
                 files = self._find_wildcard_filename(file)
             else:
                 files = [file]
             for f in files:
-                u = SourceCode(
-                    label,
-                    f,
-                    style=style,
-                    variable=variable,
-                    regex=regex
-                )
+                u = SourceCode(label, f, style=style, variable=variable, regex=regex)
                 self.source_files.append(u)
 
     def _find_wildcard_filename(self, f):
@@ -241,11 +229,9 @@ class Config(object):
         filename field.  Search root dir + all subdirs.
         """
 
-        logger.verbose(f'file section * in filename - {f}')
+        logger.verbose(f"file section * in filename - {f}")
         matches = [x for x in Path(self.path).rglob(f)]
         if matches:
-            logger.verbose(f'wildcard found: {len(matches)} files')
+            logger.verbose(f"wildcard found: {len(matches)} files")
             return matches
         return None
-
-

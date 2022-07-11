@@ -1,25 +1,23 @@
 # -*- coding: utf-8 -*-
-"""
 
- ,---.  ,-.,---.  ,---.  ,-.    ,-..-. .-.,---.
- | .-.\ |(|| .-.\ | .-'  | |    |(||  \| || .-'
- | |-' )(_)| |-' )| `-.  | |    (_)|   | || `-.
- | |--' | || |--' | .-'  | |    | || |\  || .-'
- | |    | || |    |  `--.| `--. | || | |)||  `--.
- /(     `-'/(     /( __.'|( __.'`-'/(  (_)/( __.'
-(__)      (__)   (__)    (_)      (__)   (__)
-
-
-"""
+#
+#   ,---.  ,-.,---.  ,---.  ,-.    ,-..-. .-.,---.
+#   | .-.\ |(|| .-.\ | .-'  | |    |(||  \| || .-'
+#   | |-' )(_)| |-' )| `-.  | |    (_)|   | || `-.
+#   | |--' | || |--' | .-'  | |    | || |\  || .-'
+#   | |    | || |    |  `--.| `--. | || | |)||  `--.
+#   /(     `-'/(     /( __.'|( __.'`-'/(  (_)/( __.'
+#  (__)      (__)   (__)    (_)      (__)   (__)
+#
 
 import os
 import re
 import subprocess
 import shlex
-from pathlib import Path
 from types import SimpleNamespace
 
 from .log import logger
+from .base import Base
 from . import exceptions
 
 
@@ -30,7 +28,7 @@ from . import exceptions
 #######################################
 
 
-class Pipeline(object):
+class Pipeline(Base):
 
     TEMPLATE = r"{{(?P<var>.*?)}}"
 
@@ -40,11 +38,11 @@ class Pipeline(object):
         self.compiled = re.compile(Pipeline.TEMPLATE)
 
         if steps is None:
-            logger.error('must include at least 1 step')
+            logger.error("must include at least 1 step")
 
         if steps:
             for k, v in steps:
-                logger.verbose(f'{label.upper()}.{k} - {v}')
+                logger.verbose(f"{label.upper()}.{k} - {v}")
                 step = SimpleNamespace(label=k, cmd=v)
                 self.steps.append(step)
 
@@ -54,14 +52,15 @@ class Pipeline(object):
         """
 
         result, n = self.compiled.subn(
-            lambda m: ctx.get(m.group('var'), 'N/A'),cmd
+            lambda m: ctx.get(m.group("var").upper(), "N/A"),
+            cmd
         )
 
         if n > 0:
-            logger.verbose(f'rendered cmd: {result}')
+            logger.verbose(f"rendered cmd: {result}")
         return result
 
-    def _run_cmd(self, cmd):
+    def _run_cmd(self, cmd, custom_env):
         """Here is where we actually run the pipeline steps via the
         shell.
 
@@ -74,28 +73,51 @@ class Pipeline(object):
             stdout and stderr representing the results of the subprocess
         """
 
-        #my_env = {**os.environ, **dict_with_env_variables}
-        
         if type(cmd) not in (tuple, list):
             cmd = shlex.split(cmd)
 
-        logger.verbose(f'running cmd - {cmd}')
+        logger.verbose(f"running cmd - {cmd}")
         result = subprocess.run(
             cmd,
             shell=False,
+            env=custom_env,
             capture_output=False,
             text=True
         ).stdout
 
         if result:
-            logger.verbose(f'cmd result - {result}')
-        return result
+            logger.verbose(f"cmd result - {result}")
+        return
 
-    def run(self, ctx={}):
-        logger.info(f'+BEGIN pipeline.{self.label.upper()}')
+    def _build_ctx(self):
+        """
+        """
+        ctx = {}
+        ctx["VERSION"] = ctx["SEMANTIC"] = self.version.semantic
+        ctx["PUBLIC"] = self.version.public
+        ctx["PEP440"] = self.version.pep440
+        ctx["GIT"] = self.version.git
+        ctx["TAG"] = self.version.tag
+        ctx["STAGE"] = self.version.stage
+        ctx["ENV"] = self.version.env
+        ctx["AGE"] = self.version.age
+        ctx["ROOT"] = self.config.path
+        ctx["PREVIOUS"] = self.config.previous_version
+
+        # ensure all are strings
+        for k,v in ctx.items():
+            ctx[k] = str(v)
+
+        logger.verbose(f'Generated ctx: {ctx}')
+        return ctx
+
+    def run(self):
+        ctx = self._build_ctx()
+        custom_env = {**os.environ, **ctx}
+        logger.info(f"+BEGIN pipeline.{self.label.upper()}")
         for step in self.steps:
             cmd = self._render(step.cmd, ctx)
-            label = step.label
+            # label = step.label
             if logger.ok_to_write:
-                result = self._run_cmd(cmd)
-        logger.info(f'+END pipeline.{self.label.upper()}')
+                self._run_cmd(cmd, custom_env)
+        logger.info(f"+END pipeline.{self.label.upper()}")

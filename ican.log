@@ -2523,3 +2523,497 @@
 07-10-2022 23:00:13 | VERBOSE | version level = RELEASE
 07-10-2022 23:00:13 | INFO | +BEGIN pipeline.RELEASE
 07-10-2022 23:00:13 | VERBOSE | running cmd - ['git', 'add', '.']
+07-10-2022 23:00:13 | VERBOSE | rendered cmd: git commit -m "auto-commit for v0.1.20"
+07-10-2022 23:00:13 | VERBOSE | running cmd - ['git', 'commit', '-m', 'auto-commit for v0.1.20']
+07-10-2022 23:00:13 | VERBOSE | rendered cmd: git tag -a v0.1.20 -m "automated tag for release v0.1.20" --sign
+07-10-2022 23:00:13 | VERBOSE | running cmd - ['git', 'tag', '-a', 'v0.1.20', '-m', 'automated tag for release v0.1.20', '--sign']
+07-10-2022 23:00:13 | VERBOSE | rendered cmd: git push origin master v0.1.20
+07-10-2022 23:00:13 | VERBOSE | running cmd - ['git', 'push', 'origin', 'master', 'v0.1.20']
+07-10-2022 23:00:14 | INFO | +END pipeline.RELEASE
+07-10-2022 23:00:14 | VERBOSE | persisting version - 0.1.20+build.159
+07-10-2022 23:00:14 | VERBOSE | wrote config file
+07-10-2022 23:00:14 | VERBOSE | bump() COMPLETE
+07-10-2022 23:00:14 | INFO | Version: 0.1.20+build.159
+07-11-2022 10:17:51 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 10:17:51 | VERBOSE | regex generated for __version__
+07-11-2022 10:17:51 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 10:17:51 | VERBOSE | regex generated for __public_version__
+07-11-2022 10:17:51 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 10:17:51 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 10:17:51 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 10:17:51 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 10:17:51 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 10:17:51 | VERBOSE | parsing TEST pipeline
+07-11-2022 10:17:51 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 10:17:51 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 10:17:51 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 10:17:51 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 10:17:51 | INFO | Current semantic version: 0.1.20+build.159
+07-11-2022 10:29:16 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 10:29:16 | VERBOSE | regex generated for __version__
+07-11-2022 10:29:16 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 10:29:16 | VERBOSE | regex generated for __public_version__
+07-11-2022 10:29:16 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 10:29:16 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 10:29:16 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 10:29:16 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 10:29:16 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 10:29:16 | VERBOSE | parsing TEST pipeline
+07-11-2022 10:29:16 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 10:29:16 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 10:29:16 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 10:29:16 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 10:29:16 | INFO | Current semantic version: 0.1.20+build.159
+07-11-2022 11:29:51 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 11:29:51 | VERBOSE | regex generated for __version__
+07-11-2022 11:29:51 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 11:29:51 | VERBOSE | regex generated for __public_version__
+07-11-2022 11:29:51 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 11:29:51 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 11:29:51 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 11:29:51 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 11:29:51 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 11:29:51 | VERBOSE | parsing TEST pipeline
+07-11-2022 11:29:51 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 11:29:53 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 11:29:53 | VERBOSE | regex generated for __version__
+07-11-2022 11:29:53 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 11:29:53 | VERBOSE | regex generated for __public_version__
+07-11-2022 11:29:53 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 11:29:53 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 11:29:53 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 11:29:53 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 11:29:53 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 11:29:53 | VERBOSE | parsing TEST pipeline
+07-11-2022 11:29:53 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 11:31:34 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 11:31:34 | VERBOSE | regex generated for __version__
+07-11-2022 11:31:34 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 11:31:34 | VERBOSE | regex generated for __public_version__
+07-11-2022 11:31:34 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 11:31:34 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 11:31:34 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 11:31:34 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 11:31:34 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 11:31:34 | VERBOSE | parsing TEST pipeline
+07-11-2022 11:31:34 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 11:32:52 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 11:32:52 | VERBOSE | regex generated for __version__
+07-11-2022 11:32:52 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 11:32:52 | VERBOSE | regex generated for __public_version__
+07-11-2022 11:32:52 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 11:32:52 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 11:32:52 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 11:32:52 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 11:32:52 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 11:32:52 | VERBOSE | parsing TEST pipeline
+07-11-2022 11:32:52 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 11:32:52 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 11:32:52 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 11:32:52 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 11:32:52 | INFO | Current semantic version: 0.1.20+build.159
+07-11-2022 11:33:15 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 11:33:15 | VERBOSE | regex generated for __version__
+07-11-2022 11:33:15 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 11:33:15 | VERBOSE | regex generated for __public_version__
+07-11-2022 11:33:15 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 11:33:15 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 11:33:15 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 11:33:15 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 11:33:15 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 11:33:15 | VERBOSE | parsing TEST pipeline
+07-11-2022 11:33:15 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 11:33:15 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 11:33:15 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 11:33:15 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 11:33:42 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 11:33:42 | VERBOSE | regex generated for __version__
+07-11-2022 11:33:42 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 11:33:42 | VERBOSE | regex generated for __public_version__
+07-11-2022 11:33:42 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 11:33:42 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 11:33:42 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 11:33:42 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 11:33:42 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 11:33:42 | VERBOSE | parsing TEST pipeline
+07-11-2022 11:33:42 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 11:33:42 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 11:33:42 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 11:33:42 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 11:33:42 | VERBOSE | env = PRODUCTION
+07-11-2022 11:33:42 | INFO | +BEGIN pipeline.TEST
+07-11-2022 11:33:42 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 11:33:42 | INFO | +END pipeline.TEST
+07-11-2022 12:31:40 | VERBOSE | verbose
+07-11-2022 12:31:46 | VERBOSE | verbose
+07-11-2022 12:31:48 | VERBOSE | verbose
+07-11-2022 12:31:51 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 12:31:51 | VERBOSE | regex generated for __version__
+07-11-2022 12:31:51 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 12:31:51 | VERBOSE | regex generated for __public_version__
+07-11-2022 12:31:51 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 12:31:51 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 12:31:51 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 12:31:51 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 12:31:51 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 12:31:51 | VERBOSE | parsing TEST pipeline
+07-11-2022 12:31:51 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 12:31:51 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 12:31:51 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 12:31:51 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 12:31:51 | VERBOSE | env = PRODUCTION
+07-11-2022 12:31:51 | INFO | +BEGIN pipeline.TEST
+07-11-2022 12:31:51 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 12:31:51 | INFO | +END pipeline.TEST
+07-11-2022 12:47:20 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 12:47:20 | VERBOSE | regex generated for __version__
+07-11-2022 12:47:20 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 12:47:20 | VERBOSE | regex generated for __public_version__
+07-11-2022 12:47:20 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 12:47:20 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 12:47:20 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 12:47:20 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 12:47:20 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 12:47:20 | VERBOSE | parsing TEST pipeline
+07-11-2022 12:47:20 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 12:47:20 | VERBOSE | TEST.step2 - env
+07-11-2022 12:47:20 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 12:47:20 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 12:47:20 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 12:47:20 | VERBOSE | env = PRODUCTION
+07-11-2022 12:47:20 | INFO | +BEGIN pipeline.TEST
+07-11-2022 12:48:31 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 12:48:31 | VERBOSE | regex generated for __version__
+07-11-2022 12:48:31 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 12:48:31 | VERBOSE | regex generated for __public_version__
+07-11-2022 12:48:31 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 12:48:31 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 12:48:31 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 12:48:31 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 12:48:31 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 12:48:31 | VERBOSE | parsing TEST pipeline
+07-11-2022 12:48:31 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 12:48:31 | VERBOSE | TEST.step2 - env
+07-11-2022 12:48:31 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 12:48:31 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 12:48:31 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 12:48:31 | VERBOSE | env = PRODUCTION
+07-11-2022 12:48:31 | INFO | +BEGIN pipeline.TEST
+07-11-2022 12:48:31 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 12:50:29 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 12:50:29 | VERBOSE | regex generated for __version__
+07-11-2022 12:50:29 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 12:50:29 | VERBOSE | regex generated for __public_version__
+07-11-2022 12:50:29 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 12:50:29 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 12:50:29 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 12:50:29 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 12:50:29 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 12:50:29 | VERBOSE | parsing TEST pipeline
+07-11-2022 12:50:29 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 12:50:29 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 12:50:29 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 12:50:29 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 12:50:29 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 12:50:29 | VERBOSE | env = PRODUCTION
+07-11-2022 12:50:29 | INFO | +BEGIN pipeline.TEST
+07-11-2022 12:50:29 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 12:51:54 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 12:51:54 | VERBOSE | regex generated for __version__
+07-11-2022 12:51:54 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 12:51:54 | VERBOSE | regex generated for __public_version__
+07-11-2022 12:51:54 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 12:51:54 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 12:51:54 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 12:51:54 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 12:51:54 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 12:51:54 | VERBOSE | parsing TEST pipeline
+07-11-2022 12:51:54 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 12:51:54 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 12:51:54 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 12:51:54 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 12:51:54 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 12:51:54 | VERBOSE | env = PRODUCTION
+07-11-2022 12:51:54 | INFO | +BEGIN pipeline.TEST
+07-11-2022 12:51:54 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 13:11:31 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 13:11:31 | VERBOSE | regex generated for __version__
+07-11-2022 13:11:31 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 13:11:31 | VERBOSE | regex generated for __public_version__
+07-11-2022 13:11:31 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 13:11:31 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 13:11:31 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 13:11:31 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 13:11:31 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 13:11:31 | VERBOSE | parsing TEST pipeline
+07-11-2022 13:11:31 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 13:11:31 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 13:11:31 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 13:11:31 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 13:11:31 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 13:11:31 | VERBOSE | env = PRODUCTION
+07-11-2022 13:11:31 | INFO | +BEGIN pipeline.TEST
+07-11-2022 13:11:31 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 13:13:33 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 13:13:33 | VERBOSE | regex generated for __version__
+07-11-2022 13:13:33 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 13:13:33 | VERBOSE | regex generated for __public_version__
+07-11-2022 13:13:33 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 13:13:33 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 13:13:33 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 13:13:33 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 13:13:33 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 13:13:33 | VERBOSE | parsing TEST pipeline
+07-11-2022 13:13:33 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 13:13:33 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 13:13:33 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 13:13:33 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 13:13:33 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 13:13:43 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 13:13:43 | VERBOSE | regex generated for __version__
+07-11-2022 13:13:43 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 13:13:43 | VERBOSE | regex generated for __public_version__
+07-11-2022 13:13:43 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 13:13:43 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 13:13:43 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 13:13:43 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 13:13:43 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 13:13:43 | VERBOSE | parsing TEST pipeline
+07-11-2022 13:13:43 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 13:13:43 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 13:13:43 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 13:13:43 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 13:13:43 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 13:13:43 | VERBOSE | env = PRODUCTION
+07-11-2022 13:13:43 | INFO | +BEGIN pipeline.TEST
+07-11-2022 13:13:43 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 13:14:41 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 13:14:41 | VERBOSE | regex generated for __version__
+07-11-2022 13:14:41 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 13:14:41 | VERBOSE | regex generated for __public_version__
+07-11-2022 13:14:41 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 13:14:41 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 13:14:41 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 13:14:41 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 13:14:41 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 13:14:41 | VERBOSE | parsing TEST pipeline
+07-11-2022 13:14:41 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 13:14:41 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 13:14:41 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 13:14:41 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 13:14:41 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 13:14:41 | VERBOSE | env = PRODUCTION
+07-11-2022 13:14:41 | INFO | +BEGIN pipeline.TEST
+07-11-2022 13:14:41 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 13:16:19 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 13:16:19 | VERBOSE | regex generated for __version__
+07-11-2022 13:16:19 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 13:16:19 | VERBOSE | regex generated for __public_version__
+07-11-2022 13:16:19 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 13:16:19 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 13:16:19 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 13:16:19 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 13:16:19 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 13:16:19 | VERBOSE | parsing TEST pipeline
+07-11-2022 13:16:19 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 13:16:19 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 13:16:19 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 13:16:19 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 13:16:19 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 13:16:19 | VERBOSE | env = PRODUCTION
+07-11-2022 13:16:19 | VERBOSE | Generated ctx: {'VERSION': '0.1.20+build.159', 'semantic': '0.1.20+build.159', 'PUBLIC': '0.1.20', 'PEP440': '0.1.20.159', 'GIT': '0.1.20-dev.DIRTY+7fd39b5.159', 'TAG': 'v0.1.20', 'STAGE': None, 'ENV': 'production', 'AGE': 'unknown', 'ROOT': PosixPath('/Users/jhopper/Dropbox/dev/ican'), 'PREVIOUS': '0.1.19+build.158'}
+07-11-2022 13:16:19 | INFO | +BEGIN pipeline.TEST
+07-11-2022 13:16:19 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 13:16:22 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 13:16:22 | VERBOSE | regex generated for __version__
+07-11-2022 13:16:22 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 13:16:22 | VERBOSE | regex generated for __public_version__
+07-11-2022 13:16:22 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 13:16:22 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 13:16:22 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 13:16:22 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 13:16:22 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 13:16:22 | VERBOSE | parsing TEST pipeline
+07-11-2022 13:16:22 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 13:16:22 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 13:16:22 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 13:16:22 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 13:16:22 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 13:16:22 | VERBOSE | env = PRODUCTION
+07-11-2022 13:16:22 | VERBOSE | Generated ctx: {'VERSION': '0.1.20+build.159', 'semantic': '0.1.20+build.159', 'PUBLIC': '0.1.20', 'PEP440': '0.1.20.159', 'GIT': '0.1.20-dev.DIRTY+7fd39b5.159', 'TAG': 'v0.1.20', 'STAGE': None, 'ENV': 'production', 'AGE': 'unknown', 'ROOT': PosixPath('/Users/jhopper/Dropbox/dev/ican'), 'PREVIOUS': '0.1.19+build.158'}
+07-11-2022 13:16:22 | INFO | +BEGIN pipeline.TEST
+07-11-2022 13:16:22 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 13:16:51 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 13:16:51 | VERBOSE | regex generated for __version__
+07-11-2022 13:16:51 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 13:16:51 | VERBOSE | regex generated for __public_version__
+07-11-2022 13:16:51 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 13:16:51 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 13:16:51 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 13:16:51 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 13:16:51 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 13:16:51 | VERBOSE | parsing TEST pipeline
+07-11-2022 13:16:51 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 13:16:51 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 13:16:51 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 13:16:51 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 13:16:51 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 13:16:51 | VERBOSE | env = PRODUCTION
+07-11-2022 13:16:51 | VERBOSE | Generated ctx: {'VERSION': '0.1.20+build.159', 'semantic': '0.1.20+build.159', 'PUBLIC': '0.1.20', 'PEP440': '0.1.20.159', 'GIT': '0.1.20-dev.DIRTY+7fd39b5.159', 'TAG': 'v0.1.20', 'STAGE': None, 'ENV': 'production', 'AGE': 'unknown', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.19+build.158'}
+07-11-2022 13:16:51 | INFO | +BEGIN pipeline.TEST
+07-11-2022 13:16:51 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 13:17:21 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 13:17:21 | VERBOSE | regex generated for __version__
+07-11-2022 13:17:21 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 13:17:21 | VERBOSE | regex generated for __public_version__
+07-11-2022 13:17:21 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 13:17:21 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 13:17:21 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 13:17:21 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 13:17:21 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 13:17:21 | VERBOSE | parsing TEST pipeline
+07-11-2022 13:17:21 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 13:17:21 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 13:17:21 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 13:17:21 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 13:17:21 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 13:17:21 | VERBOSE | env = PRODUCTION
+07-11-2022 13:17:21 | VERBOSE | Generated ctx: {'VERSION': '0.1.20+build.159', 'SEMANTIC': '0.1.20+build.159', 'PUBLIC': '0.1.20', 'PEP440': '0.1.20.159', 'GIT': '0.1.20-dev.DIRTY+7fd39b5.159', 'TAG': 'v0.1.20', 'STAGE': None, 'ENV': 'production', 'AGE': 'unknown', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.19+build.158'}
+07-11-2022 13:17:21 | INFO | +BEGIN pipeline.TEST
+07-11-2022 13:17:21 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 13:17:59 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 13:17:59 | VERBOSE | regex generated for __version__
+07-11-2022 13:17:59 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 13:17:59 | VERBOSE | regex generated for __public_version__
+07-11-2022 13:17:59 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 13:17:59 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 13:17:59 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 13:17:59 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 13:17:59 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 13:17:59 | VERBOSE | parsing TEST pipeline
+07-11-2022 13:17:59 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 13:17:59 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 13:17:59 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 13:17:59 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 13:17:59 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 13:17:59 | VERBOSE | env = PRODUCTION
+07-11-2022 13:17:59 | VERBOSE | Generated ctx: {'VERSION': '0.1.20+build.159', 'SEMANTIC': '0.1.20+build.159', 'PUBLIC': '0.1.20', 'PEP440': '0.1.20.159', 'GIT': '0.1.20-dev.DIRTY+7fd39b5.159', 'TAG': 'v0.1.20', 'STAGE': 'None', 'ENV': 'production', 'AGE': 'unknown', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.19+build.158'}
+07-11-2022 13:17:59 | INFO | +BEGIN pipeline.TEST
+07-11-2022 13:17:59 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 13:17:59 | VERBOSE | running cmd - ['echo', '`env`']
+07-11-2022 13:17:59 | INFO | +END pipeline.TEST
+07-11-2022 13:19:29 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 13:19:29 | VERBOSE | regex generated for __version__
+07-11-2022 13:19:29 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 13:19:29 | VERBOSE | regex generated for __public_version__
+07-11-2022 13:19:29 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 13:19:29 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 13:19:29 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 13:19:29 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 13:19:29 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 13:19:29 | VERBOSE | parsing TEST pipeline
+07-11-2022 13:19:29 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 13:19:29 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 13:19:29 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 13:19:29 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 13:19:29 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 13:19:29 | VERBOSE | env = PRODUCTION
+07-11-2022 13:19:29 | VERBOSE | Generated ctx: {'VERSION': '0.1.20+build.159', 'SEMANTIC': '0.1.20+build.159', 'PUBLIC': '0.1.20', 'PEP440': '0.1.20.159', 'GIT': '0.1.20-dev.DIRTY+7fd39b5.159', 'TAG': 'v0.1.20', 'STAGE': 'None', 'ENV': 'production', 'AGE': 'unknown', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.19+build.158'}
+07-11-2022 13:19:29 | INFO | +BEGIN pipeline.TEST
+07-11-2022 13:19:29 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 13:19:29 | VERBOSE | running cmd - ['echo', '`env`']
+07-11-2022 13:19:29 | INFO | +END pipeline.TEST
+07-11-2022 13:19:54 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 13:19:54 | VERBOSE | regex generated for __version__
+07-11-2022 13:19:54 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 13:19:54 | VERBOSE | regex generated for __public_version__
+07-11-2022 13:19:54 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 13:19:54 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 13:19:54 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 13:19:54 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 13:19:54 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 13:19:54 | VERBOSE | parsing TEST pipeline
+07-11-2022 13:19:54 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 13:19:54 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 13:19:54 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 13:19:54 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 13:19:54 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 13:19:54 | VERBOSE | env = PRODUCTION
+07-11-2022 13:19:54 | VERBOSE | Generated ctx: {'VERSION': '0.1.20+build.159', 'SEMANTIC': '0.1.20+build.159', 'PUBLIC': '0.1.20', 'PEP440': '0.1.20.159', 'GIT': '0.1.20-dev.DIRTY+7fd39b5.159', 'TAG': 'v0.1.20', 'STAGE': 'None', 'ENV': 'production', 'AGE': 'unknown', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.19+build.158'}
+07-11-2022 13:19:54 | INFO | +BEGIN pipeline.TEST
+07-11-2022 13:19:54 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 13:19:54 | VERBOSE | running cmd - ['echo', '`env`']
+07-11-2022 13:19:54 | INFO | +END pipeline.TEST
+07-11-2022 13:20:08 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 13:20:08 | VERBOSE | regex generated for __version__
+07-11-2022 13:20:08 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 13:20:08 | VERBOSE | regex generated for __public_version__
+07-11-2022 13:20:08 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 13:20:08 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 13:20:08 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 13:20:08 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 13:20:08 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 13:20:08 | VERBOSE | parsing TEST pipeline
+07-11-2022 13:20:08 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 13:20:08 | VERBOSE | TEST.step2 - echo `env`
+07-11-2022 13:20:08 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 13:20:08 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 13:20:08 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 13:20:08 | VERBOSE | env = PRODUCTION
+07-11-2022 13:20:08 | VERBOSE | Generated ctx: {'VERSION': '0.1.20+build.159', 'SEMANTIC': '0.1.20+build.159', 'PUBLIC': '0.1.20', 'PEP440': '0.1.20.159', 'GIT': '0.1.20-dev.DIRTY+7fd39b5.159', 'TAG': 'v0.1.20', 'STAGE': 'None', 'ENV': 'production', 'AGE': 'unknown', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.19+build.158'}
+07-11-2022 13:20:08 | INFO | +BEGIN pipeline.TEST
+07-11-2022 13:20:08 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 13:20:08 | VERBOSE | running cmd - ['echo', '`env`']
+07-11-2022 13:20:08 | INFO | +END pipeline.TEST
+07-11-2022 13:20:19 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 13:20:19 | VERBOSE | regex generated for __version__
+07-11-2022 13:20:19 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 13:20:19 | VERBOSE | regex generated for __public_version__
+07-11-2022 13:20:19 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 13:20:19 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 13:20:19 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 13:20:19 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 13:20:19 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 13:20:19 | VERBOSE | parsing TEST pipeline
+07-11-2022 13:20:19 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 13:20:19 | VERBOSE | TEST.step2 - env
+07-11-2022 13:20:19 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 13:20:19 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 13:20:19 | VERBOSE | discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 13:20:19 | VERBOSE | env = PRODUCTION
+07-11-2022 13:20:19 | VERBOSE | Generated ctx: {'VERSION': '0.1.20+build.159', 'SEMANTIC': '0.1.20+build.159', 'PUBLIC': '0.1.20', 'PEP440': '0.1.20.159', 'GIT': '0.1.20-dev.DIRTY+7fd39b5.159', 'TAG': 'v0.1.20', 'STAGE': 'None', 'ENV': 'production', 'AGE': 'unknown', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.19+build.158'}
+07-11-2022 13:20:19 | INFO | +BEGIN pipeline.TEST
+07-11-2022 13:20:19 | VERBOSE | running cmd - ['echo', 'foo']
+07-11-2022 13:20:19 | VERBOSE | running cmd - ['env']
+07-11-2022 13:20:19 | INFO | +END pipeline.TEST
+07-11-2022 14:07:44 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-11-2022 14:07:44 | VERBOSE | regex generated for __version__
+07-11-2022 14:07:44 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-11-2022 14:07:44 | VERBOSE | regex generated for __public_version__
+07-11-2022 14:07:44 | VERBOSE | parsing NEW.RELEASE pipeline
+07-11-2022 14:07:44 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-11-2022 14:07:44 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-11-2022 14:07:44 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-11-2022 14:07:44 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-11-2022 14:07:44 | VERBOSE | parsing TEST pipeline
+07-11-2022 14:07:44 | VERBOSE | TEST.step1 - echo "foo"
+07-11-2022 14:07:44 | VERBOSE | TEST.step2 - env
+07-11-2022 14:07:44 | VERBOSE | discovered 0.1.20+build.159 @ CONFIG.version
+07-11-2022 14:07:44 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-11-2022 14:07:44 | VERBOSE | Discovered 0.1.20-dev.DIRTY+7fd39b5.159 @ GIT.version
+07-11-2022 14:07:44 | VERBOSE | Beginning bump of <PATCH>
+07-11-2022 14:07:44 | VERBOSE | New value of <PATCH> - 21
+07-11-2022 14:07:44 | VERBOSE | VERSION[./ican/__init__.py] - updating to 0.1.21+build.160
+07-11-2022 14:07:44 | VERBOSE | VERSION[./ican/__init__.py] - found 1 matches
+07-11-2022 14:07:44 | VERBOSE | VERSION[./ican/__init__.py] - update COMPLETE
+07-11-2022 14:07:44 | VERBOSE | PUBLIC[./ican/__init__.py] - updating to 0.1.21
+07-11-2022 14:07:44 | VERBOSE | PUBLIC[./ican/__init__.py] - found 1 matches
+07-11-2022 14:07:44 | VERBOSE | PUBLIC[./ican/__init__.py] - update COMPLETE
+07-11-2022 14:07:44 | VERBOSE | age = NEW
+07-11-2022 14:07:44 | VERBOSE | age = NEW
+07-11-2022 14:07:44 | VERBOSE | age = NEW
+07-11-2022 14:07:44 | VERBOSE | env = PRODUCTION
+07-11-2022 14:07:44 | VERBOSE | age = NEW
+07-11-2022 14:07:44 | VERBOSE | Generated ctx: {'VERSION': '0.1.21+build.160', 'SEMANTIC': '0.1.21+build.160', 'PUBLIC': '0.1.21', 'PEP440': '0.1.21.160', 'GIT': '0.1.20-dev.DIRTY+7fd39b5.160', 'TAG': 'v0.1.21', 'STAGE': 'new.release', 'ENV': 'production', 'AGE': 'new', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.19+build.158'}
+07-11-2022 14:07:44 | INFO | +BEGIN pipeline.NEW.RELEASE
+07-11-2022 14:07:44 | VERBOSE | running cmd - ['git', 'add', '.']

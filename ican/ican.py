@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os
-from pathlib import Path
-
-from .config import Config
+from .base import Base
 from .version import Version
 from .git import Git
 from .log import logger
@@ -18,18 +15,15 @@ from .exceptions import RollbackNotPossible
 #######################################
 
 
-class Ican(object):
+class Ican(Base):
     """
     Object which will orchestrate entire program
     """
 
-    def __init__(self, config=None):
+    def __init__(self):
         """Typically ican will be instantiated by cli with a half parsed
         config.  We pre-parse so logging can begin.
         """
-        self.version = None
-        self.git = None
-        self.config = config
         self.ready = False
 
         # make sure the config is fully parsed
@@ -42,8 +36,8 @@ class Ican(object):
             raise NoConfigFound()
 
         # Now config is parsed.  We can parse from config
-        self.version = Version.parse(self.config.version)
-        logger.verbose(f'discovered {self.version.semantic} @ CONFIG.version')
+        self.version = Version.parse(self.config.current_version)
+        logger.verbose(f"discovered {self.version.semantic} @ CONFIG.version")
 
         # Git init
         self.git = Git()
@@ -51,12 +45,11 @@ class Ican(object):
         try:
             self.version._git_metadata = self.git.describe()
         except GitDescribeError as e:
-            logger.info(e)
-            logger.info('Git style versions will be disabled.')
-            logger.info('Possibly this is a new repo with no tags.')
+            logger.verbose(e)
+            logger.verbose("Git-versions are disabled. Does this repo have a tag?")
             self.git.disable()
         else:
-            logger.verbose(f'discovered {self.version.git} @ GIT.version')
+            logger.verbose(f"Discovered {self.version.git} @ GIT.version")
         return
 
     def show(self, style):
@@ -66,37 +59,8 @@ class Ican(object):
 
         v = getattr(self.version, style)
         if v is None:
-            return f'version STYLE: {style} not available'
+            return f"Version STYLE: {style} not available"
         return v
-
-    def bump(self, part):
-        """This is pretty much the full process
-        """
-
-        logger.verbose(f'beginning bump of <{part.upper()}>')
-
-        # Use the Version API to bump 'part'
-        self.version.bump(part)
-        logger.verbose(
-            f'new value of <{part.upper()}> - {getattr(self.version, part)}'
-        )
-
-        # Update the user's files with new version
-        for file in self.config.source_files:
-            file.update(self.version)
-
-        # Run the appropriate pipeline
-        if self.version.new_release:
-            self.run_pipeline('release', True)
-        elif part == 'prerelease':
-            self.run_pipeline('prerelease', True)
-        elif part == 'build':
-            self.run_pipeline('build', True)
-
-        # Once all else is successful, persist the new version
-        self.config.persist_version(self.version.semantic)
-
-        return self
 
     def rollback(self):
         """When all else fails, this should bring the version back
@@ -117,25 +81,44 @@ class Ican(object):
         # Now that everything else is finished, persist version
         self.config.persist_version(self.config.previous_version)
 
+    def bump(self, part, pre):
+        """This is pretty much the full process
+        """
+        if pre and part == "prerelease":
+            logger.verbose(f"Setting prerelease string to {pre}")
+        if pre and part != 'prerelease':
+            print(pre)
+            logger.warning(f"Disregarding --pre with part set to {part.upper()}.")
+        logger.verbose(f"Beginning bump of <{part.upper()}>")
+
+        self.version.bump(part, pre)
+        logger.verbose(f"New value of <{part.upper()}> - {getattr(self.version, part)}")
+
+        # Update the user's files with new version
+        for file in self.config.source_files:
+            file.update(self.version)
+
+        # Run the appropriate pipeline
+        # new.release, new.prerelease rebuild.release, rebuild.prerelease
+        if self.version.stage:
+            self.run_pipeline(self.version.stage, True)
+
+        # Once all else is successful, persist the new version
+        self.config.persist_version(self.version.semantic)
+
+        return self
+
     def run_pipeline(self, pipeline, automated=False):
         # Pipeline
         if self.config.pipelines.get(pipeline) is None:
             # Pipeline is not defined
             if automated:
-                # In this case user did not ask to run it
-                logger.verbose(f'Pipeline `{pipeline}` not found.')
+                logger.verbose(f"Pipeline `{pipeline}` not found.")
             else:
                 # This was requested so an error is appropriate
-                logger.error(f'Pipeline `{pipeline}` not found.')
+                logger.error(f"Pipeline `{pipeline}` not found.")
             return
 
         pl = self.config.pipelines.get(pipeline)
-        # Prep the ctx dictionary
-        ctx = dict()
-        vars = dir(self.version)
-        for v in vars:
-            if not v.startswith('_') and not callable(getattr(self.version, v)):
-                ctx[v] = getattr(self.version, v)
-        pl.run(ctx)
+        pl.run()
         return
-

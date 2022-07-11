@@ -5,14 +5,14 @@ from types import SimpleNamespace
 from .log import logger
 
 
-__version__ = '0.2'
+__version__ = "0.3"
 
 
-#######################################
+#########################
 #
 #   Version Class
 #
-#######################################
+#########################
 
 
 class Version(object):
@@ -20,9 +20,9 @@ class Version(object):
     Semver representation
     """
 
-    BUMPABLE = ['major', 'minor', 'patch', 'prerelease', 'build']
-    DEFAULT_PRERELEASE = 'beta.0'
-    DEFAULT_BUILD = 'build.0'
+    BUMPABLE = ["major", "minor", "patch", "prerelease", "build"]
+    DEFAULT_PRERELEASE = "beta.0"
+    DEFAULT_BUILD = "build.0"
 
     last_number_re = re.compile(r"(?:[^\d]*(\d+)[^\d]*)+")
     semver_re = re.compile(
@@ -42,23 +42,17 @@ class Version(object):
         re.VERBOSE,
     )
     pep440_re = re.compile(
-        r'''
+        r"""
         ^([1-9][0-9]*!)?
         (0|[1-9][0-9]*)
         (\.(0|[1-9][0-9]*))*((a|b|rc)(0|[1-9][0-9]*))?
         (\.post(0|[1-9][0-9]*))?
         (\.dev(0|[1-9][0-9]*))?$
-        ''',
-        re.VERBOSE
+        """,
+        re.VERBOSE,
     )
 
-    def __init__(
-        self, 
-        major=0, 
-        minor=0, 
-        patch=0, 
-        prerelease=None, 
-        build=None):
+    def __init__(self, major=0, minor=0, patch=0, prerelease=None, build=None):
 
         self._major = int(major)
         self._minor = int(minor)
@@ -68,13 +62,13 @@ class Version(object):
         self._git_metadata = None
 
         f = SimpleNamespace(
-            major = self.major,
-            minor = self.minor,
-            patch = self.patch,
-            prerelease = self.prerelease,
-            build = self.build,
-            semantic = self.semantic,
-            part = None
+            major=self.major,
+            minor=self.minor,
+            patch=self.patch,
+            prerelease=self.prerelease,
+            build=self.build,
+            semantic=self.semantic,
+            part=None,
         )
         self._frozen = f
 
@@ -83,16 +77,14 @@ class Version(object):
 
     def __repr__(self):
         address = hex(id(self))
-        return f'<Version {self.semantic} at {address}>'
+        return f"<Version {self.semantic} at {address}>"
 
-
-##########################################
-#
-#  Version Parts: 
-#    major, minor, patch, pre, build
-#
-##########################################
-
+    ##########################################
+    #
+    #  Version Parts:
+    #    major, minor, patch, pre, build
+    #
+    ##########################################
 
     @property
     def major(self):
@@ -137,7 +129,7 @@ class Version(object):
     @property
     def build_int(self):
         """
-        Parse an int from build... 
+        Parse an int from build...
         +build.102 = 102
         """
 
@@ -159,12 +151,12 @@ class Version(object):
         if match:
             return int(match.group(1))
 
-##########################################
-#
-#  Version Styles: 
-#    semantic, public, pep440, git
-#
-##########################################
+    ##########################################
+    #
+    #  Version Styles:
+    #    semantic, public, pep440, git
+    #
+    ##########################################
 
     @property
     def semantic(self):
@@ -172,43 +164,43 @@ class Version(object):
         This is the standard semantic version format.  For most
         purposes this is the best choice.
         """
-        v = f'{self._major}.{self._minor}.{self._patch}'
+        v = f"{self._major}.{self._minor}.{self._patch}"
         if self._prerelease:
-            v = f'{v}-{self._prerelease}'
+            v = f"{v}-{self._prerelease}"
         if self._build:
-            v = f'{v}+{self._build}'
+            v = f"{v}+{self._build}"
         return v
 
     @property
     def pep440(self):
         """
-        This is a loose translation to pep440 compliant.  They 
-        allow more than 3 segments of ints, so we can do 
+        This is a loose translation to pep440 compliant.  They
+        allow more than 3 segments of ints, so we can do
         1.2.3.899b2 where 899 is build # and b2 is prerelease
         """
         base = self.public
-        prerelease = ''
-        build = ''
+        prerelease = ""
+        build = ""
 
         if self.prerelease:
             numeric = self.prerelease_int
             if numeric is None:
-                prerelease = ''
-            elif 'alpha' in self.prerelease.lower():
-                prerelease = f'a{numeric}'
-            elif 'beta' in self.prerelease.lower():
-                prerelease = f'b{numeric}'
-            elif 'rc' in self.prerelease.lower():
-                prerelease = f'rc{numeric}'
+                prerelease = ""
+            elif "alpha" in self.prerelease.lower():
+                prerelease = f"a{numeric}"
+            elif "beta" in self.prerelease.lower():
+                prerelease = f"b{numeric}"
+            elif "rc" in self.prerelease.lower():
+                prerelease = f"rc{numeric}"
             else:
-                prerelease = f'.dev{numeric}'
+                prerelease = f".dev{numeric}"
 
         if self.build:
-            build = f'.{self.build_int}'
+            build = f".{self.build_int}"
 
-        v = f'{base}{prerelease}{build}'
+        v = f"{base}{prerelease}{build}"
         return v
-    
+
     @property
     def public(self):
         """
@@ -217,19 +209,19 @@ class Version(object):
         and simple semantic versions.
         """
 
-        return f'{self._major}.{self._minor}.{self._patch}'
+        return f"{self._major}.{self._minor}.{self._patch}"
 
     @property
     def git(self):
         """
         This is a git formatted version, made up from metadata
         retrieved with `git describe`.
-        
+
         format will be: M.m.p-dev.<distance>+build.<commit_sha>
         ex: 4.2.0-rc.3.dev.5+fcf2c8fd
         """
         if self._git_metadata is None:
-            return 'GIT METADATA NOT AVAILABLE'
+            return "GIT METADATA NOT AVAILABLE"
 
         tag = self._git_metadata.tag
         dirty = self._git_metadata.dirty
@@ -238,31 +230,29 @@ class Version(object):
 
         # Add distance in prerelease. Check for existing prerelease
         if distance and self.prerelease:
-            pre = f'-{self.prerelease}.dev.{distance}'
+            pre = f"-{self.prerelease}.dev.{distance}"
         elif distance:
-            pre = f'-dev.{distance}'
+            pre = f"-dev.{distance}"
         elif dirty:
-            pre = f'-dev.DIRTY'
+            pre = "-dev.DIRTY"
         else:
-            pre = ''
+            pre = ""
 
         # Construct build metadata with git sha + tracked build
         if commit_sha:
-            build = f'{commit_sha}.{self.build_int}'
+            build = f"{commit_sha}.{self.build_int}"
         else:
-            build = f'build.{self.build_int}'
+            build = f"build.{self.build_int}"
 
         # Add build metadata to version
-        v = f'{tag}{pre}+{build}'
+        v = f"{tag}{pre}+{build}"
         return v
 
-
-##########################################
-#
-#  Descriptors: original, new_release
-#
-##########################################
-
+    ##########################################
+    #
+    #  Descriptors: original, new_release
+    #
+    ##########################################
 
     @property
     def bumped(self):
@@ -278,7 +268,7 @@ class Version(object):
     @property
     def original(self):
         """Use the data stored in _frozen to return a Version instance
-        of the original data, in case a bump has been made and some
+        of the original datac, in case a bump has been made and some
         type of comparison is desired.
 
         _frozen.part: the part of the original version that was
@@ -287,32 +277,51 @@ class Version(object):
         return Version.parse(self._frozen.semantic)
 
     @property
-    def new_release(self):
-        if not self._frozen:
-            return None
-        
+    def age(self):
         part = self._frozen.part
-        if part in ['major', 'minor', 'patch']:
-            logger.verbose('version level = RELEASE')
-            return True
-        return False
+        if part in ["major", "minor", "patch", "prerelease"]:
+            logger.verbose("age = NEW")
+            return "new"
+        elif part in ["build"]:
+            logger.verbose("age = REBUILD")
+            return "rebuild"
+        else:
+            return "unknown"
+
+    @property
+    def env(self):
+        if self._prerelease:
+            logger.verbose("env = DEVELOPMENT")
+            return "development"
+        logger.verbose("env = PRODUCTION")
+        return "production"
+
+    @property
+    def stage(self):
+        """Also known as the BR (bump result)"""
+        if not self.bumped:
+            return None
+
+        env = "release"
+        if self._prerelease:
+            env = "prerelease"
+
+        return f"{self.age}.{env}"
 
     @property
     def tag(self):
-        return f'v{self.public}'
+        return f"v{self.public}"
 
-
-##########################################
-#
-#  Version methods
-#
-##########################################
-
+    #########################
+    #
+    #  Version methods
+    #
+    #########################
 
     def is_canonical(self):
         return Version.pep440_re.match(self.pep440) is not None
 
-    def bump(self, part=None):
+    def bump(self, part=None, pre=None):
         """
         Exposed bump method in the public api.
         Arguments:
@@ -325,13 +334,17 @@ class Version(object):
         if part not in Version.BUMPABLE:
             raise ValueError(f"{part} is not bumpable")
 
+        # additional arg for setting prerelease
+        if pre:
+            self._prerelease = f'{pre}.0'
+
         # Record the bumped part
         self._frozen.part = part
         # Always increment the build number
         self.increment_build()
 
         # Find the part-specifric bump function
-        bump_method = getattr(self, f'bump_{part}')
+        bump_method = getattr(self, f"bump_{part}")
         bump_method()
 
     def bump_major(self):
@@ -352,7 +365,7 @@ class Version(object):
         self._minor = self._minor + 1
         self._patch = 0
         self._prerelease = None
-        
+
     def bump_patch(self):
         """
         Bump method for bumping PATCH
@@ -372,8 +385,7 @@ class Version(object):
         self._prerelease = prerelease
 
     def bump_build(self):
-        """
-        """
+        """ """
         pass
 
     def increment_build(self):
@@ -381,9 +393,7 @@ class Version(object):
         Always increment build number
         """
 
-        build = Version.increment_string(
-            self._build or Version.DEFAULT_BUILD
-        )
+        build = Version.increment_string(self._build or Version.DEFAULT_BUILD)
         self._build = build
 
     @classmethod
@@ -415,4 +425,3 @@ class Version(object):
 
         matched_parts = match.groupdict()
         return cls(**matched_parts)
-
