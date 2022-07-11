@@ -1,6 +1,6 @@
 [version]
-current = 0.1.18+build.157
-previous = 0.1.17+build.156
+current = 0.1.19+build.158
+previous = 0.1.18+build.157
 
 [options]
 log_file = ican.log
@@ -28,3 +28,5 @@ step4 = git push origin master {{tag}}
 step1 = touch /tmp/test.txt
 step2 = echo {{tag}}
 
+[pipeline: test]
+step1 = echo "foo"

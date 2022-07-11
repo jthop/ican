@@ -92,8 +92,10 @@ class Pipeline(object):
         return result
 
     def run(self, ctx={}):
+        logger.info(f'+BEGIN pipeline.{self.label.upper()}')
         for step in self.steps:
             cmd = self._render(step.cmd, ctx)
             label = step.label
             if logger.ok_to_write:
                 result = self._run_cmd(cmd)
+        logger.info(f'+END pipeline.{self.label.upper()}')

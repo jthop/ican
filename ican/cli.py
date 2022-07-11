@@ -228,9 +228,7 @@ commands:
         args = parser.parse_args(sys.argv[2:])
 
         i = Ican(config=self.config)
-        logger.info(f'+BEGIN pipeline[{args.pipeline}].run')
         i.run_pipeline(args.pipeline)
-        logger.info(f'+END pipeline[{args.pipeline}].run')
 
     def test(self):
         """dispatched here with command test

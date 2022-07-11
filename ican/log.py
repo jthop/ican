@@ -35,8 +35,8 @@ class IcanFormatter(logging.Formatter):
         self.FORMATS[IcanLogger.DRY_RUN] = self.color(self.BOLD + self.BLUE)
         self.FORMATS[logging.INFO] = self.color(self.BOLD + self.GREEN, True)
         self.FORMATS[logging.WARNING] = self.color(self.RED)
-        self.FORMATS[logging.ERROR] = self.color(self.BLINK + self.RED)
-        self.FORMATS[logging.CRITICAL] = self.color(self.INVERT + self.RED)
+        self.FORMATS[logging.ERROR] = self.color(self.INVERT + self.RED)
+        self.FORMATS[logging.CRITICAL] = self.color(self.BLINK + self.RED)
 
         if emoji:
             pass

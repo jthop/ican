@@ -87,11 +87,11 @@ class Ican(object):
 
         # Run the appropriate pipeline
         if self.version.new_release:
-            self.run_pipeline('release')
+            self.run_pipeline('release', True)
         elif part == 'prerelease':
-            self.run_pipeline('prerelease')
+            self.run_pipeline('prerelease', True)
         elif part == 'build':
-            self.run_pipeline('build')
+            self.run_pipeline('build', True)
 
         # Once all else is successful, persist the new version
         self.config.persist_version(self.version.semantic)
@@ -117,14 +117,19 @@ class Ican(object):
         # Now that everything else is finished, persist version
         self.config.persist_version(self.config.previous_version)
 
-    def run_pipeline(self, pipeline):
+    def run_pipeline(self, pipeline, automated=False):
         # Pipeline
         if self.config.pipelines.get(pipeline) is None:
+            # Pipeline is not defined
+            if automated:
+                # In this case user did not ask to run it
+                logger.verbose(f'Pipeline `{pipeline}` not found.')
+            else:
+                # This was requested so an error is appropriate
+                logger.error(f'Pipeline `{pipeline}` not found.')
             return
 
-        logger.verbose(f'running pipeline.{pipeline.upper()}')
         pl = self.config.pipelines.get(pipeline)
-
         # Prep the ctx dictionary
         ctx = dict()
         vars = dir(self.version)
