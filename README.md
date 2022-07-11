@@ -17,13 +17,13 @@ because anything you ask of it, the response is **always** `ican`
 
 ## :man_office_worker: Motivation
 
-There may be many similar programs.  But ican is the only version bumper/task runner/code releaser that is designed for small or even the 1 man team.
+There are plenty of version bumpers and build tools.  But ican is the only one that is designed for the smallest teams, even the 1 man team.
 
-The one man team can have different procedures than larger teams.  When a "new version" is finished, often times you may forget to even increment it.  And when you run the new version, you're bound to find bugs.  Sometimes I may be deploying something to a docker container, and re-build the container 20 or 30 times just to do some decent debugging.  Do I increment the version each time?  No.  Of course not.  That is my motivation for the build number.
+The one man team has different procedures than most.  Often times the one man team forgets to bump version numbers.  Few even bother to keep a code repository besides their own "Dropbox."
 
-With ican the build number is always incremented and never reset.  This way if you run your pipeline to build a container 20 times or so, at least your version has a new build # each time.  Once you define a few pipelines too, you may even do more version incrementing than you used to.
+ican brings big team development practices to small teams.  ican's build number is one feature.  As long as you use ican to automate your docker image builds, deployments, etc. each time your build number is incremented.  That way you always have a different semantic version number, even if you don't purposely bump one of the primary 3 parts.
 
-Now, your one man team software can have a changelog, git activity, and version numbers that suggest to others you are a fully staffed company.
+You can even easily use ican to start tagging docker images, as well as git commits.  Soon your small team will be officially "tagging" and "releasing" software like you have a Fortune 500 CI/CD manager.
 
 ## :floppy_disk: Install
 
@@ -105,11 +105,11 @@ file = ./src/__main__.py
 | file: [LABEL]     | file            | The filename of a file ican will update with new versions.  You can use a standard unix glob (*.py) if desired. |
 | file: [LABEL]     | style           | The version format to use.  Choices are [semantic, public, pep440, git] |
 | file: [LABEL]     | variable        | The variable name pointing to the version string that ican will update when versions are bumped. |
-| file: [LABEL]     | regex           | User-supplied python formattted regex string defining how to replace the file's version. [^1] |
-| pipeline: [LABEL] | [STEP]            | A pipeline step is a cli command such as `git commit -a`.  **STEP values MUST to be unique.**  [^2]  |
+| file: [LABEL]     | regex           | User-supplied python formattted regex string defining how to replace the file's version. |
+| pipeline: [LABEL] | [STEP]            | A pipeline step is a cli command such as `git commit -a`.  **STEP values MUST to be unique.**  |
 
 
-### :mag: [^1]: User-supplied regex
+### :mag: User-supplied regex
 
 When searching for a variable, ican will search for the variable's name, followed by an `=` symbol, followed by a value in either single or double quotes.  There can be spaces or no spaces on either side of the `=` symbol.  This covers most use cases.
 
@@ -123,23 +123,23 @@ style = semantic
 regex = __version__\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)
 ```
 
-### :computer: [^2]: Pipelines
+### :computer: Pipelines
 
-#### Labels
-
+#### Labels 
 Pipeline labels have 2 purposes:
-    * The label is used when using `ican run LABEL`.  This way we know which pipeline to run.
-    * Certain labeled pipelines are automatically run.  These are labels that match a version's 'stage'
-        - new.release - bump [major, minor, patch]
-        - new.prerelease - bump [prerelease]
-        - rebuild.release - bump[build] when prerelase is not set
-        - rebuild.prerelease - bump[build] when prerelease is set
+
+* At the CLI using `ican run LABEL`.  This way we know which pipeline to run.
+* Each `ican bump` looks for a specific pipeline to run automatically.
+   * new.release - runs with `bump [major, minor, patch]`
+   * new.prerelease - runs with `bump [prerelease]`
+   * rebuild.release - runs with `bump[build]` IF the version IS NOT a prerelease
+   * rebuild.prerelease - runs with `bump[build]` IF the version IS a prerelease
 
 #### Pipeline Context
+The pipeline context is available in 2 locations
 
-The context can be referenced 2 places in your pipelines
-    * When writing pipelines you can use Jinja-style templating to insert contextual variables into the step. For example `git push origin master {{tag}}`
-    * Ican will inject all context variables into the shell's environment as well when running pipeline steps.  This makes them available to any script you are running in the pipeline.
+* In the pipeline itself, you can use Jinja-style templating. Example: `git push origin master {{tag}}`
+* Before pipelines run, ican injects the ENV with all pipeline context variables.
 
 #### Pipeline Context Variables
 
@@ -169,7 +169,7 @@ ican [command] [arguments] [options]
 | Command    | Arguments               | Options        | Description   |
 | -----------| ------------------------| -------------  | ------------- |
 | bump       | **PART** `required`     |                | Increments the **PART** of the semantic version.  <br /> [*major*, *minor*, *patch*, *prerelease*] |
-| bump       |                         | --pre PRE      | If using prerelease, **PRE** allows you to set [*alpha*, **beta**, *rc, *dev] |
+| bump       |                         | --pre `PRE`      | If using prerelease, **PRE** allows you to set [*alpha*, *beta*, *rc*, *dev*] |
 | show       | **STYLE** `required`    |                | Shows the current version with the format **STYLE**. <br /> [*semantic*, *public*, *pep440*, *git*] |
 | run        | **PIPELINE** `required` |                | Run the specified **PIPELINE**  |
 | rollback   | none                    |                | Rollback to the previously persisted version.  |
@@ -222,7 +222,3 @@ docker container build...
 +END pipeline.DOCKER
 1.0.0+build.101
 ```
-
-[^1]: The defaults are version '0.1.0' with auto-tag and auto-commit OFF.  For files to modify, all *.py files are searched for a __version__ string.
-
-[^2]:
