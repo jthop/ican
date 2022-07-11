@@ -2249,3 +2249,41 @@
 07-10-2022 17:35:29 | VERBOSE | version level = RELEASE
 07-10-2022 17:35:29 | VERBOSE | version level = RELEASE
 07-10-2022 17:35:29 | VERBOSE | running cmd - ['git', 'add', '.']
+07-10-2022 17:35:29 | VERBOSE | rendered cmd: git commit -m "auto-commit for v0.1.18"
+07-10-2022 17:35:29 | VERBOSE | running cmd - ['git', 'commit', '-m', 'auto-commit for v0.1.18']
+07-10-2022 17:35:29 | VERBOSE | rendered cmd: git tag -a v0.1.18 -m "automated tag for release v0.1.18" --sign
+07-10-2022 17:35:29 | VERBOSE | running cmd - ['git', 'tag', '-a', 'v0.1.18', '-m', 'automated tag for release v0.1.18', '--sign']
+07-10-2022 17:35:29 | VERBOSE | rendered cmd: git push origin master v0.1.18
+07-10-2022 17:35:29 | VERBOSE | running cmd - ['git', 'push', 'origin', 'master', 'v0.1.18']
+07-10-2022 17:35:30 | VERBOSE | persisting version - 0.1.18+build.157
+07-10-2022 17:35:30 | VERBOSE | wrote config file
+07-10-2022 17:35:30 | VERBOSE | bump() COMPLETE
+07-10-2022 17:35:30 | INFO | Version: 0.1.18+build.157
+07-10-2022 22:39:10 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-10-2022 22:39:10 | VERBOSE | regex generated for __version__
+07-10-2022 22:39:10 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-10-2022 22:39:10 | VERBOSE | regex generated for __public_version__
+07-10-2022 22:39:10 | VERBOSE | parsing RELEASE pipeline
+07-10-2022 22:39:10 | VERBOSE | RELEASE.step1 - git add .
+07-10-2022 22:39:10 | VERBOSE | RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-10-2022 22:39:10 | VERBOSE | RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-10-2022 22:39:10 | VERBOSE | RELEASE.step4 - git push origin master {{tag}}
+07-10-2022 22:39:10 | VERBOSE | parsing BUILD pipeline
+07-10-2022 22:39:10 | VERBOSE | BUILD.step1 - touch /tmp/test.txt
+07-10-2022 22:39:10 | VERBOSE | BUILD.step2 - echo {{tag}}
+07-10-2022 22:39:10 | VERBOSE | discovered 0.1.18+build.157 @ CONFIG.version
+07-10-2022 22:39:10 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-10-2022 22:39:10 | VERBOSE | discovered 0.1.18-dev.DIRTY+5f7cdaf.157 @ GIT.version
+07-10-2022 22:39:10 | VERBOSE | beginning bump of <PATCH>
+07-10-2022 22:39:10 | VERBOSE | new value of <PATCH> - 19
+07-10-2022 22:39:10 | VERBOSE | VERSION[./ican/__init__.py] - updating to 0.1.19+build.158
+07-10-2022 22:39:10 | VERBOSE | VERSION[./ican/__init__.py] - found 1 matches
+07-10-2022 22:39:10 | VERBOSE | VERSION[./ican/__init__.py] - update COMPLETE
+07-10-2022 22:39:10 | VERBOSE | PUBLIC[./ican/__init__.py] - updating to 0.1.19
+07-10-2022 22:39:10 | VERBOSE | PUBLIC[./ican/__init__.py] - found 1 matches
+07-10-2022 22:39:10 | VERBOSE | PUBLIC[./ican/__init__.py] - update COMPLETE
+07-10-2022 22:39:10 | VERBOSE | version level = RELEASE
+07-10-2022 22:39:10 | VERBOSE | running pipeline.RELEASE
+07-10-2022 22:39:10 | VERBOSE | version level = RELEASE
+07-10-2022 22:39:10 | VERBOSE | version level = RELEASE
+07-10-2022 22:39:10 | VERBOSE | running cmd - ['git', 'add', '.']

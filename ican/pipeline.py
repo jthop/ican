@@ -74,6 +74,8 @@ class Pipeline(object):
             stdout and stderr representing the results of the subprocess
         """
 
+        #my_env = {**os.environ, **dict_with_env_variables}
+        
         if type(cmd) not in (tuple, list):
             cmd = shlex.split(cmd)
 
