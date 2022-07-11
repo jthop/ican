@@ -336,7 +336,7 @@ class Version(object):
 
         # additional arg for setting prerelease
         if pre:
-            self._prerelease = f'{pre}.0'
+            self._prerelease = f"{pre}.0"
 
         # Record the bumped part
         self._frozen.part = part

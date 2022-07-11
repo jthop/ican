@@ -82,11 +82,10 @@ class Ican(Base):
         self.config.persist_version(self.config.previous_version)
 
     def bump(self, part, pre):
-        """This is pretty much the full process
-        """
+        """This is pretty much the full process"""
         if pre and part == "prerelease":
             logger.verbose(f"Setting prerelease string to {pre}")
-        if pre and part != 'prerelease':
+        if pre and part != "prerelease":
             print(pre)
             logger.warning(f"Disregarding --pre with part set to {part.upper()}.")
         logger.verbose(f"Beginning bump of <{part.upper()}>")

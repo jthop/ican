@@ -142,7 +142,9 @@ commands:
             help=argparse.SUPPRESS,
         )
         parser.add_argument(
-            "--pre", type=str, help="set the prerelease string [alpha, beta, rc, dev]",
+            "--pre",
+            type=str,
+            help="set the prerelease string [alpha, beta, rc, dev]",
         )
         parser.add_argument(
             "--dry_run", help="do not write any files", action="store_true"

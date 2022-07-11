@@ -14,8 +14,6 @@ from configparser import ConfigParser
 from configparser import DuplicateSectionError
 from configparser import ParsingError
 
-from types import SimpleNamespace
-
 from .base import Base
 from .source import SourceCode
 from .pipeline import Pipeline
@@ -104,14 +102,14 @@ class Config(Base):
 
     def init(self):
         """Set default config and save"""
-        logger.verbose(f"command init - setting default config")
+        logger.verbose("cmd: init - setting default config")
         self.parser.read_dict(Config.DEFAULT_CONFIG)
         self.save()
         return self
 
     def locate_config_file(self):
         """Find our config file."""
-        logger.verbose(f"searching for config file")
+        logger.verbose("Searching for config file")
         f = Config.CONFIG_FILE
         dir = Path.cwd()
         root = Path(dir.root)
@@ -119,12 +117,12 @@ class Config(Base):
             cfg = Path(dir, f)
             if cfg.exists():
                 self.config_file = cfg
-                logger.verbose(f"config found @ {cfg}")
+                logger.verbose(f"Config found @ {cfg}")
                 return True
             dir = dir.parent
             if dir == root:
                 # quit right before we'd be writing in the root
-                logger.verbose(f"cannot find config file!")
+                logger.verbose("Cannot find config file!")
                 break
         return None
 
@@ -211,7 +209,7 @@ class Config(Base):
                 logger.verbose(f"skipping source - missing file ({label})")
                 continue
             elif variable is None and regex is None:
-                logger.verbose(f"skipping source - missing variable/regex")
+                logger.verbose("Skipping source - missing variable/regex")
                 continue
 
             logger.verbose(f"parsing file config {label.upper()}[{file}]")

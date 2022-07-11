@@ -2,7 +2,6 @@
 """
 """
 
-import sys
 from . import __version__
 from .log import logger
 

@@ -1,6 +1,6 @@
 [version]
-current = 0.1.20+build.159
-previous = 0.1.19+build.158
+current = 0.1.21+build.160
+previous = 0.1.20+build.159
 
 [options]
 log_file = ican.log
@@ -27,3 +27,7 @@ step4 = git push origin master {{tag}}
 [pipeline: test]
 step1 = echo "foo"
 step2 = env
+
+[pipeline: lint]
+step1 = black ./ican/
+step2 = flake8 ./ican/*

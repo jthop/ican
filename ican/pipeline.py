@@ -18,7 +18,6 @@ from types import SimpleNamespace
 
 from .log import logger
 from .base import Base
-from . import exceptions
 
 
 #######################################
@@ -52,8 +51,7 @@ class Pipeline(Base):
         """
 
         result, n = self.compiled.subn(
-            lambda m: ctx.get(m.group("var").upper(), "N/A"),
-            cmd
+            lambda m: ctx.get(m.group("var").upper(), "N/A"), cmd
         )
 
         if n > 0:
@@ -78,11 +76,7 @@ class Pipeline(Base):
 
         logger.verbose(f"running cmd - {cmd}")
         result = subprocess.run(
-            cmd,
-            shell=False,
-            env=custom_env,
-            capture_output=False,
-            text=True
+            cmd, shell=False, env=custom_env, capture_output=False, text=True
         ).stdout
 
         if result:
@@ -90,8 +84,7 @@ class Pipeline(Base):
         return
 
     def _build_ctx(self):
-        """
-        """
+        """ """
         ctx = {}
         ctx["VERSION"] = ctx["SEMANTIC"] = self.version.semantic
         ctx["PUBLIC"] = self.version.public
@@ -105,10 +98,10 @@ class Pipeline(Base):
         ctx["PREVIOUS"] = self.config.previous_version
 
         # ensure all are strings
-        for k,v in ctx.items():
+        for k, v in ctx.items():
             ctx[k] = str(v)
 
-        logger.verbose(f'Generated ctx: {ctx}')
+        logger.verbose(f"Generated ctx: {ctx}")
         return ctx
 
     def run(self):
