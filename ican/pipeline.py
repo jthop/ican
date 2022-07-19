@@ -34,6 +34,8 @@ class Pipeline(Base):
     def __init__(self, label=None, steps=None):
         self.label = label
         self.steps = []
+        self.env = None
+        self.ctx = None
         self.compiled = re.compile(Pipeline.TEMPLATE)
 
         if steps is None:
@@ -45,20 +47,20 @@ class Pipeline(Base):
                 step = SimpleNamespace(label=k, cmd=v)
                 self.steps.append(step)
 
-    def _render(self, cmd, ctx):
+    def _render(self, cmd):
         """render jinja-style templates
         {{var}} = ctx['var']
         """
 
         result, n = self.compiled.subn(
-            lambda m: ctx.get(m.group("var").upper(), "N/A"), cmd
+            lambda m: self.ctx.get(m.group("var").upper(), "N/A"), cmd
         )
 
         if n > 0:
             logger.verbose(f"rendered cmd: {result}")
         return result
 
-    def _run_cmd(self, cmd, custom_env):
+    def _run_cmd(self, cmd):
         """Here is where we actually run the pipeline steps via the
         shell.
 
@@ -76,7 +78,7 @@ class Pipeline(Base):
 
         logger.verbose(f"running cmd - {cmd}")
         result = subprocess.run(
-            cmd, shell=False, env=custom_env, capture_output=False, text=True
+            cmd, shell=False, env=self.env, capture_output=False, text=True
         ).stdout
 
         if result:
@@ -85,32 +87,46 @@ class Pipeline(Base):
 
     def _build_ctx(self):
         """ """
-        ctx = {}
-        ctx["VERSION"] = ctx["SEMANTIC"] = self.version.semantic
-        ctx["PUBLIC"] = self.version.public
-        ctx["PEP440"] = self.version.pep440
-        ctx["GIT"] = self.version.git
-        ctx["TAG"] = self.version.tag
-        ctx["STAGE"] = self.version.stage
-        ctx["ENV"] = self.version.env
-        ctx["AGE"] = self.version.age
-        ctx["ROOT"] = self.config.path
-        ctx["PREVIOUS"] = self.config.previous_version
+        self.ctx = {}
+        self.ctx["VERSION"] = self.version.semantic
+        self.ctx["SEMANTIC"] = self.version.semantic
+        self.ctx["PUBLIC"] = self.version.public
+        self.ctx["PEP440"] = self.version.pep440
+        self.ctx["GIT"] = self.version.git
+        self.ctx["TAG"] = self.version.tag
+        self.ctx["MAJOR"] = self.version.major
+        self.ctx["MINOR"] = self.version.minor
+        self.ctx["PATCH"] = self.version.patch
+        self.ctx["PRERELEASE"] = self.version.prerelease
+        self.ctx["BUILD"] = self.version.build
+        self.ctx["STAGE"] = self.version.stage
+        self.ctx["ENV"] = self.version.env
+        self.ctx["AGE"] = self.version.age
+        self.ctx["ROOT"] = self.config.path
+        self.ctx["PREVIOUS"] = self.config.previous_version
 
         # ensure all are strings
-        for k, v in ctx.items():
-            ctx[k] = str(v)
+        for k, v in self.ctx.items():
+            self.ctx[k] = str(v)
 
-        logger.verbose(f"Generated ctx: {ctx}")
-        return ctx
+        logger.verbose(f"Generated ctx: {self.ctx}")
+        return
+
+    def _build_env(self):
+        """ Use ctx and simple add prefix to all keys
+        """
+
+        _env = {f'ICAN_{k}': v for k, v in self.ctx.items()}
+        self.env = {**os.environ, **_env}
+        return
 
     def run(self):
-        ctx = self._build_ctx()
-        custom_env = {**os.environ, **ctx}
+        self._build_ctx()
+        self._build_env()
         logger.info(f"+BEGIN pipeline.{self.label.upper()}")
         for step in self.steps:
-            cmd = self._render(step.cmd, ctx)
+            cmd = self._render(step.cmd)
             # label = step.label
             if logger.ok_to_write:
-                self._run_cmd(cmd, custom_env)
+                self._run_cmd(cmd)
         logger.info(f"+END pipeline.{self.label.upper()}")
