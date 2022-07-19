@@ -19,7 +19,7 @@ from .exceptions import SourceCodeFileMissing
 
 class SourceCode(object):
 
-    #VARIABLE_RE = r"{{var}}\s*=\s*(?P<quote>[\'\"])?(?P<version>.+)(?P=quote)"
+    # NOTE - below regex is compiled with re.MULTILINE
     VARIABLE_RE = r"^\s*?{{var}}\s*=\s*(?P<quote>[\'\"]?)(?P<version>.+)(?P=quote)"
 
     def __init__(self, label, file, style="semantic", variable=None, regex=None):
@@ -44,7 +44,7 @@ class SourceCode(object):
 
         if self.regex:
             try:
-                self.compiled = re.compile(self.regex)
+                self.compiled = re.compile(self.regex, re.MULTILINE)
             except Exception:
                 msg = f"Error compiling regex: {self.regex}"
                 raise UserSuppliedRegexError(msg)
@@ -82,7 +82,11 @@ class SourceCode(object):
             original = f.read()
 
             # Regex search
-            updated, n = self.compiled.subn(self._replacement, original, count=1)
+            updated, n = self.compiled.subn(
+                self._replacement,
+                original,
+                count=1
+            )
 
             # Check if we found a match or not
             if n == 0:

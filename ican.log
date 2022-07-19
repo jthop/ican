@@ -3195,3 +3195,135 @@
 07-19-2022 09:33:14 | VERBOSE | Generated ctx: {'VERSION': '0.1.24+build.163', 'SEMANTIC': '0.1.24+build.163', 'PUBLIC': '0.1.24', 'PEP440': '0.1.24.163', 'GIT': '0.1.23-dev.DIRTY+1a4551a.163', 'TAG': 'v0.1.24', 'STAGE': 'new.release', 'ENV': 'production', 'AGE': 'new', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.22+build.161'}
 07-19-2022 09:33:14 | INFO | +BEGIN pipeline.NEW.RELEASE
 07-19-2022 09:33:14 | VERBOSE | running cmd - ['git', 'add', '.']
+07-19-2022 09:33:14 | VERBOSE | rendered cmd: git commit -m "auto-commit for v0.1.24"
+07-19-2022 09:33:14 | VERBOSE | running cmd - ['git', 'commit', '-m', 'auto-commit for v0.1.24']
+07-19-2022 09:33:14 | VERBOSE | rendered cmd: git tag -a v0.1.24 -m "automated tag for release v0.1.24" --sign
+07-19-2022 09:33:14 | VERBOSE | running cmd - ['git', 'tag', '-a', 'v0.1.24', '-m', 'automated tag for release v0.1.24', '--sign']
+07-19-2022 09:33:14 | VERBOSE | rendered cmd: git push origin master v0.1.24
+07-19-2022 09:33:14 | VERBOSE | running cmd - ['git', 'push', 'origin', 'master', 'v0.1.24']
+07-19-2022 09:33:15 | INFO | +END pipeline.NEW.RELEASE
+07-19-2022 09:33:15 | VERBOSE | persisting version - 0.1.24+build.163
+07-19-2022 09:33:15 | VERBOSE | wrote config file
+07-19-2022 09:33:15 | VERBOSE | bump() COMPLETE
+07-19-2022 09:33:15 | INFO | Version: 0.1.24+build.163
+07-19-2022 09:48:25 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-19-2022 09:48:25 | VERBOSE | regex generated for __version__
+07-19-2022 09:48:25 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-19-2022 09:48:25 | VERBOSE | regex generated for __public_version__
+07-19-2022 09:48:25 | VERBOSE | parsing NEW.RELEASE pipeline
+07-19-2022 09:48:25 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-19-2022 09:48:25 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-19-2022 09:48:25 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-19-2022 09:48:25 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-19-2022 09:48:25 | VERBOSE | parsing TEST pipeline
+07-19-2022 09:48:25 | VERBOSE | TEST.step1 - echo "foo"
+07-19-2022 09:48:25 | VERBOSE | TEST.step2 - env
+07-19-2022 09:48:25 | VERBOSE | parsing LINT pipeline
+07-19-2022 09:48:25 | VERBOSE | LINT.step1 - black ./ican/
+07-19-2022 09:48:25 | VERBOSE | LINT.step2 - flake8 ./ican/*
+07-19-2022 09:48:25 | VERBOSE | discovered 0.1.24+build.163 @ CONFIG.version
+07-19-2022 09:48:25 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-19-2022 09:48:25 | VERBOSE | Discovered 0.1.24-dev.DIRTY+9016bea.163 @ GIT.version
+07-19-2022 09:48:25 | VERBOSE | Beginning bump of <BUILD>
+07-19-2022 09:48:25 | VERBOSE | New value of <BUILD> - build.164
+07-19-2022 09:48:25 | VERBOSE | VERSION[./ican/__init__.py] - updating to 0.1.24+build.164
+07-19-2022 09:54:11 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-19-2022 09:54:11 | VERBOSE | regex generated for __version__
+07-19-2022 09:54:11 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-19-2022 09:54:11 | VERBOSE | regex generated for __public_version__
+07-19-2022 09:54:11 | VERBOSE | parsing NEW.RELEASE pipeline
+07-19-2022 09:54:11 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-19-2022 09:54:11 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-19-2022 09:54:11 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-19-2022 09:54:11 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-19-2022 09:54:11 | VERBOSE | parsing TEST pipeline
+07-19-2022 09:54:11 | VERBOSE | TEST.step1 - echo "foo"
+07-19-2022 09:54:11 | VERBOSE | TEST.step2 - env
+07-19-2022 09:54:11 | VERBOSE | parsing LINT pipeline
+07-19-2022 09:54:11 | VERBOSE | LINT.step1 - black ./ican/
+07-19-2022 09:54:11 | VERBOSE | LINT.step2 - flake8 ./ican/*
+07-19-2022 09:54:11 | VERBOSE | discovered 0.1.24+build.163 @ CONFIG.version
+07-19-2022 09:54:11 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-19-2022 09:54:11 | VERBOSE | Discovered 0.1.24-dev.DIRTY+9016bea.163 @ GIT.version
+07-19-2022 09:54:11 | VERBOSE | Beginning bump of <BUILD>
+07-19-2022 09:54:11 | VERBOSE | New value of <BUILD> - build.164
+07-19-2022 09:54:11 | VERBOSE | VERSION[./ican/__init__.py] - updating to 0.1.24+build.164
+07-19-2022 09:54:11 | VERBOSE | VERSION[./ican/__init__.py] - found 1 matches
+07-19-2022 09:54:11 | VERBOSE | VERSION[./ican/__init__.py] - update COMPLETE
+07-19-2022 09:54:11 | VERBOSE | PUBLIC[./ican/__init__.py] - updating to 0.1.24
+07-19-2022 09:54:11 | VERBOSE | PUBLIC[./ican/__init__.py] - found 1 matches
+07-19-2022 09:54:11 | VERBOSE | PUBLIC[./ican/__init__.py] - update COMPLETE
+07-19-2022 09:54:11 | VERBOSE | age = REBUILD
+07-19-2022 09:54:11 | VERBOSE | age = REBUILD
+07-19-2022 09:54:11 | VERBOSE | Pipeline `rebuild.release` not found.
+07-19-2022 09:54:11 | VERBOSE | persisting version - 0.1.24+build.164
+07-19-2022 09:54:11 | VERBOSE | wrote config file
+07-19-2022 09:54:11 | VERBOSE | bump() COMPLETE
+07-19-2022 09:54:11 | INFO | Version: 0.1.24+build.164
+07-19-2022 09:54:13 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-19-2022 09:54:13 | VERBOSE | regex generated for __version__
+07-19-2022 09:54:13 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-19-2022 09:54:13 | VERBOSE | regex generated for __public_version__
+07-19-2022 09:54:13 | VERBOSE | parsing NEW.RELEASE pipeline
+07-19-2022 09:54:13 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-19-2022 09:54:13 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-19-2022 09:54:13 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-19-2022 09:54:13 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-19-2022 09:54:13 | VERBOSE | parsing TEST pipeline
+07-19-2022 09:54:13 | VERBOSE | TEST.step1 - echo "foo"
+07-19-2022 09:54:13 | VERBOSE | TEST.step2 - env
+07-19-2022 09:54:13 | VERBOSE | parsing LINT pipeline
+07-19-2022 09:54:13 | VERBOSE | LINT.step1 - black ./ican/
+07-19-2022 09:54:13 | VERBOSE | LINT.step2 - flake8 ./ican/*
+07-19-2022 09:54:13 | VERBOSE | discovered 0.1.24+build.164 @ CONFIG.version
+07-19-2022 09:54:13 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-19-2022 09:54:13 | VERBOSE | Discovered 0.1.24-dev.DIRTY+9016bea.164 @ GIT.version
+07-19-2022 09:54:13 | VERBOSE | Beginning bump of <BUILD>
+07-19-2022 09:54:13 | VERBOSE | New value of <BUILD> - build.165
+07-19-2022 09:54:13 | VERBOSE | VERSION[./ican/__init__.py] - updating to 0.1.24+build.165
+07-19-2022 09:54:13 | VERBOSE | VERSION[./ican/__init__.py] - found 1 matches
+07-19-2022 09:54:13 | VERBOSE | VERSION[./ican/__init__.py] - update COMPLETE
+07-19-2022 09:54:13 | VERBOSE | PUBLIC[./ican/__init__.py] - updating to 0.1.24
+07-19-2022 09:54:13 | VERBOSE | PUBLIC[./ican/__init__.py] - found 1 matches
+07-19-2022 09:54:13 | VERBOSE | PUBLIC[./ican/__init__.py] - update COMPLETE
+07-19-2022 09:54:13 | VERBOSE | age = REBUILD
+07-19-2022 09:54:13 | VERBOSE | age = REBUILD
+07-19-2022 09:54:13 | VERBOSE | Pipeline `rebuild.release` not found.
+07-19-2022 09:54:13 | VERBOSE | persisting version - 0.1.24+build.165
+07-19-2022 09:54:13 | VERBOSE | wrote config file
+07-19-2022 09:54:13 | VERBOSE | bump() COMPLETE
+07-19-2022 09:54:13 | INFO | Version: 0.1.24+build.165
+07-19-2022 09:55:43 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-19-2022 09:55:43 | VERBOSE | regex generated for __version__
+07-19-2022 09:55:43 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-19-2022 09:55:43 | VERBOSE | regex generated for __public_version__
+07-19-2022 09:55:43 | VERBOSE | parsing NEW.RELEASE pipeline
+07-19-2022 09:55:43 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-19-2022 09:55:43 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-19-2022 09:55:43 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-19-2022 09:55:43 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-19-2022 09:55:43 | VERBOSE | parsing TEST pipeline
+07-19-2022 09:55:43 | VERBOSE | TEST.step1 - echo "foo"
+07-19-2022 09:55:43 | VERBOSE | TEST.step2 - env
+07-19-2022 09:55:43 | VERBOSE | parsing LINT pipeline
+07-19-2022 09:55:43 | VERBOSE | LINT.step1 - black ./ican/
+07-19-2022 09:55:43 | VERBOSE | LINT.step2 - flake8 ./ican/*
+07-19-2022 09:55:43 | VERBOSE | discovered 0.1.24+build.165 @ CONFIG.version
+07-19-2022 09:55:43 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-19-2022 09:55:43 | VERBOSE | Discovered 0.1.24-dev.DIRTY+9016bea.165 @ GIT.version
+07-19-2022 09:55:43 | VERBOSE | Beginning bump of <PATCH>
+07-19-2022 09:55:43 | VERBOSE | New value of <PATCH> - 25
+07-19-2022 09:55:43 | VERBOSE | VERSION[./ican/__init__.py] - updating to 0.1.25+build.166
+07-19-2022 09:55:43 | VERBOSE | VERSION[./ican/__init__.py] - found 1 matches
+07-19-2022 09:55:43 | VERBOSE | VERSION[./ican/__init__.py] - update COMPLETE
+07-19-2022 09:55:43 | VERBOSE | PUBLIC[./ican/__init__.py] - updating to 0.1.25
+07-19-2022 09:55:43 | VERBOSE | PUBLIC[./ican/__init__.py] - found 1 matches
+07-19-2022 09:55:43 | VERBOSE | PUBLIC[./ican/__init__.py] - update COMPLETE
+07-19-2022 09:55:43 | VERBOSE | age = NEW
+07-19-2022 09:55:43 | VERBOSE | age = NEW
+07-19-2022 09:55:43 | VERBOSE | age = NEW
+07-19-2022 09:55:43 | VERBOSE | env = PRODUCTION
+07-19-2022 09:55:43 | VERBOSE | age = NEW
+07-19-2022 09:55:43 | VERBOSE | Generated ctx: {'VERSION': '0.1.25+build.166', 'SEMANTIC': '0.1.25+build.166', 'PUBLIC': '0.1.25', 'PEP440': '0.1.25.166', 'GIT': '0.1.24-dev.DIRTY+9016bea.166', 'TAG': 'v0.1.25', 'STAGE': 'new.release', 'ENV': 'production', 'AGE': 'new', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.24+build.164'}
+07-19-2022 09:55:43 | INFO | +BEGIN pipeline.NEW.RELEASE
+07-19-2022 09:55:43 | VERBOSE | running cmd - ['git', 'add', '.']
