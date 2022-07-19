@@ -19,7 +19,8 @@ from .exceptions import SourceCodeFileMissing
 
 class SourceCode(object):
 
-    VARIABLE_RE = r"{{var}}\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)"
+    #VARIABLE_RE = r"{{var}}\s*=\s*(?P<quote>[\'\"])?(?P<version>.+)(?P=quote)"
+    VARIABLE_RE = r"^\s*?{{var}}\s*=\s*(?P<quote>[\'\"]?)(?P<version>.+)(?P=quote)"
 
     def __init__(self, label, file, style="semantic", variable=None, regex=None):
         self.label = f"{label.upper()}[{file}]"

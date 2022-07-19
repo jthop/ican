@@ -1,6 +1,6 @@
 [version]
-current = 0.1.21+build.160
-previous = 0.1.20+build.159
+current = 0.1.22+build.161
+previous = 0.1.21+build.160
 
 [options]
 log_file = ican.log
@@ -31,3 +31,4 @@ step2 = env
 [pipeline: lint]
 step1 = black ./ican/
 step2 = flake8 ./ican/*
+
