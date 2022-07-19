@@ -139,22 +139,29 @@ Pipeline labels have 2 purposes:
 The pipeline context is available in 2 locations
 
 * In the pipeline itself, you can use Jinja-style templating. Example: `git push origin master {{tag}}`
-* Before pipelines run, ican injects the ENV with all pipeline context variables.
+* Before a pipeline runs, ican will inject your shell's environment with all pipeline context variables prefixed with ICAN_.
+
+For example you could access `semantic` in your ENV as `ICAN_SEMANTIC`
 
 #### Pipeline Context Variables
 
-| Variable      | Description                                      |
+| variable      | Description                                      |
 | --------------|--------------------------------------------------|
 | semantic      | the current version in semantic format           |
 | public        | the current version in public format             |
 | pep440        | the current version canonical with pep440        |
 | git           | the current version using git metadata           |
-| previous      | the previous semantic version                    |
+| major         | the major portion of the semantic version        |
+| minor         | the minor portion of the semantic version        |
+| patch         | the patch portion of the semantic version        |
+| prerelease    | the major portion of the semantic version        |
+| build         | the build number                                 |
 | tag           | the git tag, `v{public_version}`                 |
 | age           | REBUILD if bump build, NEW all other bumps       |
 | env           | DEVELOPMENT or PRODUCTION based on the version   |
 | stage         | AGE . (RELEASE or PRERELEASE) ex NEW.RELEASE     |
 | root          | the root directory of your project               |
+| previous      | the previous semantic version                    |
 
 ## :muscle: Use
 

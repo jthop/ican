@@ -3396,3 +3396,48 @@
 07-19-2022 17:44:50 | VERBOSE | Generated ctx: {'VERSION': '0.1.26+build.167', 'SEMANTIC': '0.1.26+build.167', 'PUBLIC': '0.1.26', 'PEP440': '0.1.26.167', 'GIT': '0.1.25-dev.DIRTY+06cb413.167', 'TAG': 'v0.1.26', 'MAJOR': '0', 'MINOR': '1', 'PATCH': '26', 'PRERELEASE': 'None', 'BUILD': 'build.167', 'STAGE': 'new.release', 'ENV': 'production', 'AGE': 'new', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.24+build.165'}
 07-19-2022 17:44:50 | INFO | +BEGIN pipeline.NEW.RELEASE
 07-19-2022 17:44:50 | VERBOSE | running cmd - ['git', 'add', '.']
+07-19-2022 17:44:50 | VERBOSE | rendered cmd: git commit -m "auto-commit for v0.1.26"
+07-19-2022 17:44:50 | VERBOSE | running cmd - ['git', 'commit', '-m', 'auto-commit for v0.1.26']
+07-19-2022 17:44:50 | VERBOSE | rendered cmd: git tag -a v0.1.26 -m "automated tag for release v0.1.26" --sign
+07-19-2022 17:44:50 | VERBOSE | running cmd - ['git', 'tag', '-a', 'v0.1.26', '-m', 'automated tag for release v0.1.26', '--sign']
+07-19-2022 17:44:50 | VERBOSE | rendered cmd: git push origin master v0.1.26
+07-19-2022 17:44:50 | VERBOSE | running cmd - ['git', 'push', 'origin', 'master', 'v0.1.26']
+07-19-2022 17:44:51 | INFO | +END pipeline.NEW.RELEASE
+07-19-2022 17:44:51 | VERBOSE | persisting version - 0.1.26+build.167
+07-19-2022 17:44:51 | VERBOSE | wrote config file
+07-19-2022 17:44:51 | VERBOSE | bump() COMPLETE
+07-19-2022 17:44:51 | INFO | Version: 0.1.26+build.167
+07-19-2022 17:56:03 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-19-2022 17:56:03 | VERBOSE | regex generated for __version__
+07-19-2022 17:56:03 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-19-2022 17:56:03 | VERBOSE | regex generated for __public_version__
+07-19-2022 17:56:03 | VERBOSE | parsing NEW.RELEASE pipeline
+07-19-2022 17:56:03 | VERBOSE | NEW.RELEASE.step1 - git add .
+07-19-2022 17:56:03 | VERBOSE | NEW.RELEASE.step2 - git commit -m "auto-commit for {{tag}}"
+07-19-2022 17:56:03 | VERBOSE | NEW.RELEASE.step3 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-19-2022 17:56:03 | VERBOSE | NEW.RELEASE.step4 - git push origin master {{tag}}
+07-19-2022 17:56:03 | VERBOSE | parsing TEST pipeline
+07-19-2022 17:56:03 | VERBOSE | TEST.step1 - echo "foo"
+07-19-2022 17:56:03 | VERBOSE | TEST.step2 - env
+07-19-2022 17:56:03 | VERBOSE | parsing LINT pipeline
+07-19-2022 17:56:03 | VERBOSE | LINT.step1 - black ./ican/
+07-19-2022 17:56:03 | VERBOSE | LINT.step2 - flake8 ./ican/*
+07-19-2022 17:56:03 | VERBOSE | discovered 0.1.26+build.167 @ CONFIG.version
+07-19-2022 17:56:03 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-19-2022 17:56:03 | VERBOSE | Discovered 0.1.26-dev.DIRTY+999b170.167 @ GIT.version
+07-19-2022 17:56:03 | VERBOSE | Beginning bump of <PATCH>
+07-19-2022 17:56:03 | VERBOSE | New value of <PATCH> - 27
+07-19-2022 17:56:03 | VERBOSE | VERSION[./ican/__init__.py] - updating to 0.1.27+build.168
+07-19-2022 17:56:03 | VERBOSE | VERSION[./ican/__init__.py] - found 1 matches
+07-19-2022 17:56:03 | VERBOSE | VERSION[./ican/__init__.py] - update COMPLETE
+07-19-2022 17:56:03 | VERBOSE | PUBLIC[./ican/__init__.py] - updating to 0.1.27
+07-19-2022 17:56:03 | VERBOSE | PUBLIC[./ican/__init__.py] - found 1 matches
+07-19-2022 17:56:03 | VERBOSE | PUBLIC[./ican/__init__.py] - update COMPLETE
+07-19-2022 17:56:03 | VERBOSE | age = NEW
+07-19-2022 17:56:03 | VERBOSE | age = NEW
+07-19-2022 17:56:03 | VERBOSE | age = NEW
+07-19-2022 17:56:03 | VERBOSE | env = PRODUCTION
+07-19-2022 17:56:03 | VERBOSE | age = NEW
+07-19-2022 17:56:03 | VERBOSE | Generated ctx: {'VERSION': '0.1.27+build.168', 'SEMANTIC': '0.1.27+build.168', 'PUBLIC': '0.1.27', 'PEP440': '0.1.27.168', 'GIT': '0.1.26-dev.DIRTY+999b170.168', 'TAG': 'v0.1.27', 'MAJOR': '0', 'MINOR': '1', 'PATCH': '27', 'PRERELEASE': 'None', 'BUILD': 'build.168', 'STAGE': 'new.release', 'ENV': 'production', 'AGE': 'new', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.25+build.166'}
+07-19-2022 17:56:03 | INFO | +BEGIN pipeline.NEW.RELEASE
+07-19-2022 17:56:03 | VERBOSE | running cmd - ['git', 'add', '.']
