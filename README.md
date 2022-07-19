@@ -13,7 +13,7 @@
 
 # :wave: ican
 
-because anything you ask of it, the response is **always** `ican`
+Because anything you ask of it, the response is **always** `ican`.
 
 ## :man_office_worker: Motivation
 
@@ -141,7 +141,7 @@ The pipeline context is available in 2 locations
 * In the pipeline itself, you can use Jinja-style templating. Example: `git push origin master {{tag}}`
 * Before a pipeline runs, ican will inject your shell's environment with all pipeline context variables prefixed with ICAN_.
 
-For example you could access `semantic` in your ENV as `ICAN_SEMANTIC`
+For example you can access `semantic` in your ENV as `ICAN_SEMANTIC`
 
 #### Pipeline Context Variables
 
