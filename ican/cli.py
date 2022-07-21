@@ -237,6 +237,7 @@ commands:
 
         self.ican = Ican()
         self.ican.run_pipeline(args.pipeline)
+        logger.info(f"+FINISHED pipeline.{args.pipeline.upper()}")
 
     def test2(self):
         """dispatched here with command test"""

@@ -4658,3 +4658,199 @@ flake8 ./ican/*
 07-20-2022 20:42:48 | INFO | +BEGIN pipeline.GIT
 07-20-2022 20:42:48 | VERBOSE | Generated ctx: {'VERSION': '0.1.29+build.172', 'SEMANTIC': '0.1.29+build.172', 'PUBLIC': '0.1.29', 'PEP440': '0.1.29.172', 'GIT': '0.1.28-dev.DIRTY+80be87b.172', 'TAG': 'v0.1.29', 'MAJOR': '0', 'MINOR': '1', 'PATCH': '29', 'PRERELEASE': 'None', 'BUILD': 'build.172', 'ENV': 'production', 'AGE': 'new', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.28+build.170'}
 07-20-2022 20:42:48 | VERBOSE | running cmd - ['git', 'add', '.']
+07-20-2022 20:42:48 | VERBOSE | Generated ctx: {'VERSION': '0.1.29+build.172', 'SEMANTIC': '0.1.29+build.172', 'PUBLIC': '0.1.29', 'PEP440': '0.1.29.172', 'GIT': '0.1.28-dev.DIRTY+80be87b.172', 'TAG': 'v0.1.29', 'MAJOR': '0', 'MINOR': '1', 'PATCH': '29', 'PRERELEASE': 'None', 'BUILD': 'build.172', 'ENV': 'production', 'AGE': 'new', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.28+build.170'}
+07-20-2022 20:42:48 | VERBOSE | rendered cmd: git commit -m "auto-commit for v0.1.29"
+07-20-2022 20:42:48 | VERBOSE | running cmd - ['git', 'commit', '-m', 'auto-commit for v0.1.29']
+07-20-2022 20:42:48 | VERBOSE | Generated ctx: {'VERSION': '0.1.29+build.172', 'SEMANTIC': '0.1.29+build.172', 'PUBLIC': '0.1.29', 'PEP440': '0.1.29.172', 'GIT': '0.1.28-dev.DIRTY+80be87b.172', 'TAG': 'v0.1.29', 'MAJOR': '0', 'MINOR': '1', 'PATCH': '29', 'PRERELEASE': 'None', 'BUILD': 'build.172', 'ENV': 'production', 'AGE': 'new', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.28+build.170'}
+07-20-2022 20:42:48 | VERBOSE | rendered cmd: git tag -a v0.1.29 -m "automated tag for release v0.1.29" --sign
+07-20-2022 20:42:48 | VERBOSE | running cmd - ['git', 'tag', '-a', 'v0.1.29', '-m', 'automated tag for release v0.1.29', '--sign']
+07-20-2022 20:42:48 | VERBOSE | Generated ctx: {'VERSION': '0.1.29+build.172', 'SEMANTIC': '0.1.29+build.172', 'PUBLIC': '0.1.29', 'PEP440': '0.1.29.172', 'GIT': '0.1.28-dev.DIRTY+80be87b.172', 'TAG': 'v0.1.29', 'MAJOR': '0', 'MINOR': '1', 'PATCH': '29', 'PRERELEASE': 'None', 'BUILD': 'build.172', 'ENV': 'production', 'AGE': 'new', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.28+build.170'}
+07-20-2022 20:42:48 | VERBOSE | rendered cmd: git push origin HEAD v0.1.29
+07-20-2022 20:42:48 | VERBOSE | running cmd - ['git', 'push', 'origin', 'HEAD', 'v0.1.29']
+07-20-2022 20:42:51 | INFO | +END pipeline.GIT
+07-20-2022 20:42:51 | INFO | +END pipeline.RELEASE
+07-20-2022 21:49:09 | INFO |         ---===::: Welcome to ican :::===---
+07-20-2022 21:49:09 | VERBOSE | --verbose detected.  Displaying verbose messaging.
+07-20-2022 21:49:09 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-20-2022 21:49:09 | VERBOSE | regex generated for __version__
+07-20-2022 21:49:09 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-20-2022 21:49:09 | VERBOSE | regex generated for __public_version__
+07-20-2022 21:49:09 | VERBOSE | parsing GIT pipeline
+07-20-2022 21:49:09 | VERBOSE | GIT.step2 - git add .
+07-20-2022 21:49:09 | VERBOSE | GIT.step3 - git commit -m "auto-commit for {{tag}}"
+07-20-2022 21:49:09 | VERBOSE | GIT.step4 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-20-2022 21:49:09 | VERBOSE | GIT.step5 - git push origin HEAD {{tag}}
+07-20-2022 21:49:09 | VERBOSE | parsing RELEASE pipeline
+07-20-2022 21:49:09 | VERBOSE | RELEASE.step1 - $_ICAN{bump patch}
+07-20-2022 21:49:09 | VERBOSE | RELEASE.step2 - $_ICAN{run git}
+07-20-2022 21:49:09 | VERBOSE | parsing LINT pipeline
+07-20-2022 21:49:09 | VERBOSE | LINT.step1 - black ./ican/
+07-20-2022 21:49:09 | VERBOSE | LINT.step2 - flake8 ./ican/*
+07-20-2022 21:49:09 | VERBOSE | parsing BETA pipeline
+07-20-2022 21:49:09 | VERBOSE | BETA.step1 - $_ICAN{pre beta}
+07-20-2022 21:49:09 | VERBOSE | parsing TEST pipeline
+07-20-2022 21:49:09 | VERBOSE | TEST.step1 - echo "{{semantic}}"
+07-20-2022 21:49:09 | VERBOSE | TEST.step2 - $_ICAN{bump build}
+07-20-2022 21:49:09 | VERBOSE | TEST.step3 - echo "{{semantic}}"
+07-20-2022 21:49:09 | VERBOSE | discovered 0.1.29+build.172 @ CONFIG.version
+07-20-2022 21:49:09 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-20-2022 21:49:09 | VERBOSE | Discovered 0.1.29-dev.DIRTY+2dbe1e7.172 @ GIT.version
+07-20-2022 21:49:09 | INFO | +BEGIN pipeline.BETA
+07-20-2022 21:49:09 | VERBOSE | Generated ctx: {'VERSION': '0.1.29+build.172', 'SEMANTIC': '0.1.29+build.172', 'PUBLIC': '0.1.29', 'PEP440': '0.1.29.172', 'GIT': '0.1.29-dev.DIRTY+2dbe1e7.172', 'TAG': 'v0.1.29', 'MAJOR': '0', 'MINOR': '1', 'PATCH': '29', 'PRERELEASE': 'None', 'BUILD': 'build.172', 'ENV': 'production', 'AGE': 'unknown', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.28+build.171'}
+07-20-2022 21:49:09 | INFO | +RUNNING step.ICAN.pre beta
+07-20-2022 21:49:09 | VERBOSE | running internal cmd - pre beta
+07-20-2022 21:49:09 | VERBOSE | Setting prerelease string to beta
+07-20-2022 21:49:09 | VERBOSE | persisting version - 0.1.29-beta.0+build.172
+07-20-2022 21:49:09 | VERBOSE | wrote config file
+07-20-2022 21:49:09 | INFO | +END pipeline.BETA
+07-20-2022 21:49:39 | INFO |         ---===::: Welcome to ican :::===---
+07-20-2022 21:49:39 | VERBOSE | --verbose detected.  Displaying verbose messaging.
+07-20-2022 21:49:39 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-20-2022 21:49:39 | VERBOSE | regex generated for __version__
+07-20-2022 21:49:39 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-20-2022 21:49:39 | VERBOSE | regex generated for __public_version__
+07-20-2022 21:49:39 | VERBOSE | parsing GIT pipeline
+07-20-2022 21:49:39 | VERBOSE | GIT.step2 - git add .
+07-20-2022 21:49:39 | VERBOSE | GIT.step3 - git commit -m "auto-commit for {{tag}}"
+07-20-2022 21:49:39 | VERBOSE | GIT.step4 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-20-2022 21:49:39 | VERBOSE | GIT.step5 - git push origin HEAD {{tag}}
+07-20-2022 21:49:39 | VERBOSE | parsing RELEASE pipeline
+07-20-2022 21:49:39 | VERBOSE | RELEASE.step1 - $_ICAN{bump patch}
+07-20-2022 21:49:39 | VERBOSE | RELEASE.step2 - $_ICAN{run git}
+07-20-2022 21:49:39 | VERBOSE | parsing LINT pipeline
+07-20-2022 21:49:39 | VERBOSE | LINT.step1 - black ./ican/
+07-20-2022 21:49:39 | VERBOSE | LINT.step2 - flake8 ./ican/*
+07-20-2022 21:49:39 | VERBOSE | parsing BETA pipeline
+07-20-2022 21:49:39 | VERBOSE | BETA.step1 - $_ICAN{pre beta}
+07-20-2022 21:49:39 | VERBOSE | parsing TEST pipeline
+07-20-2022 21:49:39 | VERBOSE | TEST.step1 - echo "{{semantic}}"
+07-20-2022 21:49:39 | VERBOSE | TEST.step2 - $_ICAN{bump build}
+07-20-2022 21:49:39 | VERBOSE | TEST.step3 - echo "{{semantic}}"
+07-20-2022 21:49:39 | VERBOSE | discovered 0.1.29-beta.0+build.172 @ CONFIG.version
+07-20-2022 21:49:39 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-20-2022 21:49:39 | VERBOSE | Discovered 0.1.29-dev.DIRTY+2dbe1e7.172 @ GIT.version
+07-20-2022 21:49:39 | INFO | +BEGIN pipeline.BETA
+07-20-2022 21:49:39 | VERBOSE | Generated ctx: {'VERSION': '0.1.29-beta.0+build.172', 'SEMANTIC': '0.1.29-beta.0+build.172', 'PUBLIC': '0.1.29', 'PEP440': '0.1.29b0.172', 'GIT': '0.1.29-dev.DIRTY+2dbe1e7.172', 'TAG': 'v0.1.29', 'MAJOR': '0', 'MINOR': '1', 'PATCH': '29', 'PRERELEASE': 'beta.0', 'BUILD': 'build.172', 'ENV': 'development', 'AGE': 'unknown', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.29+build.172'}
+07-20-2022 21:49:39 | INFO | +RUNNING step.ICAN[pre beta]
+07-20-2022 21:49:39 | VERBOSE | running internal cmd - pre beta
+07-20-2022 21:49:39 | VERBOSE | Setting prerelease string to beta
+07-20-2022 21:49:39 | VERBOSE | persisting version - 0.1.29-beta.0+build.172
+07-20-2022 21:49:39 | VERBOSE | wrote config file
+07-20-2022 21:49:39 | INFO | +END pipeline.BETA
+07-20-2022 21:50:52 | INFO |         ---===::: Welcome to ican :::===---
+07-20-2022 21:50:52 | VERBOSE | --verbose detected.  Displaying verbose messaging.
+07-20-2022 21:50:52 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-20-2022 21:50:52 | VERBOSE | regex generated for __version__
+07-20-2022 21:50:52 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-20-2022 21:50:52 | VERBOSE | regex generated for __public_version__
+07-20-2022 21:50:52 | VERBOSE | parsing GIT pipeline
+07-20-2022 21:50:52 | VERBOSE | GIT.step2 - git add .
+07-20-2022 21:50:52 | VERBOSE | GIT.step3 - git commit -m "auto-commit for {{tag}}"
+07-20-2022 21:50:52 | VERBOSE | GIT.step4 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-20-2022 21:50:52 | VERBOSE | GIT.step5 - git push origin HEAD {{tag}}
+07-20-2022 21:50:52 | VERBOSE | parsing RELEASE pipeline
+07-20-2022 21:50:52 | VERBOSE | RELEASE.step1 - $_ICAN{bump patch}
+07-20-2022 21:50:52 | VERBOSE | RELEASE.step2 - $_ICAN{run git}
+07-20-2022 21:50:52 | VERBOSE | parsing LINT pipeline
+07-20-2022 21:50:52 | VERBOSE | LINT.step1 - black ./ican/
+07-20-2022 21:50:52 | VERBOSE | LINT.step2 - flake8 ./ican/*
+07-20-2022 21:50:52 | VERBOSE | parsing BETA pipeline
+07-20-2022 21:50:52 | VERBOSE | BETA.step1 - $_ICAN{pre beta}
+07-20-2022 21:50:52 | VERBOSE | parsing TEST pipeline
+07-20-2022 21:50:52 | VERBOSE | TEST.step1 - echo "{{semantic}}"
+07-20-2022 21:50:52 | VERBOSE | TEST.step2 - $_ICAN{bump build}
+07-20-2022 21:50:52 | VERBOSE | TEST.step3 - echo "{{semantic}}"
+07-20-2022 21:50:52 | VERBOSE | discovered 0.1.29-beta.0+build.172 @ CONFIG.version
+07-20-2022 21:50:52 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-20-2022 21:50:52 | VERBOSE | Discovered 0.1.29-dev.DIRTY+2dbe1e7.172 @ GIT.version
+07-20-2022 21:50:52 | INFO | +BEGIN pipeline.BETA
+07-20-2022 21:50:52 | VERBOSE | Generated ctx: {'VERSION': '0.1.29-beta.0+build.172', 'SEMANTIC': '0.1.29-beta.0+build.172', 'PUBLIC': '0.1.29', 'PEP440': '0.1.29b0.172', 'GIT': '0.1.29-dev.DIRTY+2dbe1e7.172', 'TAG': 'v0.1.29', 'MAJOR': '0', 'MINOR': '1', 'PATCH': '29', 'PRERELEASE': 'beta.0', 'BUILD': 'build.172', 'ENV': 'development', 'AGE': 'unknown', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.29-beta.0+build.172'}
+07-20-2022 21:50:52 | INFO | +RUNNING step.ICAN[pre beta]
+07-20-2022 21:50:52 | VERBOSE | running internal cmd - pre beta
+07-20-2022 21:50:52 | VERBOSE | Setting prerelease string to beta
+07-20-2022 21:50:52 | VERBOSE | persisting version - 0.1.29-beta.0+build.172
+07-20-2022 21:50:52 | VERBOSE | wrote config file
+07-20-2022 21:50:52 | INFO | +END pipeline.BETA
+07-20-2022 21:50:52 | INFO | pipeline.BETA COMPLETE
+07-20-2022 21:51:15 | INFO |         ---===::: Welcome to ican :::===---
+07-20-2022 21:51:15 | VERBOSE | --verbose detected.  Displaying verbose messaging.
+07-20-2022 21:51:15 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-20-2022 21:51:15 | VERBOSE | regex generated for __version__
+07-20-2022 21:51:15 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-20-2022 21:51:15 | VERBOSE | regex generated for __public_version__
+07-20-2022 21:51:15 | VERBOSE | parsing GIT pipeline
+07-20-2022 21:51:15 | VERBOSE | GIT.step2 - git add .
+07-20-2022 21:51:15 | VERBOSE | GIT.step3 - git commit -m "auto-commit for {{tag}}"
+07-20-2022 21:51:15 | VERBOSE | GIT.step4 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-20-2022 21:51:15 | VERBOSE | GIT.step5 - git push origin HEAD {{tag}}
+07-20-2022 21:51:15 | VERBOSE | parsing RELEASE pipeline
+07-20-2022 21:51:15 | VERBOSE | RELEASE.step1 - $_ICAN{bump patch}
+07-20-2022 21:51:15 | VERBOSE | RELEASE.step2 - $_ICAN{run git}
+07-20-2022 21:51:15 | VERBOSE | parsing LINT pipeline
+07-20-2022 21:51:15 | VERBOSE | LINT.step1 - black ./ican/
+07-20-2022 21:51:15 | VERBOSE | LINT.step2 - flake8 ./ican/*
+07-20-2022 21:51:15 | VERBOSE | parsing BETA pipeline
+07-20-2022 21:51:15 | VERBOSE | BETA.step1 - $_ICAN{pre beta}
+07-20-2022 21:51:15 | VERBOSE | parsing TEST pipeline
+07-20-2022 21:51:15 | VERBOSE | TEST.step1 - echo "{{semantic}}"
+07-20-2022 21:51:15 | VERBOSE | TEST.step2 - $_ICAN{bump build}
+07-20-2022 21:51:15 | VERBOSE | TEST.step3 - echo "{{semantic}}"
+07-20-2022 21:51:15 | VERBOSE | discovered 0.1.29-beta.0+build.172 @ CONFIG.version
+07-20-2022 21:51:15 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-20-2022 21:51:15 | VERBOSE | Discovered 0.1.29-dev.DIRTY+2dbe1e7.172 @ GIT.version
+07-20-2022 21:51:15 | INFO | +BEGIN pipeline.BETA
+07-20-2022 21:51:15 | VERBOSE | Generated ctx: {'VERSION': '0.1.29-beta.0+build.172', 'SEMANTIC': '0.1.29-beta.0+build.172', 'PUBLIC': '0.1.29', 'PEP440': '0.1.29b0.172', 'GIT': '0.1.29-dev.DIRTY+2dbe1e7.172', 'TAG': 'v0.1.29', 'MAJOR': '0', 'MINOR': '1', 'PATCH': '29', 'PRERELEASE': 'beta.0', 'BUILD': 'build.172', 'ENV': 'development', 'AGE': 'unknown', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.29-beta.0+build.172'}
+07-20-2022 21:51:15 | INFO | +RUNNING step.ICAN[pre beta]
+07-20-2022 21:51:15 | VERBOSE | running internal cmd - pre beta
+07-20-2022 21:51:15 | VERBOSE | Setting prerelease string to beta
+07-20-2022 21:51:15 | VERBOSE | persisting version - 0.1.29-beta.0+build.172
+07-20-2022 21:51:15 | VERBOSE | wrote config file
+07-20-2022 21:51:15 | INFO | +END pipeline.BETA
+07-20-2022 21:51:15 | INFO | +FINISHED pipeline.BETA
+07-20-2022 21:51:25 | INFO |         ---===::: Welcome to ican :::===---
+07-20-2022 21:51:25 | VERBOSE | --verbose detected.  Displaying verbose messaging.
+07-20-2022 21:51:25 | VERBOSE | parsing file config VERSION[./ican/__init__.py]
+07-20-2022 21:51:25 | VERBOSE | regex generated for __version__
+07-20-2022 21:51:25 | VERBOSE | parsing file config PUBLIC[./ican/__init__.py]
+07-20-2022 21:51:25 | VERBOSE | regex generated for __public_version__
+07-20-2022 21:51:25 | VERBOSE | parsing GIT pipeline
+07-20-2022 21:51:25 | VERBOSE | GIT.step2 - git add .
+07-20-2022 21:51:25 | VERBOSE | GIT.step3 - git commit -m "auto-commit for {{tag}}"
+07-20-2022 21:51:25 | VERBOSE | GIT.step4 - git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+07-20-2022 21:51:25 | VERBOSE | GIT.step5 - git push origin HEAD {{tag}}
+07-20-2022 21:51:25 | VERBOSE | parsing RELEASE pipeline
+07-20-2022 21:51:25 | VERBOSE | RELEASE.step1 - $_ICAN{bump patch}
+07-20-2022 21:51:25 | VERBOSE | RELEASE.step2 - $_ICAN{run git}
+07-20-2022 21:51:25 | VERBOSE | parsing LINT pipeline
+07-20-2022 21:51:25 | VERBOSE | LINT.step1 - black ./ican/
+07-20-2022 21:51:25 | VERBOSE | LINT.step2 - flake8 ./ican/*
+07-20-2022 21:51:25 | VERBOSE | parsing BETA pipeline
+07-20-2022 21:51:25 | VERBOSE | BETA.step1 - $_ICAN{pre beta}
+07-20-2022 21:51:25 | VERBOSE | parsing TEST pipeline
+07-20-2022 21:51:25 | VERBOSE | TEST.step1 - echo "{{semantic}}"
+07-20-2022 21:51:25 | VERBOSE | TEST.step2 - $_ICAN{bump build}
+07-20-2022 21:51:25 | VERBOSE | TEST.step3 - echo "{{semantic}}"
+07-20-2022 21:51:25 | VERBOSE | discovered 0.1.29-beta.0+build.172 @ CONFIG.version
+07-20-2022 21:51:25 | VERBOSE | found git root @ /Users/jhopper/Dropbox/dev/ican
+07-20-2022 21:51:25 | VERBOSE | Discovered 0.1.29-dev.DIRTY+2dbe1e7.172 @ GIT.version
+07-20-2022 21:51:25 | INFO | +BEGIN pipeline.RELEASE
+07-20-2022 21:51:25 | VERBOSE | Generated ctx: {'VERSION': '0.1.29-beta.0+build.172', 'SEMANTIC': '0.1.29-beta.0+build.172', 'PUBLIC': '0.1.29', 'PEP440': '0.1.29b0.172', 'GIT': '0.1.29-dev.DIRTY+2dbe1e7.172', 'TAG': 'v0.1.29', 'MAJOR': '0', 'MINOR': '1', 'PATCH': '29', 'PRERELEASE': 'beta.0', 'BUILD': 'build.172', 'ENV': 'development', 'AGE': 'unknown', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.29-beta.0+build.172'}
+07-20-2022 21:51:25 | INFO | +RUNNING step.ICAN[bump patch]
+07-20-2022 21:51:25 | VERBOSE | running internal cmd - bump patch
+07-20-2022 21:51:25 | VERBOSE | Beginning bump of <PATCH>
+07-20-2022 21:51:25 | VERBOSE | New value of <PATCH> - 30
+07-20-2022 21:51:25 | VERBOSE | VERSION[./ican/__init__.py] - updating to 0.1.30+build.173
+07-20-2022 21:51:25 | VERBOSE | VERSION[./ican/__init__.py] - found 1 matches
+07-20-2022 21:51:25 | VERBOSE | VERSION[./ican/__init__.py] - update COMPLETE
+07-20-2022 21:51:25 | VERBOSE | PUBLIC[./ican/__init__.py] - updating to 0.1.30
+07-20-2022 21:51:25 | VERBOSE | PUBLIC[./ican/__init__.py] - found 1 matches
+07-20-2022 21:51:25 | VERBOSE | PUBLIC[./ican/__init__.py] - update COMPLETE
+07-20-2022 21:51:25 | VERBOSE | persisting version - 0.1.30+build.173
+07-20-2022 21:51:25 | VERBOSE | wrote config file
+07-20-2022 21:51:25 | VERBOSE | Generated ctx: {'VERSION': '0.1.30+build.173', 'SEMANTIC': '0.1.30+build.173', 'PUBLIC': '0.1.30', 'PEP440': '0.1.30.173', 'GIT': '0.1.29-dev.DIRTY+2dbe1e7.173', 'TAG': 'v0.1.30', 'MAJOR': '0', 'MINOR': '1', 'PATCH': '30', 'PRERELEASE': 'None', 'BUILD': 'build.173', 'ENV': 'production', 'AGE': 'new', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.29-beta.0+build.172'}
+07-20-2022 21:51:25 | INFO | +RUNNING step.ICAN[run git]
+07-20-2022 21:51:25 | VERBOSE | running internal cmd - run git
+07-20-2022 21:51:25 | INFO | +BEGIN pipeline.GIT
+07-20-2022 21:51:25 | VERBOSE | Generated ctx: {'VERSION': '0.1.30+build.173', 'SEMANTIC': '0.1.30+build.173', 'PUBLIC': '0.1.30', 'PEP440': '0.1.30.173', 'GIT': '0.1.29-dev.DIRTY+2dbe1e7.173', 'TAG': 'v0.1.30', 'MAJOR': '0', 'MINOR': '1', 'PATCH': '30', 'PRERELEASE': 'None', 'BUILD': 'build.173', 'ENV': 'production', 'AGE': 'new', 'ROOT': '/Users/jhopper/Dropbox/dev/ican', 'PREVIOUS': '0.1.29-beta.0+build.172'}
+07-20-2022 21:51:25 | INFO | +RUNNING step.CLI[git add .]
+07-20-2022 21:51:25 | VERBOSE | running cmd - ['git', 'add', '.']

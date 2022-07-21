@@ -177,6 +177,7 @@ class Pipeline(Base):
             self._build_env()
             # Parse cli from internal
             self._parse_step(step)
+            logger.info(F"+RUNNING step.{step.typ.upper()}[{step.cmd}]")
             if step.typ == "ICAN":
                 self._run_internal(step)
             if step.typ == "CLI":
