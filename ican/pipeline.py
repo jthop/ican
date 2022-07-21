@@ -13,11 +13,14 @@
 import os
 import re
 import subprocess
+import functools
 import shlex
 from types import SimpleNamespace
 
 from .log import logger
 from .base import Base
+
+from .exceptions import InvalidInternalCmd
 
 
 #######################################
@@ -29,14 +32,15 @@ from .base import Base
 
 class Pipeline(Base):
 
-    TEMPLATE = r"{{(?P<var>.*?)}}"
+    TEMPLATE = r"{{\s*?(?P<var>.*?)\s*?}}"
+    COMMANDS = r"\$_ICAN{\s*?(?P<cmd>.*?)\s*?}"
+    INTERNAL_CMDS = ['bump', 'run', 'pre', 'rollback', 'show']
 
     def __init__(self, label=None, steps=None):
         self.label = label
         self.steps = []
         self.env = None
         self.ctx = None
-        self.compiled = re.compile(Pipeline.TEMPLATE)
 
         if steps is None:
             logger.error("must include at least 1 step")
@@ -44,26 +48,42 @@ class Pipeline(Base):
         if steps:
             for k, v in steps:
                 logger.verbose(f"{label.upper()}.{k} - {v}")
-                step = SimpleNamespace(label=k, cmd=v)
+                step = SimpleNamespace(label=k, cmd=v, typ=None, backup=None)
                 self.steps.append(step)
 
-    def _render(self, cmd):
+    def _parse_step(self, step):
+        """Strip out the internal cmd for {% cmd %} style commands.
+        This method sets the cmd.typ for the step as well.
+        """
+
+        # Match here means this is internal command, not CLI
+        match = re.search(self.COMMANDS, step.cmd)
+        if match:
+            step.cmd = match.group("cmd")
+            step.typ = "ICAN"
+            return
+        step.typ = "CLI"
+        return
+
+    def _render_template(self, step):
         """render jinja-style templates
         {{var}} = ctx['var']
         """
 
-        result, n = self.compiled.subn(
-            lambda m: self.ctx.get(m.group("var").upper(), "N/A"), cmd
+        # If we make it to here this is CLI command
+        result, n = re.subn(
+            self.TEMPLATE,
+            lambda m: self.ctx.get(m.group("var").upper(), "N/A"),
+            step.cmd
         )
-
         if n > 0:
+            step.backup = step.cmd
+            step.cmd = result
             logger.verbose(f"rendered cmd: {result}")
-        return result
+        return
 
-    def _run_cmd(self, cmd):
-        """Here is where we actually run the pipeline steps via the
-        shell.
-
+    def _run_cli_cmd(self, step):
+        """Here is where we actually run the cli commands.
         Args:
             cmd: This should be a tuple or list of command, args such as:
             ['git', 'commit', '-a']
@@ -72,17 +92,47 @@ class Pipeline(Base):
             result: the result object will have attributes of both
             stdout and stderr representing the results of the subprocess
         """
+        if not logger.ok_to_write:
+            return
 
-        if type(cmd) not in (tuple, list):
-            cmd = shlex.split(cmd)
-
-        logger.verbose(f"running cmd - {cmd}")
+        if type(step.cmd) not in (tuple, list):
+            step.cmd = shlex.split(step.cmd)
+        logger.verbose(f"running cmd - {step.cmd}")
         result = subprocess.run(
-            cmd, shell=False, env=self.env, capture_output=False, text=True
+            step.cmd,
+            shell=False,
+            env=self.env,
+            capture_output=False,
+            text=True
         ).stdout
 
         if result:
             logger.verbose(f"cmd result - {result}")
+        return
+
+    def _run_internal(self, step):
+        """This is for pipelines with itnernal commands.  Such as:
+        $_ICAN{bump build} runs version.bump('build')
+        """
+        if not logger.ok_to_write:
+            return
+
+        logger.verbose(f"running internal cmd - {step.cmd}")
+        parts = step.cmd.split(' ')
+        cmd = parts[0].lower()
+        if cmd not in self.INTERNAL_CMDS:
+            raise InvalidInternalCmd()
+
+        cmds = {
+            'bump': 'bump',
+            'rollback': 'rollback',
+            'pre': 'pre',
+            'run': 'run_pipeline'
+        }
+        args = parts[1:]
+        # Run using same dispatch method as cli
+        getattr(self.ican, cmds.get(cmd))(*args)
+
         return
 
     def _build_ctx(self):
@@ -99,7 +149,6 @@ class Pipeline(Base):
         self.ctx["PATCH"] = self.version.patch
         self.ctx["PRERELEASE"] = self.version.prerelease
         self.ctx["BUILD"] = self.version.build
-        self.ctx["STAGE"] = self.version.stage
         self.ctx["ENV"] = self.version.env
         self.ctx["AGE"] = self.version.age
         self.ctx["ROOT"] = self.config.path
@@ -121,12 +170,17 @@ class Pipeline(Base):
         return
 
     def run(self):
-        self._build_ctx()
-        self._build_env()
         logger.info(f"+BEGIN pipeline.{self.label.upper()}")
         for step in self.steps:
-            cmd = self._render(step.cmd)
-            # label = step.label
-            if logger.ok_to_write:
-                self._run_cmd(cmd)
+            # Rebuild the ctx each step
+            self._build_ctx()
+            self._build_env()
+            # Parse cli from internal
+            self._parse_step(step)
+            if step.typ == "ICAN":
+                self._run_internal(step)
+            if step.typ == "CLI":
+                # CLI cmds need template rendering first
+                self._render_template(step)
+                self._run_cli_cmd(step)
         logger.info(f"+END pipeline.{self.label.upper()}")

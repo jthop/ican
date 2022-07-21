@@ -5,7 +5,7 @@ from types import SimpleNamespace
 from .log import logger
 
 
-__version__ = "0.3"
+__version__ = "0.4"
 
 
 #########################
@@ -21,7 +21,7 @@ class Version(object):
     """
 
     BUMPABLE = ["major", "minor", "patch", "prerelease", "build"]
-    DEFAULT_PRERELEASE = "beta.0"
+    DEFAULT_PRERELEASE = "alpha.0"
     DEFAULT_BUILD = "build.0"
 
     last_number_re = re.compile(r"(?:[^\d]*(\d+)[^\d]*)+")
@@ -280,10 +280,8 @@ class Version(object):
     def age(self):
         part = self._frozen.part
         if part in ["major", "minor", "patch", "prerelease"]:
-            logger.verbose("age = NEW")
             return "new"
         elif part in ["build"]:
-            logger.verbose("age = REBUILD")
             return "rebuild"
         else:
             return "unknown"
@@ -291,22 +289,8 @@ class Version(object):
     @property
     def env(self):
         if self._prerelease:
-            logger.verbose("env = DEVELOPMENT")
             return "development"
-        logger.verbose("env = PRODUCTION")
         return "production"
-
-    @property
-    def stage(self):
-        """Also known as the BR (bump result)"""
-        if not self.bumped:
-            return None
-
-        env = "release"
-        if self._prerelease:
-            env = "prerelease"
-
-        return f"{self.age}.{env}"
 
     @property
     def tag(self):
@@ -320,6 +304,9 @@ class Version(object):
 
     def is_canonical(self):
         return Version.pep440_re.match(self.pep440) is not None
+
+    def set_prerelease_token(self, token):
+        self._prerelease = f"{token}.0"
 
     def bump(self, part=None, pre=None):
         """
@@ -336,7 +323,7 @@ class Version(object):
 
         # additional arg for setting prerelease
         if pre:
-            self._prerelease = f"{pre}.0"
+            self.set_prerelease_token(pre)
 
         # Record the bumped part
         self._frozen.part = part
@@ -400,8 +387,9 @@ class Version(object):
     def increment_string(cls, string):
         """
         Look for the last sequence of number(s) in a string and increment.
-        :param string: the string to search for.
-        :return: the incremented string
+        arguments:
+            string: the string to search for.
+        returns: the incremented string
         Source:
         http://code.activestate.com/recipes/442460-increment-numbers-in-a-string/#c1
         """

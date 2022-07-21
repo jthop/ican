@@ -1,12 +1,9 @@
 [version]
-current = 0.1.27+build.168
-previous = 0.1.26+build.167
+current = 0.1.29+build.172
+previous = 0.1.28+build.171
 
 [options]
 log_file = ican.log
-
-[aliases]
-deploy = test first
 
 [file: version]
 file = ./ican/__init__.py
@@ -18,17 +15,25 @@ file = ./ican/__init__.py
 variable = __public_version__
 style = public
 
-[pipeline: new.release]
-step1 = git add .
-step2 = git commit -m "auto-commit for {{tag}}"
-step3 = git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
-step4 = git push origin master {{tag}}
+[pipeline: git]
+step2 = git add .
+step3 = git commit -m "auto-commit for {{tag}}"
+step4 = git tag -a {{tag}} -m "automated tag for release {{tag}}" --sign
+step5 = git push origin HEAD {{tag}}
 
-[pipeline: test]
-step1 = echo "foo"
-step2 = env
+[pipeline: release]
+step1 = $_ICAN{bump patch}
+step2 = $_ICAN{run git}
 
 [pipeline: lint]
 step1 = black ./ican/
 step2 = flake8 ./ican/*
+
+[pipeline: beta]
+step1 = $_ICAN{pre beta}
+
+[pipeline: test]
+step1 = echo "{{semantic}}"
+step2 = $_ICAN{bump build}
+step3 = echo "{{semantic}}"
 

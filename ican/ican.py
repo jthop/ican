@@ -7,6 +7,8 @@ from .log import logger
 from .exceptions import GitDescribeError
 from .exceptions import NoConfigFound
 from .exceptions import RollbackNotPossible
+from .exceptions import PipelineNotFound
+
 
 #######################################
 #
@@ -20,7 +22,7 @@ class Ican(Base):
     Object which will orchestrate entire program
     """
 
-    def __init__(self):
+    def __init__(self, only_pre_parse=False):
         """Typically ican will be instantiated by cli with a half parsed
         config.  We pre-parse so logging can begin.
         """
@@ -28,8 +30,9 @@ class Ican(Base):
 
         # make sure the config is fully parsed
         if not self.config.pre_parsed:
+            # Typically 'init' is the ONLY way to be in this state
             self.config.parse()
-        elif not self.config.parsed:
+        elif not self.config.parsed and not only_pre_parse:
             self.config.parse()
         # Here if still config not ready, it will never be ready
         if not self.config.config_file:
@@ -52,7 +55,16 @@ class Ican(Base):
             logger.verbose(f"Discovered {self.version.git} @ GIT.version")
         return
 
-    def show(self, style):
+    def pre(self, token):
+        """Set the prerelease token"""
+
+        logger.verbose(f"Setting prerelease string to {token}")
+        self.version.set_prerelease_token(token)
+
+        # Save the new version, config will check for dry_run
+        self.config.persist_version(self.version.semantic)
+
+    def show(self, style="semantic"):
         """
         Show the <STYLE> version
         """
@@ -81,39 +93,31 @@ class Ican(Base):
         # Now that everything else is finished, persist version
         self.config.persist_version(self.config.previous_version)
 
-    def bump(self, part, pre):
+    def bump(self, part="build", token=None):
         """This is pretty much the full process"""
-        if pre:
-            logger.verbose(f"Setting prerelease string to {pre}")
+        if token:
+            logger.verbose(f"Setting prerelease string to {token}")
         logger.verbose(f"Beginning bump of <{part.upper()}>")
 
-        self.version.bump(part, pre)
-        logger.verbose(f"New value of <{part.upper()}> - {getattr(self.version, part)}")
+        self.version.bump(part, token)
+        logger.verbose(
+            f"New value of <{part.upper()}> - {getattr(self.version, part)}"
+        )
 
         # Update the user's files with new version
         for file in self.config.source_files:
             file.update(self.version)
-
-        # Run the appropriate pipeline
-        # new.release, new.prerelease rebuild.release, rebuild.prerelease
-        if self.version.stage:
-            self.run_pipeline(self.version.stage, True)
 
         # Once all else is successful, persist the new version
         self.config.persist_version(self.version.semantic)
 
         return self
 
-    def run_pipeline(self, pipeline, automated=False):
+    def run_pipeline(self, pipeline):
         # Pipeline
         if self.config.pipelines.get(pipeline) is None:
             # Pipeline is not defined
-            if automated:
-                logger.verbose(f"Pipeline `{pipeline}` not found.")
-            else:
-                # This was requested so an error is appropriate
-                logger.error(f"Pipeline `{pipeline}` not found.")
-            return
+            raise PipelineNotFound(f'pipeline.{pipeline.upper()} not found')
 
         pl = self.config.pipelines.get(pipeline)
         pl.run()

@@ -46,9 +46,6 @@ current = 0.1.6+build.40
 [options]
 log_file = ican.log
 
-[aliases]
-deploy = bump build
-
 [file: version]
 file = ./src/__init__.py
 style = semantic
@@ -68,7 +65,6 @@ step4 = git push origin master {{tag}}
 - All operations will be logged to the `ican.log` file.
 - ican will update a variable named `__version__` in `./src/__init__.py` any time the bump command is run.
 - ican will use the `semantic` style of the version when updating this file.
-- The new.release pipeline will run on bump [patch, minor, or major].
 - All pipeline steps are typically shell-based commands.
 
 ### :exclamation: Important
@@ -126,14 +122,10 @@ regex = __version__\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)
 ### :computer: Pipelines
 
 #### Labels 
-Pipeline labels have 2 purposes:
+Pipeline labels can be used in 2 ways:
 
 * At the CLI using `ican run LABEL`.  This way we know which pipeline to run.
-* Each `ican bump` looks for a specific pipeline to run automatically.
-   * new.release - runs with `bump [major, minor, patch]`
-   * new.prerelease - runs with `bump [prerelease]`
-   * rebuild.release - runs with `bump[build]` IF the version IS NOT a prerelease
-   * rebuild.prerelease - runs with `bump[build]` IF the version IS a prerelease
+* You can also run use the lazy technique and simply run `ican LABEL`.  ican should find your pipeline and run it
 
 #### Pipeline Context
 The pipeline context is available in 2 locations
@@ -159,7 +151,6 @@ For example you can access `semantic` in your ENV as `ICAN_SEMANTIC`
 | tag           | the git tag, `v{public_version}`                 |
 | age           | REBUILD if bump build, NEW all other bumps       |
 | env           | DEVELOPMENT or PRODUCTION based on the version   |
-| stage         | AGE . (RELEASE or PRERELEASE) ex NEW.RELEASE     |
 | root          | the root directory of your project               |
 | previous      | the previous semantic version                    |
 
@@ -176,7 +167,8 @@ ican [command] [arguments] [options]
 | Command    | Arguments               | Options        | Description   |
 | -----------| ------------------------| -------------  | ------------- |
 | bump       | **PART** `required`     |                | Increments the **PART** of the semantic version.  <br /> [*major*, *minor*, *patch*, *prerelease*] |
-| bump       |                         | --pre `PRE`      | If using prerelease, **PRE** allows you to set [*alpha*, *beta*, *rc*, *dev*] |
+| bump       |                         | --pre `TOKEN`  | If bumping prerelease, set the **TOKEN** to [*alpha*, *beta*, *rc*, *dev*] |
+| pre        | **TOKEN** `required`    |                | Set the prerelease **TOKEN** without bumping.
 | show       | **STYLE** `required`    |                | Shows the current version with the format **STYLE**. <br /> [*semantic*, *public*, *pep440*, *git*] |
 | run        | **PIPELINE** `required` |                | Run the specified **PIPELINE**  |
 | rollback   | none                    |                | Rollback to the previously persisted version.  |

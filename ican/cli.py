@@ -12,6 +12,7 @@ from .config import Config
 from .ican import Ican
 from .log import logger
 from .exceptions import IcanException
+from .exceptions import PipelineNotFound
 
 
 # ===============================
@@ -25,8 +26,8 @@ class CLI(Base):
     usage = """ican <COMMAND> [<ARGS>]
 
 commands:
-  bump [PART] [PRE]  increment version [minor, major, patch, prerelease, build]
-                     if prerelease use PRE to set [alpha, beta, rc, dev]
+  bump [PART]        increment version [minor, major, patch, prerelease, build]
+  pre [TOKEN]        set the prerelease string [alpha, beta, rc, dev]
   show [STYLE]       show version [semantic, public, pep440, git]
   run [PIPELINE]     run the specified PIPELINE
   rollback           restore the previous version
@@ -34,20 +35,13 @@ commands:
 """
 
     def __init__(self):
+        """
+        """
         self._register_excepthook()
-        if "--version" not in sys.argv:
-            self._arg_pop()
-            self.config = Config()
-            self.config.pre_parse()
-            self._substitute_aliases()
+        # self._arg_pop()
+        self.config = Config()
 
         parser = argparse.ArgumentParser(usage=CLI.usage, prog="ican")
-        parser.add_argument(
-            "--dry_run", help="do not write any files", action="store_true"
-        )
-        parser.add_argument(
-            "--verbose", help="display debug information", action="store_true"
-        )
         parser.add_argument("command", help=argparse.SUPPRESS)
         parser.add_argument(
             "--version",
@@ -58,51 +52,19 @@ commands:
 
         args = parser.parse_args(sys.argv[1:2])
         if not hasattr(self, args.command):
-            logger.error("Unrecognized command")
-            parser.print_help()
-            exit(1)
+            # Unknown, look for pipelines with this name (alias)
+            try:
+                self.run(args.command)
+            except PipelineNotFound:
+                logger.error("Unrecognized command")
+                parser.print_help()
+                exit(1)
+            except Exception as e:
+                raise(e)
 
-        getattr(self, args.command)()
-        return
-
-    def _arg_pop(self):
-        """Here we will pop --verbose and --dry_run out asap,
-        that way logging can be setup before we parse the config
-        file, etc.
-        """
-
-        verbose = False
-        dry_run = False
-        for i in range(1, len(sys.argv)):
-            if sys.argv[i] == "--verbose":
-                verbose = True
-                sys.argv.pop(i)
-                break
-        for i in range(1, len(sys.argv)):
-            if sys.argv[i] == "--dry_run":
-                dry_run = True
-                sys.argv.pop(i)
-                break
-        logger.setup(verbose, dry_run)
-        return
-
-    def _substitute_aliases(self):
-        """At this point we have parsed the config and know any
-        user-defined aliases.  We need to substitute them into
-        sys.argv for a seamless alias experience.
-        """
-
-        aliases = self.config.aliases
-        # if config.alias was used, insert it into sys.argv
-        if len(sys.argv) < 2:
-            # nothing to substitute here because no command
+        else:
+            getattr(self, args.command)()
             return
-        command = sys.argv[1]
-        if aliases.get(command):
-            built_in = aliases.get(command)
-            sys.argv.pop(1)  # delete the alias command
-            sys.argv[1:1] = built_in
-        return
 
     def _register_excepthook(self):
         """Register our custom exception handler"""
@@ -127,6 +89,43 @@ commands:
         else:
             self._original_excepthook(type, value, tracekback)
 
+    def _arg_pop(self):
+        """Here we will pop --verbose and --dry_run out asap,
+        that way logging can be setup before we parse the config
+        file, etc.
+        """
+
+        verbose = False
+        dry_run = False
+        for i in range(1, len(sys.argv)):
+            if sys.argv[i] == "--verbose":
+                verbose = True
+                sys.argv.pop(i)
+                break
+        for i in range(1, len(sys.argv)):
+            if sys.argv[i] == "--dry_run":
+                dry_run = True
+                sys.argv.pop(i)
+                break
+        logger.setup(verbose, dry_run)
+        return
+
+    def command_prep(self, parser, alias=None):
+        self.config.pre_parse()
+        parser.add_argument(
+            "--dry_run", help="do not write any files", action="store_true"
+        )
+        parser.add_argument(
+            "--verbose", help="display debug information", action="store_true"
+        )
+        argv = sys.argv[2:]
+        if alias:
+            argv.insert(0, alias)
+
+        args = parser.parse_args(argv)
+        logger.setup(args.verbose, args.dry_run)
+        return args
+
     def bump(self):
         """dispatched here with command bump"""
 
@@ -146,18 +145,12 @@ commands:
             type=str,
             help="set the prerelease string [alpha, beta, rc, dev]",
         )
-        parser.add_argument(
-            "--dry_run", help="do not write any files", action="store_true"
-        )
-        parser.add_argument(
-            "--verbose", help="display debug information", action="store_true"
-        )
-        args = parser.parse_args(sys.argv[2:])
+        args = self.command_prep(parser)
 
-        i = Ican()
-        i.bump(args.part.lower(), args.pre)
+        self.ican = Ican()
+        self.ican.bump(args.part.lower(), args.pre)
         logger.verbose("bump() COMPLETE")
-        logger.info(f"Version: {i.version.semantic}")
+        logger.info(f"Version: {self.ican.version.semantic}")
 
         return
 
@@ -175,17 +168,38 @@ commands:
             choices=["semantic", "public", "pep440", "git"],
             help=argparse.SUPPRESS,
         )
-        # add --verbose only to be included in --help
-        parser.add_argument(
-            "--verbose", help="display debug information", action="store_true"
-        )
-        args = parser.parse_args(sys.argv[2:])
+        args = self.command_prep(parser)
 
-        i = Ican()
-        v = i.show(args.style)
+        self.ican = Ican(only_pre_parse=True)
+        v = self.ican.show(args.style)
         logger.info(f"Current {args.style} version: {v}")
 
         return
+
+    def pre(self):
+        """Sets the prerelease token to [alpha, beta, dev, rc]
+        At the same time prerelease mode is enabled for the
+        version.  The same can be accomplished with --pre
+        during a bump.
+        """
+
+        parser = argparse.ArgumentParser(
+            description="set the prerelease TOKEN to one of "
+            "[alpha, beta, rc, dev]",
+            usage="ican pre [TOKEN]",
+        )
+        parser.add_argument(
+            "token",
+            nargs="?",
+            default="alpha",
+            choices=["alpha", "beta", "rc", "dev"],
+            help=argparse.SUPPRESS,
+        )
+        args = self.command_prep(parser)
+
+        self.ican = Ican(only_pre_parse=True)
+        self.ican.pre(args.token)
+        logger.info(f"prerelease token set: {self.ican.version.semantic}")
 
     def rollback(self):
         """in case of emergency, restore the previously
@@ -193,39 +207,25 @@ commands:
         """
 
         parser = argparse.ArgumentParser(usage="ican rollback")
-        # add --dry_run and --verbose only to be included in --help
-        parser.add_argument(
-            "--dry_run", help="do not write any files", action="store_true"
-        )
-        parser.add_argument(
-            "--verbose", help="display debug information", action="store_true"
-        )
-        parser.parse_args(sys.argv[2:])
+        self.command_prep(parser)
 
-        i = Ican()
-        i.rollback()
+        self.ican = Ican()
+        self.ican.rollback(only_pre_parse=True)
         logger.verbose("rollback() COMPLETE")
-        logger.info(f"Rollback: {i.version.semantic}")
+        logger.info(f"Rollback: {self.ican.version.semantic}")
 
     def init(self):
         """dispatched here with command init"""
 
         parser = argparse.ArgumentParser(usage="ican init")
-        # add --dry_run and --verbose only to be included in --help
-        parser.add_argument(
-            "--dry_run", help="do not write any files", action="store_true"
-        )
-        parser.add_argument(
-            "--verbose", help="display debug information", action="store_true"
-        )
-        parser.parse_args(sys.argv[2:])
+        self.command_prep(parser)
 
         self.config = Config(init=True).parse()
         logger.info("init COMPLETE")
 
         return
 
-    def run(self):
+    def run(self, alias=None):
         """dispatched here with command init"""
 
         parser = argparse.ArgumentParser(
@@ -233,31 +233,18 @@ commands:
             usage="ican run [PIPELINE]",
         )
         parser.add_argument("pipeline", help=argparse.SUPPRESS)
-        # add --verbose only to be included in --help
-        parser.add_argument(
-            "--dry_run", help="do not write any files", action="store_true"
-        )
-        parser.add_argument(
-            "--verbose", help="display debug information", action="store_true"
-        )
-        args = parser.parse_args(sys.argv[2:])
+        args = self.command_prep(parser, alias)
 
-        i = Ican()
-        i.run_pipeline(args.pipeline)
+        self.ican = Ican()
+        self.ican.run_pipeline(args.pipeline)
 
-    def test(self):
+    def test2(self):
         """dispatched here with command test"""
 
         parser = argparse.ArgumentParser(usage="ican test [ARGS]")
-        # add --dry-run and --verbose only to be included in --help
-        parser.add_argument(
-            "--dry-run", help="do not write any files", action="store_true"
-        )
-        parser.add_argument(
-            "--verbose", help="display debug information", action="store_true"
-        )
         parser.add_argument("first", nargs="?", help=argparse.SUPPRESS)
-        args = parser.parse_args(sys.argv[2:])
+        args = self.command_prep(parser)
+
         logger.verbose("verbose")
         print(f"10-4 with arg {args.first}")
 

@@ -46,3 +46,11 @@ class Base:
     @git.setter
     def git(self, value):
         registry.set("git", value)
+
+    @property
+    def ican(self):
+        return registry.get("ican")
+
+    @ican.setter
+    def ican(self, value):
+        registry.set("ican", value)

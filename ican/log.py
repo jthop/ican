@@ -69,11 +69,11 @@ class IcanLogger(logging.getLoggerClass()):
 
     def __init__(self, name, level=logging.DEBUG):
         super().__init__(name, level)
-
         self._verbose = None
         self._dry_run = None
         logging.addLevelName(self.VERBOSE, "VERBOSE")
         logging.addLevelName(self.DRY_RUN, "DRY_RUN")
+        self.ready = False
 
     def _welcome_msg(self):
         self.info("        ---===::: Welcome to ican :::===---")
@@ -106,6 +106,7 @@ class IcanLogger(logging.getLoggerClass()):
         console.setFormatter(IcanFormatter())
         self.addHandler(console)
         self._welcome_msg()
+        self.ready = True
 
     def setup_file_handler(self, filename, format=DEFAULT_FILEHANDLER):
         """This method sets up our filehandler.  This is separate as console

@@ -12,8 +12,9 @@ class ExitCode:
     NO_CONFIG_FOUND = 1
     INVALID_CONFIG = 2
     DUPLICATE_CONFIG_SECTIONS = 3
-    CONFIG_WRITE_ERROR = 4
-    NO_CURRENT_VERSION = 5
+    DUPLICATE_CONFIG_OPTIONS = 4
+    CONFIG_WRITE_ERROR = 5
+    NO_CURRENT_VERSION = 6
     ROLLBACK_NOT_POSSIBLE = 7
 
     GIT_UNUSABLE = 10
@@ -29,6 +30,9 @@ class ExitCode:
     SOURCE_CODE_FILE_OPEN_ERROR = 30
     SOURCE_CODE_FILE_MISSING = 31
     USER_SUPPLIED_REGEX_ERROR = 32
+
+    PIPELINE_NOT_FOUND = 40
+    INVALID_INTERNAL_CMD = 42
 
 
 class IcanException(Exception):
@@ -84,7 +88,12 @@ class InvalidConfig(IcanException):
 
 class DuplicateConfigSections(IcanException):
     exit_code = ExitCode.DUPLICATE_CONFIG_SECTIONS
-    msg = "Duplicate sections in config file. Did you create file/pipeline labels?"
+    msg = "Duplicate config sections. Look for duplicate file/pipeline labels."
+
+
+class DuplicateConfigOptions(IcanException):
+    exit_code = ExitCode.DUPLICATE_CONFIG_OPTIONS
+    msg = "Duplicate config options.  Look for duplicate steps in a pipeline."
 
 
 class ConfigWriteError(IcanException):
@@ -159,3 +168,12 @@ class UserSuppliedRegexError(IcanException):
 
 
 ########################
+
+
+class PipelineNotFound(IcanException):
+    exit_code = ExitCode.PIPELINE_NOT_FOUND
+
+
+class InvalidInternalCmd(IcanException):
+    exit_code = ExitCode.INVALID_INTERNAL_CMD
+

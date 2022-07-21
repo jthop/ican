@@ -12,13 +12,16 @@ import os
 from pathlib import Path
 from configparser import ConfigParser
 from configparser import DuplicateSectionError
+from configparser import DuplicateOptionError
 from configparser import ParsingError
+from collections import OrderedDict
 
 from .base import Base
 from .source import SourceCode
 from .pipeline import Pipeline
 from .log import logger
 from .exceptions import DuplicateConfigSections
+from .exceptions import DuplicateConfigOptions
 from .exceptions import ConfigWriteError
 from .exceptions import InvalidConfig
 
@@ -30,9 +33,21 @@ from .exceptions import InvalidConfig
 #######################################
 
 
-class Config(Base):
+class MultiOrderedDict(OrderedDict):
+    """Custom obj to use as parser storage to allow multiple
+    keys with same keyname. Credit:
+    https://stackoverflow.com/questions/15848674/
     """
-    Object which will orchestrate entire program
+    def __setitem__(self, key, value):
+        if isinstance(value, list) and key in self:
+            self[key].extend(value)
+        else:
+            # super(MultiOrderedDict, self).__setitem__(key, value)
+            super().__setitem__(key, value)
+
+
+class Config(Base):
+    """Config object for entire program
     """
 
     default_ver = dict(current="0.1.0")
@@ -54,7 +69,6 @@ class Config(Base):
         self.log_file = None
         self.source_files = []
         self.pipelines = {}
-        self.aliases = {}
         self.pre_parsed = False
         self.parsed = False
 
@@ -127,9 +141,7 @@ class Config(Base):
         return None
 
     def pre_parse(self):
-        """Partially parse the config.  Enough to log, use aliases in
-        the cli parser, also grab version since it's easy and is needed
-        for show().
+        """Partially parse the config.  Enough to log and grab the version.
         """
 
         if not self.config_file:
@@ -139,20 +151,33 @@ class Config(Base):
                 # Silently continue on.  There is still a chance for init()
                 return self
             try:
-                self.parser.read(self.config_file)
-            except DuplicateSectionError:
-                raise DuplicateConfigSections()
-            except ParsingError:
-                raise InvalidConfig()
+                self.parser.read([self.config_file])
+            except DuplicateSectionError as e:
+                raise DuplicateConfigSections(e)
+            except DuplicateOptionError as e:
+                raise DuplicateConfigOptions(e)
+            except ParsingError as e:
+                raise InvalidConfig(e)
 
-        self.current_version = self.parser.get("version", "current", fallback="0.1.0")
-        self.previous_version = self.parser.get("version", "previous", fallback=None)
-        self.log_file = self.parser.get("options", "log_file", fallback=None)
+        self.current_version = self.parser.get(
+            "version",
+            "current",
+            fallback="0.1.0"
+        )
+        self.previous_version = self.parser.get(
+            "version",
+            "previous",
+            fallback=[None]
+        )
+        self.log_file = self.parser.get(
+            "options",
+            "log_file",
+            fallback=[None]
+        )
 
         self.ch_dir_root()
         if self.log_file:
             logger.setup_file_handler(self.log_file)
-        self.parse_aliases()
         self.pre_parsed = True
         return self
 
@@ -168,15 +193,6 @@ class Config(Base):
         self.parse_pipelines()
         self.parsed = True
         return self
-
-    def parse_aliases(self):
-        if not self.parser.has_section("aliases"):
-            return
-
-        for alias, built_in in self.parser.items("aliases"):
-            cmd_with_args = built_in.strip().split(" ")
-            self.aliases[alias] = cmd_with_args
-        return
 
     def parse_pipelines(self):
         for s in self.parser.sections():
