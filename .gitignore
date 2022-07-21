@@ -10,9 +10,8 @@ __pycache__/
 /build/
 /dist/
 /.eggs/
-.coverage
 
-make.sh
-notes.txt
+.env
+.notes
 .backup/
-setup.py
+ican.log
