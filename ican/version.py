@@ -221,7 +221,7 @@ class Version(object):
         ex: 4.2.0-rc.3.dev.5+fcf2c8fd
         """
         if self._git_metadata is None:
-            return "GIT METADATA NOT AVAILABLE"
+            return None
 
         tag = self._git_metadata.tag
         dirty = self._git_metadata.dirty

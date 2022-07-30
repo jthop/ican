@@ -54,8 +54,8 @@ variable = __version__
 [pipeline: new.release]
 step1 = ./clean_my_project.sh
 step2 = git commit -a
-step3 = git tag -a {{tag}} --sign
-step4 = git push origin master {{tag}}
+step3 = git tag -a {tag} --sign
+step4 = git push origin master {tag}
 
 ```
 
@@ -121,16 +121,39 @@ regex = __version__\s*=\s*(?P<quote>[\'\"])(?P<version>.+)(?P=quote)
 
 ### :computer: Pipelines
 
-#### Labels 
-Pipeline labels can be used in 2 ways:
+#### Pipeline Intro
+Pipelines allow you to define cli commands as well as internal ican functions to be run in a batch.  They are defined inside your .ican file.
 
-* At the CLI using `ican run LABEL`.  This way we know which pipeline to run.
-* You can also run use the lazy technique and simply run `ican LABEL`.  ican should find your pipeline and run it
+Example:
+
+```ini
+[pipeline: release]
+step1 = $ICAN(bump {arg_1})
+step2 = git add .
+step3 = git commit -m "auto-commit for {tag}"
+step4 = git tag -a {tag} -m "automated tag for release {tag}" --sign
+step5 = git push origin master
+step6 = $ICAN(show)
+```
+
+You could explicitly tell ican to run the `release` pipeline with the following command:
+`user@mac:~/$ ican run release patch`
+
+Notice step1 uses the variable `arg_1`.  This references a user-supplied argument.  In the above example, `patch` is substituted in for {arg_1}.
+
+Although not explicit, in newer ican version you can even leave out `run` and simply type:
+
+`user@mac:~/$ ican release patch`
+
+Finally, you could omit the argument, previously we used `patch`.  If you omit an argument, ican will use the function's default argument.  With bump, the default is `build`.  So the command below will bump the build number instead of the patch version before commiting to git.
+
+`user@mac:~/$ ican release`
+
 
 #### Pipeline Context
 The pipeline context is available in 2 locations
 
-* In the pipeline itself, you can use Jinja-style templating. Example: `git push origin master {{tag}}`
+* You can template your pipeline steps, using the {variable_name} format. Example: `git push origin master {tag}`
 * Before a pipeline runs, ican will inject your shell's environment with all pipeline context variables prefixed with ICAN_.
 
 For example you can access `semantic` in your ENV as `ICAN_SEMANTIC`

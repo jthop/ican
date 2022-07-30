@@ -64,15 +64,23 @@ class Ican(Base):
         # Save the new version, config will check for dry_run
         self.config.persist_version(self.version.semantic)
 
+        # Display message to user
+        logger.info(f"prerelease token set: {self.version.semantic}")
+        return self
+
     def show(self, style="semantic"):
         """
         Show the <STYLE> version
         """
 
-        v = getattr(self.version, style)
+        v = None
+        if hasattr(self.version, style):
+            v = getattr(self.version, style)
         if v is None:
-            return f"Version STYLE: {style} not available"
-        return v
+            logger.error(f"Version.Style not available: {style}")
+        # Display message to user
+        logger.info(f"Current {style} version: {v}")
+        return self
 
     def rollback(self):
         """When all else fails, this should bring the version back
@@ -93,9 +101,16 @@ class Ican(Base):
         # Now that everything else is finished, persist version
         self.config.persist_version(self.config.previous_version)
 
+        # Display message to user
+        logger.info(f"Rollback: {self.version.semantic}")
+        return self
+
     def bump(self, part="build", token=None):
         """This is pretty much the full process"""
         if token:
+            # Little magic here to turn `bump pre` into `bump prerelease`
+            if token == "pre":
+                token = "prerelease"
             logger.verbose(f"Setting prerelease string to {token}")
         logger.verbose(f"Beginning bump of <{part.upper()}>")
 
@@ -111,14 +126,16 @@ class Ican(Base):
         # Once all else is successful, persist the new version
         self.config.persist_version(self.version.semantic)
 
+        # Display message to user
+        logger.info(f"Version: {self.ican.version.semantic}")
         return self
 
-    def run_pipeline(self, pipeline):
+    def run_pipeline(self, pipeline, user_args=[]):
         # Pipeline
         if self.config.pipelines.get(pipeline) is None:
             # Pipeline is not defined
             raise PipelineNotFound(f'pipeline.{pipeline.upper()} not found')
 
         pl = self.config.pipelines.get(pipeline)
-        pl.run()
-        return
+        pl.run(user_args)
+        return self

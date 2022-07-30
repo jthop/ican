@@ -13,14 +13,78 @@
 import os
 import re
 import subprocess
-import functools
 import shlex
-from types import SimpleNamespace
+from collections import UserDict
 
 from .log import logger
 from .base import Base
 
 from .exceptions import InvalidInternalCmd
+
+
+#######################################
+#
+#   Step
+#
+#######################################
+
+
+class CTX(UserDict):
+    def __missing__(self, key):
+        if key.startswith("arg_"):
+            return ""
+        return "#NOT_FOUND#"
+
+    def __setitem__(self, item, value):
+        # Make sure it's a string
+        value = str(value)
+        super().__setitem__(item, value)
+
+    def gen_env(self):
+        env = {f'ICAN_{k.upper()}': v for k, v in self.items()}
+        return {**os.environ, **env}
+
+
+class Step:
+
+    COMMANDS = r"\$ICAN\(\s*?(?P<cmd>.*?)\s*?\)"
+    CLI = "__CLI__"
+    INTERNAL = "__INTERNAL__"
+
+    def __init__(self, label, cmd):
+        self.label = label
+        self.cmd = None
+        self.backup = None
+        self.type = None
+
+        match = re.search(self.COMMANDS, cmd)
+        if match:
+            self.cmd = match.group("cmd")
+            self.type = self.INTERNAL
+        else:
+            self.cmd = cmd
+            self.type = self.CLI
+
+    def is_internal(self):
+        if self.type == self.INTERNAL:
+            return True
+        return False
+
+    def is_cli(self):
+        if self.type == self.CLI:
+            return True
+        return False
+
+    def render(self, ctx):
+        """render template variables
+        """
+
+        formatted = self.cmd.format_map(ctx)
+        if formatted != self.cmd:
+            self.backup = self.cmd
+            self.cmd = formatted
+            logger.verbose(f"rendered cmd: {formatted}")
+        return
 
 
 #######################################
@@ -32,9 +96,16 @@ from .exceptions import InvalidInternalCmd
 
 class Pipeline(Base):
 
-    TEMPLATE = r"{{\s*?(?P<var>.*?)\s*?}}"
-    COMMANDS = r"\$_ICAN{\s*?(?P<cmd>.*?)\s*?}"
-    INTERNAL_CMDS = ['bump', 'run', 'pre', 'rollback', 'show']
+    ARGS = r"{arg_(?P<num>\d+)}"
+    CLI = "__CLI__"
+    INTERNAL = "__INTERNAL__"
+    INTERNAL_CMDS = {
+        'bump': 'bump',
+        'run': 'run_pipeline',
+        'pre': 'pre',
+        'rollback': 'rollback',
+        'show': 'show',
+    }
 
     def __init__(self, label=None, steps=None):
         self.label = label
@@ -45,42 +116,10 @@ class Pipeline(Base):
         if steps is None:
             logger.error("must include at least 1 step")
 
-        if steps:
-            for k, v in steps:
-                logger.verbose(f"{label.upper()}.{k} - {v}")
-                step = SimpleNamespace(label=k, cmd=v, typ=None, backup=None)
-                self.steps.append(step)
-
-    def _parse_step(self, step):
-        """Strip out the internal cmd for {% cmd %} style commands.
-        This method sets the cmd.typ for the step as well.
-        """
-
-        # Match here means this is internal command, not CLI
-        match = re.search(self.COMMANDS, step.cmd)
-        if match:
-            step.cmd = match.group("cmd")
-            step.typ = "ICAN"
-            return
-        step.typ = "CLI"
-        return
-
-    def _render_template(self, step):
-        """render jinja-style templates
-        {{var}} = ctx['var']
-        """
-
-        # If we make it to here this is CLI command
-        result, n = re.subn(
-            self.TEMPLATE,
-            lambda m: self.ctx.get(m.group("var").upper(), "N/A"),
-            step.cmd
-        )
-        if n > 0:
-            step.backup = step.cmd
-            step.cmd = result
-            logger.verbose(f"rendered cmd: {result}")
-        return
+        for k, v in steps:
+            logger.verbose(f"{label.upper()}.{k} - {v}")
+            step = Step(k, v)
+            self.steps.append(step)
 
     def _run_cli_cmd(self, step):
         """Here is where we actually run the cli commands.
@@ -120,68 +159,59 @@ class Pipeline(Base):
         logger.verbose(f"running internal cmd - {step.cmd}")
         parts = step.cmd.split(' ')
         cmd = parts[0].lower()
-        if cmd not in self.INTERNAL_CMDS:
+        if cmd not in self.INTERNAL_CMDS.keys():
             raise InvalidInternalCmd()
 
-        cmds = {
-            'bump': 'bump',
-            'rollback': 'rollback',
-            'pre': 'pre',
-            'run': 'run_pipeline'
-        }
-        args = parts[1:]
+        args = [x for x in parts[1:] if x]
         # Run using same dispatch method as cli
-        getattr(self.ican, cmds.get(cmd))(*args)
+        getattr(self.ican, self.INTERNAL_CMDS.get(cmd))(*args)
 
         return
 
-    def _build_ctx(self):
+    def _build_ctx(self, user_args):
         """ """
-        self.ctx = {}
-        self.ctx["VERSION"] = self.version.semantic
-        self.ctx["SEMANTIC"] = self.version.semantic
-        self.ctx["PUBLIC"] = self.version.public
-        self.ctx["PEP440"] = self.version.pep440
-        self.ctx["GIT"] = self.version.git
-        self.ctx["TAG"] = self.version.tag
-        self.ctx["MAJOR"] = self.version.major
-        self.ctx["MINOR"] = self.version.minor
-        self.ctx["PATCH"] = self.version.patch
-        self.ctx["PRERELEASE"] = self.version.prerelease
-        self.ctx["BUILD"] = self.version.build
-        self.ctx["ENV"] = self.version.env
-        self.ctx["AGE"] = self.version.age
-        self.ctx["ROOT"] = self.config.path
-        self.ctx["PREVIOUS"] = self.config.previous_version
 
-        # ensure all are strings
-        for k, v in self.ctx.items():
-            self.ctx[k] = str(v)
+        ctx = CTX()
+        ctx["version"] = self.version.semantic
+        ctx["semantic"] = self.version.semantic
+        ctx["public"] = self.version.public
+        ctx["pep440"] = self.version.pep440
+        ctx["git"] = self.version.git
+        ctx["tag"] = self.version.tag
+        ctx["major"] = self.version.major
+        ctx["minor"] = self.version.minor
+        ctx["patch"] = self.version.patch
+        ctx["prerelease"] = self.version.prerelease
+        ctx["build"] = self.version.build
+        ctx["env"] = self.version.env
+        ctx["age"] = self.version.age
+        ctx["root"] = self.config.path
+        ctx["previous"] = self.config.previous_version
 
-        logger.verbose(f"Generated ctx: {self.ctx}")
-        return
+        # include the user_args
+        x = 0
+        for arg in user_args:
+            x += 1
+            ctx[f"arg_{x}"] = arg
 
-    def _build_env(self):
-        """ Use ctx and simple add prefix to all keys
-        """
+        logger.verbose(f"Generated ctx: {ctx}")
+        # Use the ctx to generate a new env
+        self.env = ctx.gen_env()
+        return ctx
 
-        _env = {f'ICAN_{k}': v for k, v in self.ctx.items()}
-        self.env = {**os.environ, **_env}
-        return
-
-    def run(self):
-        logger.info(f"+BEGIN pipeline.{self.label.upper()}")
+    def run(self, user_args):
+        print(user_args)
+        logger.alt_info(f"+BEGIN pipeline.{self.label.upper()}")
         for step in self.steps:
             # Rebuild the ctx each step
-            self._build_ctx()
-            self._build_env()
-            # Parse cli from internal
-            self._parse_step(step)
-            logger.info(F"+RUNNING step.{step.typ.upper()}[{step.cmd}]")
-            if step.typ == "ICAN":
+            ctx = self._build_ctx(user_args)
+
+            # Each step renders their template variables
+            step.render(ctx)
+            logger.alt_info(F"+RUNNING step.{step.type.upper()}<{step.cmd}>")
+            if step.is_internal():
                 self._run_internal(step)
-            if step.typ == "CLI":
-                # CLI cmds need template rendering first
-                self._render_template(step)
+            if step.is_cli():
                 self._run_cli_cmd(step)
-        logger.info(f"+END pipeline.{self.label.upper()}")
+
+        logger.alt_info(f"+END pipeline.{self.label.upper()}")

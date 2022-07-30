@@ -13,7 +13,7 @@ class IcanFormatter(logging.Formatter):
     RED = "\u001b[31;1m"
     GREEN = "\u001b[32;1m"
     YELLOW = "\u001b[33;1m"
-    BLUE = "\u001b[34;7m"
+    BLUE = "\u001b[34;1m"
     MAGENTA = "\u001b[35;1m"
     CYAN = "\u001b[36;1m"
     WHITE = "\u001b[37;1m"
@@ -32,8 +32,9 @@ class IcanFormatter(logging.Formatter):
         self.FORMATS = {}
         self.FORMATS[logging.DEBUG] = self.color(self.MAGENTA)
         self.FORMATS[IcanLogger.VERBOSE] = self.color(self.YELLOW)
-        self.FORMATS[IcanLogger.DRY_RUN] = self.color(self.BOLD + self.BLUE)
-        self.FORMATS[logging.INFO] = self.color(self.BOLD + self.GREEN, True)
+        self.FORMATS[IcanLogger.DRY_RUN] = self.color(self.GREEN)
+        self.FORMATS[IcanLogger.ALT_INFO] = self.color(self.INVERT + self.CYAN, True)
+        self.FORMATS[logging.INFO] = self.color(self.UNDERLINE + self.BLUE, True)
         self.FORMATS[logging.WARNING] = self.color(self.RED)
         self.FORMATS[logging.ERROR] = self.color(self.RED)
         self.FORMATS[logging.CRITICAL] = self.color(self.INVERT + self.RED)
@@ -65,6 +66,7 @@ class IcanLogger(logging.getLoggerClass()):
 
     VERBOSE = 11  # like debug, print on console and file
     DRY_RUN = 15  # dry_run related messages
+    ALT_INFO = 19   # really info but different color to stand out in run_pipeline
     DEFAULT_FILEHANDLER = "%(asctime)s | %(levelname)s | %(message)s"
 
     def __init__(self, name, level=logging.DEBUG):
@@ -73,6 +75,7 @@ class IcanLogger(logging.getLoggerClass()):
         self._dry_run = None
         logging.addLevelName(self.VERBOSE, "VERBOSE")
         logging.addLevelName(self.DRY_RUN, "DRY_RUN")
+        logging.addLevelName(self.ALT_INFO, "ALT_INFO")
         self.ready = False
 
     def _welcome_msg(self):
@@ -139,6 +142,14 @@ class IcanLogger(logging.getLoggerClass()):
         if self.isEnabledFor(self.DRY_RUN):
             if self._dry_run:
                 self._log(self.DRY_RUN, msg, args, **kwargs)
+
+    def alt_info(self, msg, *args, **kwargs):
+        """Custom logging method for our VERBOSE logging level.  Nothing
+        special it is just like the stock DEBUG, INFO, etc.
+        """
+
+        if self.isEnabledFor(self.ALT_INFO):
+            self._log(self.ALT_INFO, msg, args, **kwargs)
 
     @property
     def ok_to_write(self):

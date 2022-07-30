@@ -108,10 +108,14 @@ class Config(Base):
         we need it to rollback.
         """
         logger.verbose(f"persisting version - {new_version}")
-        self.parser.set("version", "previous", self.current_version)
-        self.parser.set("version", "current", new_version)
-        self.save()
+
+        self.previous_version = self.current_version
+        self.parser.set("version", "previous", self.previous_version)
+
         self.current_version = new_version
+        self.parser.set("version", "current", self.current_version)
+
+        self.save()
         return
 
     def init(self):

@@ -110,14 +110,17 @@ commands:
         logger.setup(verbose, dry_run)
         return
 
-    def command_prep(self, parser, alias=None):
+    def command_prep(self, parser, alias=None, user_args=False):
+        # self._arg_pop()
         self.config.pre_parse()
+
         parser.add_argument(
             "--dry_run", help="do not write any files", action="store_true"
         )
         parser.add_argument(
             "--verbose", help="display debug information", action="store_true"
         )
+
         argv = sys.argv[2:]
         if alias:
             argv.insert(0, alias)
@@ -130,14 +133,14 @@ commands:
         """dispatched here with command bump"""
 
         parser = argparse.ArgumentParser(
-            description="PART choices [major, minor, patch, prerelease, build]",
+            description="PART choices [major, minor, patch, [pre]release, build]",
             usage="ican bump [PART]",
         )
         parser.add_argument(
             "part",
             nargs="?",
             default="build",
-            choices=["major", "minor", "patch", "prerelease", "build"],
+            choices=["major", "minor", "patch", "prerelease", "pre", "build"],
             help=argparse.SUPPRESS,
         )
         parser.add_argument(
@@ -150,8 +153,6 @@ commands:
         self.ican = Ican()
         self.ican.bump(args.part.lower(), args.pre)
         logger.verbose("bump() COMPLETE")
-        logger.info(f"Version: {self.ican.version.semantic}")
-
         return
 
     def show(self):
@@ -171,9 +172,7 @@ commands:
         args = self.command_prep(parser)
 
         self.ican = Ican(only_pre_parse=True)
-        v = self.ican.show(args.style)
-        logger.info(f"Current {args.style} version: {v}")
-
+        self.ican.show(args.style)
         return
 
     def pre(self):
@@ -191,7 +190,7 @@ commands:
         parser.add_argument(
             "token",
             nargs="?",
-            default="alpha",
+            default="beta",
             choices=["alpha", "beta", "rc", "dev"],
             help=argparse.SUPPRESS,
         )
@@ -199,7 +198,7 @@ commands:
 
         self.ican = Ican(only_pre_parse=True)
         self.ican.pre(args.token)
-        logger.info(f"prerelease token set: {self.ican.version.semantic}")
+        return
 
     def rollback(self):
         """in case of emergency, restore the previously
@@ -212,7 +211,7 @@ commands:
         self.ican = Ican()
         self.ican.rollback(only_pre_parse=True)
         logger.verbose("rollback() COMPLETE")
-        logger.info(f"Rollback: {self.ican.version.semantic}")
+        return
 
     def init(self):
         """dispatched here with command init"""
@@ -233,21 +232,30 @@ commands:
             usage="ican run [PIPELINE]",
         )
         parser.add_argument("pipeline", help=argparse.SUPPRESS)
+        parser.add_argument(
+            'user_args',
+            nargs="*",
+            help=argparse.SUPPRESS
+        )
         args = self.command_prep(parser, alias)
 
         self.ican = Ican()
-        self.ican.run_pipeline(args.pipeline)
+        self.ican.run_pipeline(args.pipeline, args.user_args)
         logger.info(f"+FINISHED pipeline.{args.pipeline.upper()}")
 
     def test2(self):
         """dispatched here with command test"""
 
         parser = argparse.ArgumentParser(usage="ican test [ARGS]")
-        parser.add_argument("first", nargs="?", help=argparse.SUPPRESS)
+        # parser.add_argument("dynamic_args", nargs="*", help=argparse.SUPPRESS)
+        parser.add_argument(
+            'user_args',
+            nargs=argparse.REMAINDER,
+            help=argparse.SUPPRESS)
         args = self.command_prep(parser)
 
         logger.verbose("verbose")
-        print(f"10-4 with arg {args.first}")
+        print(f"10-4 with arg {args.dynamic_args}")
 
 
 def entry():
