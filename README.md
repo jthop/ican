@@ -42,6 +42,7 @@ Sample .ican config file
 ```ini
 [version]
 current = 0.1.6+build.40
+previous = 0.1.5+build.39
 
 [options]
 log_file = ican.log
@@ -51,8 +52,9 @@ file = ./src/__init__.py
 style = semantic
 variable = __version__
 
-[pipeline: new.release]
+[pipeline: release]
 step1 = ./clean_my_project.sh
+step2 = $ICAN(bump {arg_1})
 step2 = git commit -a
 step3 = git tag -a {tag} --sign
 step4 = git push origin master {tag}
@@ -65,12 +67,10 @@ step4 = git push origin master {tag}
 - All operations will be logged to the `ican.log` file.
 - ican will update a variable named `__version__` in `./src/__init__.py` any time the bump command is run.
 - ican will use the `semantic` style of the version when updating this file.
-- All pipeline steps are typically shell-based commands.
+- A release pipeline has been defined.  More on that later.
 
 ### :exclamation: Important
-Take note, all sections must be unique.  So if you define more than one <file: [LABEL]> section, make sure each one has a unique label.
-
-The same is true for `pipeline` sections.  Each pipeline section must have a unique label.
+Take note, all sections must be unique.  So if you define more than one [file: [LABEL]] section, make sure each one has a unique label.
 
 ### :thumbsdown: :exploding_head:
 ```ini
@@ -137,18 +137,43 @@ step6 = $ICAN(show)
 ```
 
 You could explicitly tell ican to run the `release` pipeline with the following command:
-`user@mac:~/$ ican run release patch`
 
-Notice step1 uses the variable `arg_1`.  This references a user-supplied argument.  In the above example, `patch` is substituted in for {arg_1}.
+* `ican run release patch`
 
-Although not explicit, in newer ican version you can even leave out `run` and simply type:
+* Step1 uses the variable `arg_1`.  *{arg_1}* references the *first* user supplied argument.
+ 
+* In the example above, `patch` is the value assigned to {arg_1}
 
-`user@mac:~/$ ican release patch`
+* ican allows you to leave out `run` and simply type: `ican release patch`
 
-Finally, you could omit the argument, previously we used `patch`.  If you omit an argument, ican will use the function's default argument.  With bump, the default is `build`.  So the command below will bump the build number instead of the patch version before commiting to git.
+* Finally, if you do not supply an argument, ican will use the function's default.  The bump default is `build`.  The following command will bump build instead of patch before commiting to git.
+  - `ican release`
 
-`user@mac:~/$ ican release`
 
+### :exclamation: Important
+Each [pipeline: LABEL] needs a unique LABEL value.  Pipeline steps in the same pipeline must be unique as well.  
+
+### :thumbsdown: :exploding_head:
+```ini
+[pipeline: hello]
+step1 = echo 'hello world'
+...
+[pipeline: hello]
+step1 = echo 'this is another pipeline'
+step1 = echo 'this example HAS 2 ISSUES'
+step1 = echo 'can you spot them?'
+```
+
+### :thumbsup: :sunglasses:
+```ini
+[pipeline: hello]
+step1 = echo 'hello world'
+...
+[pipeline: another]
+step1 = echo 'this is another pipeline with a unique label'
+step2 = echo 'this example has unique step names within each pipeline'
+step3 = Batter.home_run()
+```
 
 #### Pipeline Context
 The pipeline context is available in 2 locations
