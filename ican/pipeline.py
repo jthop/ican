@@ -22,18 +22,29 @@ from .base import Base
 from .exceptions import InvalidInternalCmd
 
 
-#######################################
-#
-#   Step
-#
-#######################################
+##########################
+#  CTX
+##########################
 
 
 class CTX(UserDict):
+
+    ARG_W_DEFAULT = "arg_(?P<num>\d+)(?P<default_operator>\|\|)(?P<default>.*)"
+    ARG = r"{arg_(?P<num>\d+)}"
+
+    def __init__(self, *args, **kwargs):
+        self._defaults = {}
+        super().__init__(*args, **kwargs)
+
     def __missing__(self, key):
-        if key.startswith("arg_"):
-            return ""
-        return "#NOT_FOUND#"
+        match = re.search(self.ARG_W_DEFAULT, key)
+        if match:
+            num = match.group('num')
+            default = match.group('default')
+            if f'arg_{num}' in self.data:
+                return self.data[f'arg_{num}']
+            else:
+                return default
 
     def __setitem__(self, item, value):
         # Make sure it's a string
@@ -43,6 +54,11 @@ class CTX(UserDict):
     def gen_env(self):
         env = {f'ICAN_{k.upper()}': v for k, v in self.items()}
         return {**os.environ, **env}
+
+
+##########################
+#  Step
+##########################
 
 
 class Step:
@@ -87,11 +103,9 @@ class Step:
         return
 
 
-#######################################
-#
-#   Pipeline
-#
-#######################################
+##########################
+#  Pipeline
+##########################
 
 
 class Pipeline(Base):
@@ -158,13 +172,14 @@ class Pipeline(Base):
 
         logger.verbose(f"running internal cmd - {step.cmd}")
         parts = step.cmd.split(' ')
-        cmd = parts[0].lower()
-        if cmd not in self.INTERNAL_CMDS.keys():
+        command = parts[0].lower()
+        if command not in self.INTERNAL_CMDS.keys():
             raise InvalidInternalCmd()
 
+        # list comprehension so we don't supply an arg of None or ""
         args = [x for x in parts[1:] if x]
         # Run using same dispatch method as cli
-        getattr(self.ican, self.INTERNAL_CMDS.get(cmd))(*args)
+        getattr(self.ican, self.INTERNAL_CMDS.get(command))(*args)
 
         return
 
@@ -194,24 +209,26 @@ class Pipeline(Base):
             x += 1
             ctx[f"arg_{x}"] = arg
 
-        logger.verbose(f"Generated ctx: {ctx}")
         # Use the ctx to generate a new env
         self.env = ctx.gen_env()
+
+        logger.verbose(f"Generated env/ctx: {ctx}")
         return ctx
 
     def run(self, user_args):
-        print(user_args)
         logger.alt_info(f"+BEGIN pipeline.{self.label.upper()}")
         for step in self.steps:
             # Rebuild the ctx each step
             ctx = self._build_ctx(user_args)
 
-            # Each step renders their template variables
+            # ctx as arg to step, step renders the template
             step.render(ctx)
             logger.alt_info(F"+RUNNING step.{step.type.upper()}<{step.cmd}>")
+            # The final step, run the step.  Use the appropriate run
             if step.is_internal():
                 self._run_internal(step)
             if step.is_cli():
                 self._run_cli_cmd(step)
 
         logger.alt_info(f"+END pipeline.{self.label.upper()}")
+        return

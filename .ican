@@ -1,6 +1,6 @@
 [version]
-current = 0.1.37+build.267
-previous = 0.1.36+build.266
+current = 0.1.38+build.287
+previous = 0.1.37+build.286
 
 [options]
 log_file = ican.log
@@ -34,7 +34,6 @@ step1 = $ICAN(pre beta)
 
 [pipeline: test]
 step1 = $ICAN(bump build)
-step2 = $ICAN(show {arg_1})
+step2 = $ICAN(show {arg_1||pep440})
 step3 = echo Hello {asdf}
-step4 = env
 

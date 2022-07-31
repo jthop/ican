@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+"""
+New format
+11 VERBOSE
+15 DRY_RUN
+18 NARRATION
+19 RESULTS
+30 WARNING
+40 ERROR
+"""
 
 import logging
 import sys
