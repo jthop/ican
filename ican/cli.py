@@ -23,6 +23,8 @@ from .exceptions import PipelineNotFound
 
 
 class CLI(Base):
+
+    RESERVED = ['ican', 'git', 'config', 'version']
     usage = """ican <COMMAND> [<ARGS>]
 
 commands:
@@ -61,7 +63,9 @@ commands:
                 exit(1)
             except Exception as e:
                 raise(e)
-
+        elif args.command in self.RESERVED:
+            parser.print_help()
+            exit(1)
         else:
             getattr(self, args.command)()
             return

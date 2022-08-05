@@ -108,10 +108,10 @@ class Ican(Base):
     def bump(self, part="build", token=None):
         """This is pretty much the full process"""
         if token:
-            # Little magic here to turn `bump pre` into `bump prerelease`
-            if token == "pre":
-                token = "prerelease"
             logger.verbose(f"Setting prerelease string to {token}")
+        # Little magic here to turn `bump pre` into `bump prerelease`
+        if part == "pre":
+            part = "prerelease"
         logger.verbose(f"Beginning bump of <{part.upper()}>")
 
         self.version.bump(part, token)

@@ -2,6 +2,7 @@
 
 import re
 from types import SimpleNamespace
+from .exceptions import VersionNotBumpable
 from .log import logger
 
 
@@ -319,7 +320,7 @@ class Version(object):
         part = part.lower()
 
         if part not in Version.BUMPABLE:
-            raise ValueError(f"{part} is not bumpable")
+            raise VersionNotBumpable(f"{part} is not bumpable")
 
         # additional arg for setting prerelease
         if pre:

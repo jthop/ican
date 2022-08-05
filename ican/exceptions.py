@@ -26,6 +26,7 @@ class ExitCode:
     VERSION_BUMP_ERROR = 22
     VERSION_PEP440_ERROR = 23
     VERSION_GIT_ERROR = 24
+    VERSION_NOT_BUMPABLE = 25
 
     SOURCE_CODE_FILE_OPEN_ERROR = 30
     SOURCE_CODE_FILE_MISSING = 31
@@ -150,6 +151,10 @@ class VersionPep440Error(IcanException):
 
 class VersionGitError(IcanException):
     exit_code = ExitCode.VERSION_GIT_ERROR
+
+
+class VersionNotBumpable(IcanException):
+    exit_code = ExitCode.VERSION_NOT_BUMPABLE
 
 
 ########################

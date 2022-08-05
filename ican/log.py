@@ -43,10 +43,10 @@ class IcanFormatter(logging.Formatter):
         self.FORMATS[IcanLogger.VERBOSE] = self.color(self.YELLOW)
         self.FORMATS[IcanLogger.DRY_RUN] = self.color(self.GREEN)
         self.FORMATS[IcanLogger.ALT_INFO] = self.color(self.INVERT + self.CYAN, True)
-        self.FORMATS[logging.INFO] = self.color(self.UNDERLINE + self.BLUE, True)
+        self.FORMATS[logging.INFO] = self.color(self.BLUE, True)
         self.FORMATS[logging.WARNING] = self.color(self.RED)
-        self.FORMATS[logging.ERROR] = self.color(self.RED)
-        self.FORMATS[logging.CRITICAL] = self.color(self.INVERT + self.RED)
+        self.FORMATS[logging.ERROR] = self.color(self.INVERT + self.RED)
+        self.FORMATS[logging.CRITICAL] = self.color(self.BLINK + self.INVERT + self.RED)
 
         if emoji:
             pass
