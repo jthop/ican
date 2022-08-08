@@ -1,6 +1,6 @@
 [version]
-current = 0.1.40+build.289
-previous = 0.1.39+build.288
+current = 0.1.41+build.294
+previous = 0.1.40+build.293
 
 [options]
 log_file = ican.log
@@ -16,20 +16,24 @@ variable = __public_version__
 style = public
 
 [pipeline: git]
-step2 = git add .
-step3 = git commit -m "auto-commit for {tag}"
-step4 = git tag -a {tag} -m "automated tag for release {tag}" --sign
-step5 = git push origin HEAD {tag}
+description = commit to git with current version as tag
+step1 = git add .
+step2 = git commit -m "auto-commit for {tag}"
+step3 = git tag -a {tag} -m "automated tag for release {tag}" --sign
+step4 = git push origin HEAD {tag}
 
 [pipeline: release]
+description = bump version by at least patch, then perform full git commit with tag
 step1 = $ICAN(bump patch)
 step2 = $ICAN(run git)
 
 [pipeline: lint]
+description = check code quality
 step1 = black ./ican/
 step2 = flake8 ./ican/*
 
 [pipeline: beta]
+description = set version prerelease token to `beta`
 step1 = $ICAN(pre beta)
 
 [pipeline: test]

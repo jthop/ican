@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import re
-from types import SimpleNamespace
 from .exceptions import VersionNotBumpable
 from .log import logger
 
 
-__version__ = "0.4"
+__version__ = "2.0"
 
 
 #########################
@@ -22,23 +21,18 @@ class Version(object):
     """
 
     BUMPABLE = ["major", "minor", "patch", "prerelease", "build"]
-    DEFAULT_PRERELEASE = "alpha.0"
-    DEFAULT_BUILD = "build.0"
+    VALID_TOKENS = ["alpha", "beta", "dev", "rc"]
+    DEFAULT_TOKEN = "beta"
+    DEFAULT_BUILD = 0
 
-    last_number_re = re.compile(r"(?:[^\d]*(\d+)[^\d]*)+")
     semver_re = re.compile(
         r"""
             ^(?P<major>0|[1-9]\d*)
             \.(?P<minor>0|[1-9]\d*)
             \.(?P<patch>0|[1-9]\d*)
-            (?:-(?P<prerelease>
-                (?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)
-                (?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*
-            ))?
-            (?:\+(?P<build>
-                [0-9a-zA-Z-]+
-                (?:\.[0-9a-zA-Z-]+)*
-            ))?$
+            (?:-(?P<token>[0-9a-zA-Z-]+)
+            \.(?P<prerelease>0|[1-9]\d*))?
+            (?:\+build\.(?P<build>0|[1-9]\d*))?$
         """,
         re.VERBOSE,
     )
@@ -53,25 +47,28 @@ class Version(object):
         re.VERBOSE,
     )
 
-    def __init__(self, major=0, minor=0, patch=0, prerelease=None, build=None):
+    def __init__(
+        self,
+        major=0,
+        minor=0,
+        patch=0,
+        token=DEFAULT_TOKEN,
+        prerelease=None,
+        build=DEFAULT_BUILD
+    ):
 
         self._major = int(major)
         self._minor = int(minor)
         self._patch = int(patch)
+        self._token = token
         self._prerelease = prerelease
-        self._build = build
-        self._git_metadata = None
+        if prerelease:
+            self._prerelease = int(prerelease)
+        self._build = int(build)
 
-        f = SimpleNamespace(
-            major=self.major,
-            minor=self.minor,
-            patch=self.patch,
-            prerelease=self.prerelease,
-            build=self.build,
-            semantic=self.semantic,
-            part=None,
-        )
-        self._frozen = f
+        self._git_metadata = None
+        self._bumped_part = None
+        self._bumped_part_value = None
 
     def __str__(self):
         return self.semantic
@@ -91,66 +88,25 @@ class Version(object):
     def major(self):
         return self._major
 
-    @major.setter
-    def major(self, value):
-        raise AttributeError("major is readonly")
-
     @property
     def minor(self):
         return self._minor
-
-    @minor.setter
-    def minor(self, value):
-        raise AttributeError("minor is readonly")
 
     @property
     def patch(self):
         return self._patch
 
-    @patch.setter
-    def patch(self, value):
-        raise AttributeError("patch is readonly")
-
     @property
     def prerelease(self):
-        return self._prerelease
-
-    @prerelease.setter
-    def prerelease(self, value):
-        raise AttributeError("prerelease is readonly")
+        if self._prerelease is None:
+            return None
+        return f"{self._token}.{self._prerelease}"
 
     @property
     def build(self):
-        return self._build
-
-    @build.setter
-    def build(self, value):
-        raise AttributeError("build is readonly")
-
-    @property
-    def build_int(self):
-        """
-        Parse an int from build...
-        +build.102 = 102
-        """
-
-        if not self.build:
-            return 0
-        match = Version.last_number_re.search(self.build)
-        if match:
-            return int(match.group(1))
-
-    @property
-    def prerelease_int(self):
-        """
-        Parse an int from prerelease...
-        """
-
-        if not self.prerelease:
+        if self._build is None:
             return None
-        match = Version.last_number_re.search(self.prerelease)
-        if match:
-            return int(match.group(1))
+        return f"build.{self._build}"
 
     ##########################################
     #
@@ -166,10 +122,10 @@ class Version(object):
         purposes this is the best choice.
         """
         v = f"{self._major}.{self._minor}.{self._patch}"
-        if self._prerelease:
-            v = f"{v}-{self._prerelease}"
-        if self._build:
-            v = f"{v}+{self._build}"
+        if self.prerelease:
+            v = f"{v}-{self.prerelease}"
+        if self.build:
+            v = f"{v}+{self.build}"
         return v
 
     @property
@@ -183,21 +139,18 @@ class Version(object):
         prerelease = ""
         build = ""
 
-        if self.prerelease:
-            numeric = self.prerelease_int
-            if numeric is None:
-                prerelease = ""
-            elif "alpha" in self.prerelease.lower():
-                prerelease = f"a{numeric}"
-            elif "beta" in self.prerelease.lower():
-                prerelease = f"b{numeric}"
-            elif "rc" in self.prerelease.lower():
-                prerelease = f"rc{numeric}"
+        if self._prerelease:
+            if self._token == "alpha":
+                prerelease = f"a{self._prerelease}"
+            elif self._token == "beta":
+                prerelease = f"b{self._prerelease}"
+            elif self._token == "rc":
+                prerelease = f"rc{self._prerelease}"
             else:
-                prerelease = f".dev{numeric}"
+                prerelease = f".dev{self._prerelease}"
 
-        if self.build:
-            build = f".{self.build_int}"
+        if self._build:
+            build = f".{self._build}"
 
         v = f"{base}{prerelease}{build}"
         return v
@@ -241,9 +194,9 @@ class Version(object):
 
         # Construct build metadata with git sha + tracked build
         if commit_sha:
-            build = f"{commit_sha}.{self.build_int}"
+            build = f"{commit_sha}.{self._build}"
         else:
-            build = f"build.{self.build_int}"
+            build = f"build.{self._build}"
 
         # Add build metadata to version
         v = f"{tag}{pre}+{build}"
@@ -262,30 +215,9 @@ class Version(object):
         version.bumped will be False.  Aftter a .bump() it will
         return True.
         """
-        if self._frozen.part:
+        if self._bumped_part:
             return True
         return False
-
-    @property
-    def original(self):
-        """Use the data stored in _frozen to return a Version instance
-        of the original datac, in case a bump has been made and some
-        type of comparison is desired.
-
-        _frozen.part: the part of the original version that was
-        bumped.  Will be None until a bump occurs.
-        """
-        return Version.parse(self._frozen.semantic)
-
-    @property
-    def age(self):
-        part = self._frozen.part
-        if part in ["major", "minor", "patch", "prerelease"]:
-            return "new"
-        elif part in ["build"]:
-            return "rebuild"
-        else:
-            return "unknown"
 
     @property
     def env(self):
@@ -306,10 +238,14 @@ class Version(object):
     def is_canonical(self):
         return Version.pep440_re.match(self.pep440) is not None
 
-    def set_prerelease_token(self, token):
-        self._prerelease = f"{token}.0"
+    def set_token(self, token):
+        token = token.lower()
+        if self._token != token:
+            self._prerelease = 0
+            self._token = token
+        return
 
-    def bump(self, part=None, pre=None):
+    def bump(self, part="build"):
         """
         Exposed bump method in the public api.
         Arguments:
@@ -317,21 +253,28 @@ class Version(object):
             Still valid if blank because the tracked build
             number will be incremented.
         """
+
         part = part.lower()
+        # "pre" is just shorthand for "prerelease"
+        if part == "pre":
+            part = "prerelease"
+        # shortcut to set the token and bump at same time
+        elif part in Version.VALID_TOKENS:
+            token = part
+            part = "prerelease"
+            self.set_token(token)
 
         if part not in Version.BUMPABLE:
             raise VersionNotBumpable(f"{part} is not bumpable")
 
-        # additional arg for setting prerelease
-        if pre:
-            self.set_prerelease_token(pre)
+        # Record the bumsped part incase we need to rollback
+        self._bumped_part = part
+        self._bumped_part_value = getattr(self, part)
 
-        # Record the bumped part
-        self._frozen.part = part
         # Always increment the build number
         self.increment_build()
 
-        # Find the part-specifric bump function
+        # Find the part-specific bump method
         bump_method = getattr(self, f"bump_{part}")
         bump_method()
 
@@ -367,40 +310,24 @@ class Version(object):
         Bump method for bumping PRERELEASE
         """
 
-        prerelease = Version.increment_string(
-            self._prerelease or Version.DEFAULT_PRERELEASE
-        )
-        self._prerelease = prerelease
+        if self._prerelease is None:
+            self._prerelease = 0
+
+        self._prerelease += 1
 
     def bump_build(self):
-        """ """
+        """Needed so dispatch technique works even with bump build
+        """
         pass
 
     def increment_build(self):
         """
         Always increment build number
         """
+        if self._build is None:
+            self._build = 0
 
-        build = Version.increment_string(self._build or Version.DEFAULT_BUILD)
-        self._build = build
-
-    @classmethod
-    def increment_string(cls, string):
-        """
-        Look for the last sequence of number(s) in a string and increment.
-        arguments:
-            string: the string to search for.
-        returns: the incremented string
-        Source:
-        http://code.activestate.com/recipes/442460-increment-numbers-in-a-string/#c1
-        """
-
-        match = cls.last_number_re.search(string)
-        if match:
-            next_ = str(int(match.group(1)) + 1)
-            start, end = match.span(1)
-            string = string[: max(end - len(next_), start)] + next_ + string[end:]
-        return string
+        self._build += 1
 
     @classmethod
     def parse(cls, version):

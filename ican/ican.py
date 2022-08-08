@@ -28,12 +28,13 @@ class Ican(Base):
         """
         self.ready = False
 
-        # make sure the config is fully parsed
-        if not self.config.pre_parsed:
-            # Typically 'init' is the ONLY way to be in this state
+        # Make sure the config is fully parsed
+        if only_pre_parse:
+            pass
+        # This if statement should be for init() cases only
+        elif not self.config.parsed:
             self.config.parse()
-        elif not self.config.parsed and not only_pre_parse:
-            self.config.parse()
+
         # Here if still config not ready, it will never be ready
         if not self.config.config_file:
             raise NoConfigFound()
@@ -59,7 +60,7 @@ class Ican(Base):
         """Set the prerelease token"""
 
         logger.verbose(f"Setting prerelease string to {token}")
-        self.version.set_prerelease_token(token)
+        self.version.set_token(token)
 
         # Save the new version, config will check for dry_run
         self.config.persist_version(self.version.semantic)
@@ -105,19 +106,24 @@ class Ican(Base):
         logger.info(f"Rollback: {self.version.semantic}")
         return self
 
-    def bump(self, part="build", token=None):
+    def list(self):
+        """"""""
+
+        pipelines = self.config.pipelines.values()
+        lines = "\n".join([p.describe_self() for p in pipelines])
+
+        logger.info("\nAvailable Commands  ")
+        logger.info("══════════════════\n")
+        logger.info(lines)
+        logger.info("\n")
+
+    def bump(self, part="build"):
         """This is pretty much the full process"""
-        if token:
-            logger.verbose(f"Setting prerelease string to {token}")
+
         # Little magic here to turn `bump pre` into `bump prerelease`
-        if part == "pre":
-            part = "prerelease"
         logger.verbose(f"Beginning bump of <{part.upper()}>")
 
-        self.version.bump(part, token)
-        logger.verbose(
-            f"New value of <{part.upper()}> - {getattr(self.version, part)}"
-        )
+        self.version.bump(part)
 
         # Update the user's files with new version
         for file in self.config.source_files:

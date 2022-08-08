@@ -45,6 +45,7 @@ class CTX(UserDict):
                 return self.data[f'arg_{num}']
             else:
                 return default
+        return "N/A"
 
     def __setitem__(self, item, value):
         # Make sure it's a string
@@ -121,19 +122,30 @@ class Pipeline(Base):
         'show': 'show',
     }
 
-    def __init__(self, label=None, steps=None):
+    def __init__(self, label=None, items=None):
         self.label = label
         self.steps = []
+        self.description = None
         self.env = None
         self.ctx = None
 
-        if steps is None:
-            logger.error("must include at least 1 step")
+        for key, value in items:
+            if key.lower() == 'description':
+                logger.verbose(f"{label.upper()} - {value}")
+                self.description = value
+            elif "step" in key.lower():
+                logger.verbose(f"STEP - {label.upper()}.{key} - {value}")
+                step = Step(key, value)
+                self.steps.append(step)
 
-        for k, v in steps:
-            logger.verbose(f"{label.upper()}.{k} - {v}")
-            step = Step(k, v)
-            self.steps.append(step)
+        if len(self.steps) == 0:
+            logger.error(f"{label.upper()} - must include at least 1 step")
+
+    def describe_self(self):
+        d = self.description
+        if d is None:
+            d = "description N/A (visit the READNE to learn about descriptions)"
+        return f"{self.label} - {d}"
 
     def _run_cli_cmd(self, step):
         """Here is where we actually run the cli commands.
@@ -199,7 +211,6 @@ class Pipeline(Base):
         ctx["prerelease"] = self.version.prerelease
         ctx["build"] = self.version.build
         ctx["env"] = self.version.env
-        ctx["age"] = self.version.age
         ctx["root"] = self.config.path
         ctx["previous"] = self.config.previous_version
 

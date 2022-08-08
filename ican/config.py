@@ -206,8 +206,8 @@ class Config(Base):
 
             label = s.split(":")[1].strip().lower()
             logger.verbose(f"parsing {label.upper()} pipeline")
-            left_right_tuple = self.parser.items(s)
-            pl = Pipeline(label=label, steps=left_right_tuple)
+            items = self.parser.items(s)
+            pl = Pipeline(label=label, items=items)
             self.pipelines[label] = pl
         return
 

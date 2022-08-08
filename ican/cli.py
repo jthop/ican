@@ -29,11 +29,12 @@ class CLI(Base):
 
 commands:
   bump [PART]        increment version [minor, major, patch, prerelease, build]
+  init               initialize a config in the current directory
+  list               list available user-defined pipelines
   pre [TOKEN]        set the prerelease string [alpha, beta, rc, dev]
-  show [STYLE]       show version [semantic, public, pep440, git]
   run [PIPELINE]     run the specified PIPELINE
   rollback           restore the previous version
-  init               initialize a config in the current directory
+  show [STYLE]       show version [semantic, public, pep440, git]
 """
 
     def __init__(self):
@@ -144,19 +145,34 @@ commands:
             "part",
             nargs="?",
             default="build",
-            choices=["major", "minor", "patch", "prerelease", "pre", "build"],
+            choices=[
+                "major",
+                "minor",
+                "patch",
+                "prerelease",
+                "build",
+                "pre",
+                "beta",
+                "alpha",
+                "dev",
+                "rc",
+            ],
             help=argparse.SUPPRESS,
-        )
-        parser.add_argument(
-            "--pre",
-            type=str,
-            help="set the prerelease string [alpha, beta, rc, dev]",
         )
         args = self.command_prep(parser)
 
         self.ican = Ican()
-        self.ican.bump(args.part.lower(), args.pre)
+        self.ican.bump(args.part.lower())
         logger.verbose("bump() COMPLETE")
+        return
+
+    def list(self):
+        """dispatched here with command list"""
+        parser = argparse.ArgumentParser(usage="ican list")
+        self.command_prep(parser)
+
+        self.ican = Ican()
+        self.ican.list()
         return
 
     def show(self):
@@ -182,8 +198,7 @@ commands:
     def pre(self):
         """Sets the prerelease token to [alpha, beta, dev, rc]
         At the same time prerelease mode is enabled for the
-        version.  The same can be accomplished with --pre
-        during a bump.
+        version.
         """
 
         parser = argparse.ArgumentParser(
