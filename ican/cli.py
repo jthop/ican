@@ -228,7 +228,7 @@ commands:
         self.command_prep(parser)
 
         self.ican = Ican()
-        self.ican.rollback(only_pre_parse=True)
+        self.ican.rollback()
         logger.verbose("rollback() COMPLETE")
         return
 

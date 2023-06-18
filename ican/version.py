@@ -23,7 +23,6 @@ class Version(object):
     BUMPABLE = ["major", "minor", "patch", "prerelease", "build"]
     VALID_TOKENS = ["alpha", "beta", "dev", "rc"]
     DEFAULT_TOKEN = "beta"
-    DEFAULT_BUILD = 0
 
     semver_re = re.compile(
         r"""
@@ -54,7 +53,7 @@ class Version(object):
         patch=0,
         token=DEFAULT_TOKEN,
         prerelease=None,
-        build=DEFAULT_BUILD
+        build=None
     ):
 
         self._major = int(major)
@@ -62,9 +61,12 @@ class Version(object):
         self._patch = int(patch)
         self._token = token
         self._prerelease = prerelease
+        self._build = build
+
         if prerelease:
             self._prerelease = int(prerelease)
-        self._build = int(build)
+        if build:
+            self._build = int(build)
 
         self._git_metadata = None
         self._bumped_part = None
@@ -316,7 +318,10 @@ class Version(object):
         self._prerelease += 1
 
     def bump_build(self):
-        """Needed so dispatch technique works even with bump build
+        """
+        This bump_method is included only incase user runs bump build.
+        Build has already been bumped since we run increment_build
+        separately each bump.
         """
         pass
 

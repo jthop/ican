@@ -112,10 +112,13 @@ class Ican(Base):
         pipelines = self.config.pipelines.values()
         lines = "\n".join([p.describe_self() for p in pipelines])
 
-        logger.info("\nAvailable Commands  ")
-        logger.info("══════════════════\n")
-        logger.info(lines)
-        logger.info("\n")
+        if lines:
+            logger.info("\nAvailable Commands  ")
+            logger.info("══════════════════\n")
+            logger.info(lines)
+            logger.info("\n")
+        else:
+            logger.info("\nNo Pipelines Defined  ")
 
     def bump(self, part="build"):
         """This is pretty much the full process"""
