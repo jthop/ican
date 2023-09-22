@@ -52,6 +52,12 @@ file = ./src/__init__.py
 style = semantic
 variable = __version__
 
+[file: json_example]
+file = ./package.json
+style = public
+variable = version
+file_type = json
+
 [pipeline: release]
 step1 = ./clean_my_project.sh
 step2 = $ICAN(bump {arg_1})
@@ -97,12 +103,12 @@ file = ./src/__main__.py
 | version           | current         | This is the value that ican stores the current version number in. |
 | version           | previous        | This is the previous version ican uses in case of rollback.       |
 | options           | log_file        | All operations are logged to disk in this file.  To turn logging off, do not define the log_file. |
-| aliases           | [ALIAS]         | Built-in command + args that [ALIAS] will trigger.  Example `bump patch` |
 | file: [LABEL]     | file            | The filename of a file ican will update with new versions.  You can use a standard unix glob (*.py) if desired. |
+| file: [LABEL]     | file_type       | The type of file.  Can be "python", "json", or "unknown".  Python/Unknown just search via regex.  Json will use the variable name as a key.  This field is optional as ican will use file extensions to guess the file type.
 | file: [LABEL]     | style           | The version format to use.  Choices are [semantic, public, pep440, git] |
 | file: [LABEL]     | variable        | The variable name pointing to the version string that ican will update when versions are bumped. |
 | file: [LABEL]     | regex           | User-supplied python formattted regex string defining how to replace the file's version. |
-| pipeline: [LABEL] | [STEP]            | A pipeline step is a cli command such as `git commit -a`.  **STEP values MUST to be unique.**  |
+| pipeline: [LABEL] | [STEP]          | A pipeline step is a cli command such as `git commit -a`.  **STEP values MUST to be unique.**  |
 
 
 ### :mag: User-supplied regex

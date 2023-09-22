@@ -107,7 +107,8 @@ class Ican(Base):
         return self
 
     def list(self):
-        """"""""
+        """
+        """
 
         pipelines = self.config.pipelines.values()
         lines = "\n".join([p.describe_self() for p in pipelines])

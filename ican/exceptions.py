@@ -31,6 +31,8 @@ class ExitCode:
     SOURCE_CODE_FILE_OPEN_ERROR = 30
     SOURCE_CODE_FILE_MISSING = 31
     USER_SUPPLIED_REGEX_ERROR = 32
+    VARIABLE_REQUIRED = 33
+    INVALID_STYLE = 34
 
     PIPELINE_NOT_FOUND = 40
     INVALID_INTERNAL_CMD = 42
@@ -170,6 +172,14 @@ class SourceCodeFileMissing(IcanException):
 
 class UserSuppliedRegexError(IcanException):
     exit_code = ExitCode.USER_SUPPLIED_REGEX_ERROR
+
+
+class VariableRequired(IcanException):
+    exit_code = ExitCode.VARIABLE_REQUIRED
+
+
+class InvalidStyle(IcanException):
+    exit_code = ExitCode.INVALID_STYLE
 
 
 ########################
